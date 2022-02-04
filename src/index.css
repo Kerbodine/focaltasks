@@ -13,3 +13,20 @@
 html {
   font-family: "Inter", sans-serif;
 }
+
+.form-input {
+  @apply outline-none rounded-md bg-gray-100 w-full h-8 px-2 text-sm focus:ring-2 ring-accent/50;
+}
+
+.form-button {
+  @apply px-3 py-1.5 text-sm rounded-md border-[2px] bg-white border-gray-200 hover:border-accent hover:bg-accent transition-colors hover:text-white font-semibold text-gray-500;
+}
+
+.draggable {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
