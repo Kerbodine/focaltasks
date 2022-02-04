@@ -2,11 +2,9 @@ import { useState } from "react";
 import { BiHide, BiInfoCircle, BiShow } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Signup() {
+export default function Login() {
   // const navigate = useNavigate();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,14 +14,6 @@ export default function Signup() {
   const [error, setError] = useState("");
 
   // const { signup } = useAuth();
-
-  const updateFirstName = (e) => {
-    setFirstName(e.target.value);
-  };
-
-  const updateLastName = (e) => {
-    setLastName(e.target.value);
-  };
 
   const updateEmail = (e) => {
     setEmail(e.target.value);
@@ -41,32 +31,14 @@ export default function Signup() {
         <div className="w-full h-full p-8 flex gap-8">
           <div className="w-full sm:w-1/2 flex justify-center items-center xs:py-4">
             <form onSubmit={handleSubmit} className="max-w-[312px] w-full">
-              <h1 className="text-2xl sm:text-3xl font-semibold">Sign up</h1>
-              <div className="mt-6 flex gap-3">
-                <input
-                  type="text"
-                  placeholder="First name"
-                  value={firstName}
-                  onChange={updateFirstName}
-                  required
-                  className="form-input"
-                />
-                <input
-                  type="text"
-                  placeholder="Last name"
-                  value={lastName}
-                  onChange={updateLastName}
-                  required
-                  className="form-input"
-                />
-              </div>
+              <h1 className="text-2xl sm:text-3xl font-semibold">Log in</h1>
               <input
                 type="email"
                 placeholder="Email address"
                 value={email}
                 onChange={updateEmail}
                 required
-                className="form-input mt-3"
+                className="form-input mt-6"
               />
               <div className="flex mt-3 items-center">
                 <input
@@ -85,6 +57,12 @@ export default function Signup() {
                   {showPassword ? <BiShow /> : <BiHide />}
                 </button>
               </div>
+              <Link
+                className="mt-1 w-full h-4 text-right block text-sm text-gray-500 hover:underline"
+                to="/forgot-password"
+              >
+                Forgot password?
+              </Link>
               {error && (
                 <div className="mt-3 w-full box-border border-[2px] border-red-400 bg-red-100 text-red-400 text-sm px-1 py-0.5 rounded-md flex items-center gap-1">
                   <BiInfoCircle className="text-xl rotate-180" />
@@ -92,12 +70,12 @@ export default function Signup() {
                 </div>
               )}
               <button type="submit" className="mt-8 form-button">
-                Sign up
+                Log in
               </button>
               <p className="mt-2 ml-0.5 block text-sm text-gray-500">
-                Already have an account?{" "}
-                <Link to="/login" className="hover:underline cursor-pointer">
-                  Log in
+                Need an account?{" "}
+                <Link to="/signup" className="hover:underline cursor-pointer">
+                  Sign up
                 </Link>
               </p>
             </form>
