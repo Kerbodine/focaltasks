@@ -34,15 +34,23 @@ export default function Login() {
       setLoading(false);
       navigate("/");
     } catch (err) {
-      console.log(err);
-      setError("Failed to login account");
+      switch (err.code) {
+        case "auth/user-not-found":
+          setError("User not found");
+          break;
+        case "auth/wrong-password":
+          setError("Wrong password");
+          break;
+        default:
+          setError("Failed to login");
+      }
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-screen h-screen bg-slate-400 overflow-hidden p-0 xs:p-[52px] grid place-items-center draggable">
-      <div className="no-drag w-full max-w-4xl h-full xs:max-h-[600px] bg-white border-[1px] border-gray-200 rounded-none xs:rounded-2xl pt-[52px] xs:p-0">
+    <div className="w-screen h-screen bg-white overflow-hidden p-0 xs:p-[52px] grid place-items-center draggable">
+      <div className="no-drag w-full max-w-4xl h-full xs:max-h-[600px] bg-white border-[2px] border-gray-200 rounded-none xs:rounded-2xl pt-[52px] xs:p-0">
         <div className="w-full h-full p-8 flex gap-8">
           <div className="w-full sm:w-1/2 flex justify-center items-center xs:py-4">
             {loading ? (

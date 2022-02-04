@@ -26,21 +26,29 @@ export default function ForgotPassword() {
       await resetPassword(email);
       setEmail("");
       setLoading(false);
-      setMessage("Check your email for a password reset link");
+      setMessage("Check your email!");
     } catch (err) {
-      console.log(err);
-      setError("Failed to reset password for this account");
+      switch (err.code) {
+        case "auth/user-not-found":
+          setError("User not found");
+          break;
+        case "auth/invalid-email":
+          setError("Invalid email");
+          break;
+        default:
+          setError("Failed to reset password");
+      }
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-screen h-screen bg-slate-400 grid place-items-center">
-      <div className="w-[300px] rounded-2xl shadow-xl bg-white p-8">
+    <div className="w-screen h-screen bg-white grid place-items-center">
+      <div className="max-w-[320px] w-full rounded-2xl border-[2px] border-gray-200 bg-white p-8">
         {loading ? (
           <Loader />
         ) : (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="">
             <h1 className="text-2xl font-semibold">Reset password</h1>
             <input
               type="email"
