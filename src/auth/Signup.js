@@ -65,13 +65,13 @@ export default function Signup() {
   return (
     <div className="auth-frame">
       <div className="auth-container">
-        <div className="w-full h-full p-8 flex gap-8">
-          <div className="w-full sm:w-1/2 flex justify-center items-center xs:py-4">
+        <div className="flex h-full w-full gap-8 p-8">
+          <div className="flex w-full items-center justify-center sm:w-1/2 xs:py-4">
             {loading ? (
               <Loader />
             ) : (
-              <form onSubmit={handleSubmit} className="max-w-[312px] w-full">
-                <h1 className="text-2xl sm:text-3xl font-semibold mb-6">
+              <form onSubmit={handleSubmit} className="w-full max-w-[312px]">
+                <h1 className="mb-6 text-2xl font-semibold sm:text-3xl">
                   Sign up
                 </h1>
                 <GoogleSignin type={"signup"} />
@@ -101,7 +101,7 @@ export default function Signup() {
                   required
                   className="form-input mt-2"
                 />
-                <div className="flex mt-2 items-center">
+                <div className="mt-2 flex items-center">
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
@@ -112,31 +112,31 @@ export default function Signup() {
                   />
                   <button
                     type="button"
-                    className="-ml-7 rounded-full text-gray-400 hover:text-gray-600 text-xl"
+                    className="-ml-7 rounded-full text-xl text-gray-400 hover:text-gray-600"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <BiShow /> : <BiHide />}
                   </button>
                 </div>
                 {error && (
-                  <div className="mt-2 error-alert">
-                    <BiInfoCircle className="text-xl rotate-180" />
+                  <div className="error-alert mt-2">
+                    <BiInfoCircle className="rotate-180 text-xl" />
                     <p className="flex-auto truncate">{error}</p>
                   </div>
                 )}
-                <button type="submit" className="mt-6 form-button">
+                <button type="submit" className="form-button mt-6">
                   Sign up
                 </button>
                 <p className="mt-2 ml-0.5 block text-sm text-gray-500">
                   Already have an account?{" "}
-                  <Link to="/login" className="hover:underline cursor-pointer">
+                  <Link to="/login" className="cursor-pointer hover:underline">
                     Log in
                   </Link>
                 </p>
               </form>
             )}
           </div>
-          <div className="hidden sm:block h-full w-1/2 bg-red-200 rounded-xl"></div>
+          <div className="hidden h-full w-1/2 rounded-xl bg-red-200 sm:block"></div>
         </div>
       </div>
     </div>

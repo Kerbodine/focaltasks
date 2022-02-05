@@ -29,39 +29,39 @@ export default function Home() {
   } = useView();
 
   return (
-    <div className="draggable w-screen h-screen bg-slate-400 grid place-items-center p-8 pt-[52px] overflow-y-auto">
-      <div className="no-drag w-full max-w-[400px] rounded-2xl shadow-xl bg-white p-8">
-        <h1 className="text-2xl font-semibold mb-2">User Info:</h1>
-        <div className="text-gray-600 flex flex-wrap">
+    <div className="draggable grid h-screen w-screen place-items-center overflow-y-auto bg-slate-400 p-8 pt-[52px]">
+      <div className="no-drag w-full max-w-[400px] rounded-2xl bg-white p-8 shadow-xl">
+        <h1 className="mb-2 text-2xl font-semibold">User Info:</h1>
+        <div className="flex flex-wrap text-gray-600">
           <p className="font-semibold">UserID:</p>
           <p className="break-all">{currentUser.uid}</p>
         </div>
-        <div className="text-gray-600 flex flex-wrap">
+        <div className="flex flex-wrap text-gray-600">
           <p className="font-semibold">Email:</p>
           <p className="break-all">{currentUser.email}</p>
         </div>
         <div className="mt-4 flex">
-          <button className="ml-auto form-button" onClick={signOut}>
+          <button className="form-button ml-auto" onClick={signOut}>
             Sign out
           </button>
         </div>
-        <h1 className="text-2xl font-semibold mt-4 mb-2">App Info:</h1>
+        <h1 className="mt-4 mb-2 text-2xl font-semibold">App Info:</h1>
         <div className="flex flex-col gap-1">
-          <div className="text-gray-600 flex flex-wrap items-center">
+          <div className="flex flex-wrap items-center text-gray-600">
             <p className="font-semibold">Navbar:</p>
             <p className="break-all">{JSON.stringify(navbar)}</p>
-            <button className="ml-auto text-button" onClick={toggleNavbar}>
+            <button className="text-button ml-auto" onClick={toggleNavbar}>
               Toggle
             </button>
           </div>
-          <div className="text-gray-600 flex flex-wrap items-center">
+          <div className="flex flex-wrap items-center text-gray-600">
             <p className="font-semibold">Sidebar:</p>
             <p className="break-all">{JSON.stringify(sidebar)}</p>
-            <button className="ml-auto text-button" onClick={toggleSidebar}>
+            <button className="text-button ml-auto" onClick={toggleSidebar}>
               Toggle
             </button>
           </div>
-          <div className="text-gray-600 flex flex-wrap items-center">
+          <div className="flex flex-wrap items-center text-gray-600">
             <p className="font-semibold">Sidebar panel:</p>
             <p className="break-all">{sidebarPanel}</p>
           </div>

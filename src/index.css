@@ -15,11 +15,11 @@ html {
 }
 
 .form-input {
-  @apply outline-none rounded-md bg-gray-100 w-full h-8 px-2 text-sm focus:ring-2 ring-accent/50;
+  @apply h-8 w-full rounded-md bg-gray-100 px-2 text-sm outline-none ring-accent/50 focus:ring-2;
 }
 
 .form-button {
-  @apply px-3 py-1.5 text-sm rounded-md border-[2px] bg-white border-gray-200 hover:border-accent hover:bg-accent transition-colors hover:text-white font-semibold text-gray-500;
+  @apply rounded-md border-[2px] border-gray-200 bg-white px-3 py-1.5 text-sm font-semibold text-gray-500 transition-colors hover:border-accent hover:bg-accent hover:text-white;
 }
 
 .draggable {
@@ -32,21 +32,21 @@ html {
 }
 
 .auth-frame {
-  @apply w-screen h-screen bg-white overflow-hidden p-0 xs:p-[52px] grid place-items-center draggable;
+  @apply draggable grid h-screen w-screen place-items-center overflow-hidden bg-white p-0 xs:p-[52px];
 }
 
 .auth-container {
-  @apply no-drag w-full max-w-4xl h-full xs:max-h-[600px] xs:min-h-[376px] border-0 box-border bg-white xs:border-[2px] border-gray-200 rounded-none xs:rounded-2xl pt-[52px] xs:p-0;
+  @apply no-drag box-border h-full w-full max-w-4xl rounded-none border-0 border-gray-200 bg-white pt-[52px] xs:max-h-[600px] xs:min-h-[376px] xs:rounded-2xl xs:border-[2px] xs:p-0;
 }
 
 .error-alert {
-  @apply w-full box-border border-[2px] border-red-400 bg-red-100 text-red-400 text-sm px-1 py-0.5 rounded-md flex items-center gap-1;
+  @apply box-border flex w-full items-center gap-1 rounded-md border-[2px] border-red-400 bg-red-100 px-1 py-0.5 text-sm text-red-400;
 }
 
 .success-alert {
-  @apply w-full box-border border-[2px] border-green-400 bg-green-100 text-green-400 text-sm px-1 py-0.5 rounded-md flex items-center gap-1;
+  @apply box-border flex w-full items-center gap-1 rounded-md border-[2px] border-green-400 bg-green-100 px-1 py-0.5 text-sm text-green-400;
 }
 
 .text-button {
-  @apply px-2 py-1 border-[2px] border-gray-200 hover:border-gray-300 rounded-md text-xs font-semibold text-gray-500;
+  @apply rounded-md border-[2px] border-gray-200 px-2 py-1 text-xs font-semibold text-gray-500 hover:border-gray-300;
 }

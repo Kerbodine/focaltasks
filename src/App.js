@@ -9,7 +9,7 @@ import ForgotPassword from "./auth/ForgotPassword";
 
 function App() {
   return (
-    <div className="w-screen h-screen overflow-hidden">
+    <div className="h-screen w-screen overflow-hidden">
       <Router>
         <AuthProvider>
           <ViewProvider>

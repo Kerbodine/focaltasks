@@ -41,8 +41,8 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="draggable w-screen h-screen bg-white grid place-items-center">
-      <div className="no-drag max-w-[296px] w-full rounded-2xl border-[2px] border-box border-gray-200 bg-white p-8">
+    <div className="draggable grid h-screen w-screen place-items-center bg-white">
+      <div className="no-drag border-box w-full max-w-[296px] rounded-2xl border-[2px] border-gray-200 bg-white p-8">
         {loading ? (
           <Loader />
         ) : (
@@ -57,24 +57,24 @@ export default function ForgotPassword() {
               className="form-input mt-3"
             />
             <Link
-              className="mt-1 w-full text-right block text-sm text-gray-500 hover:underline"
+              className="mt-1 block w-full text-right text-sm text-gray-500 hover:underline"
               to="/login"
             >
               Back to login page
             </Link>
             {error && (
-              <div className="mt-2 error-alert">
-                <BiInfoCircle className="text-xl rotate-180" />
+              <div className="error-alert mt-2">
+                <BiInfoCircle className="rotate-180 text-xl" />
                 <p className="flex-auto truncate">{error}</p>
               </div>
             )}
             {message && (
-              <div className="mt-2 success-alert">
+              <div className="success-alert mt-2">
                 <BiCheck className="text-xl" />
                 <p className="flex-auto truncate">{message}</p>
               </div>
             )}
-            <button type="submit" className="mt-8 form-button">
+            <button type="submit" className="form-button mt-8">
               Reset password
             </button>
           </form>
