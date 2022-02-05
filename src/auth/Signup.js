@@ -3,6 +3,7 @@ import { BiHide, BiInfoCircle, BiShow } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import { useAuth } from "./AuthContext";
+import GoogleSignin from "./GoogleSignin";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -62,16 +63,19 @@ export default function Signup() {
   };
 
   return (
-    <div className="w-screen h-screen bg-white overflow-hidden p-0 xs:p-[52px] grid place-items-center draggable">
-      <div className="no-drag w-full max-w-4xl h-full xs:max-h-[600px] bg-white border-[2px] border-gray-200 rounded-none xs:rounded-2xl pt-[52px] xs:p-0">
+    <div className="auth-frame">
+      <div className="auth-container">
         <div className="w-full h-full p-8 flex gap-8">
           <div className="w-full sm:w-1/2 flex justify-center items-center xs:py-4">
             {loading ? (
               <Loader />
             ) : (
               <form onSubmit={handleSubmit} className="max-w-[312px] w-full">
-                <h1 className="text-2xl sm:text-3xl font-semibold">Sign up</h1>
-                <div className="mt-6 flex gap-3">
+                <h1 className="text-2xl sm:text-3xl font-semibold mb-6">
+                  Sign up
+                </h1>
+                <GoogleSignin type={"signup"} />
+                <div className="mt-2 flex gap-2">
                   <input
                     type="text"
                     placeholder="First name"
@@ -95,9 +99,9 @@ export default function Signup() {
                   value={email}
                   onChange={updateEmail}
                   required
-                  className="form-input mt-3"
+                  className="form-input mt-2"
                 />
-                <div className="flex mt-3 items-center">
+                <div className="flex mt-2 items-center">
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
@@ -115,12 +119,12 @@ export default function Signup() {
                   </button>
                 </div>
                 {error && (
-                  <div className="mt-3 w-full box-border border-[2px] border-red-400 bg-red-100 text-red-400 text-sm px-1 py-0.5 rounded-md flex items-center gap-1">
+                  <div className="mt-3 error-alert">
                     <BiInfoCircle className="text-xl rotate-180" />
                     <p className="flex-auto truncate">{error}</p>
                   </div>
                 )}
-                <button type="submit" className="mt-8 form-button">
+                <button type="submit" className="mt-6 form-button">
                   Sign up
                 </button>
                 <p className="mt-2 ml-0.5 block text-sm text-gray-500">
