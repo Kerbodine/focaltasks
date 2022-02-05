@@ -5,8 +5,6 @@ import { useAuth } from "./AuthContext";
 import Loader from "../components/Loader";
 
 export default function ForgotPassword() {
-  const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -65,13 +63,13 @@ export default function ForgotPassword() {
               Back to login page
             </Link>
             {error && (
-              <div className="mt-3 error-alert">
+              <div className="mt-2 error-alert">
                 <BiInfoCircle className="text-xl rotate-180" />
                 <p className="flex-auto truncate">{error}</p>
               </div>
             )}
             {message && (
-              <div className="mt-4 success-alert">
+              <div className="mt-2 success-alert">
                 <BiCheck className="text-xl" />
                 <p className="flex-auto truncate">{message}</p>
               </div>

@@ -119,7 +119,7 @@ export default function Signup() {
                   </button>
                 </div>
                 {error && (
-                  <div className="mt-3 error-alert">
+                  <div className="mt-2 error-alert">
                     <BiInfoCircle className="text-xl rotate-180" />
                     <p className="flex-auto truncate">{error}</p>
                   </div>

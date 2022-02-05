@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
+import { ViewProvider } from "./components/ViewContext";
 import PrivateRoute from "./auth/PrivateRoute";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
@@ -11,14 +12,20 @@ function App() {
     <div className="w-screen h-screen overflow-hidden">
       <Router>
         <AuthProvider>
-          <Routes>
-            <Route exact path="/" element={<PrivateRoute />}>
-              <Route exact path="/" element={<Home />} />
-            </Route>
-            <Route path="/signup" exact element={<Signup />} />
-            <Route path="/login" exact element={<Login />} />
-            <Route path="/reset-password" exact element={<ForgotPassword />} />
-          </Routes>
+          <ViewProvider>
+            <Routes>
+              <Route exact path="/" element={<PrivateRoute />}>
+                <Route exact path="/" element={<Home />} />
+              </Route>
+              <Route path="/signup" exact element={<Signup />} />
+              <Route path="/login" exact element={<Login />} />
+              <Route
+                path="/reset-password"
+                exact
+                element={<ForgotPassword />}
+              />
+            </Routes>
+          </ViewProvider>
         </AuthProvider>
       </Router>
     </div>

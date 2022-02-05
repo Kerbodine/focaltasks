@@ -38,20 +38,6 @@ export function AuthProvider({ children }) {
 
   const provider = new GoogleAuthProvider();
 
-  // const signInWithGoogle = () => {
-  //   signInWithPopup(auth, provider)
-  //     .then((result) => {
-  //       const name = result.user.displayName;
-  //       const email = result.user.email;
-  //       const user = result.user;
-  //       setCurrentUser(user);
-  //       // const photoURL = result.user.photoURL;
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
   const signInWithGoogle = () => {
     return signInWithPopup(auth, provider);
   };
