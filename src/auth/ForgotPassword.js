@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BiCheck, BiInfoCircle } from "react-icons/bi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import Loader from "../components/Loader";
 
@@ -41,8 +41,8 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="draggable grid h-screen w-screen place-items-center bg-white">
-      <div className="no-drag border-box w-full max-w-[296px] rounded-2xl border-[2px] border-gray-200 bg-white p-8">
+    <div className="grid h-screen w-screen place-items-center bg-white">
+      <div className="border-box w-full max-w-[296px] rounded-2xl border-2 border-gray-200 bg-white p-8">
         {loading ? (
           <Loader />
         ) : (

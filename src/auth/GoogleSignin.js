@@ -16,7 +16,7 @@ export default function GoogleSignin({ type }) {
     <button
       type="button"
       onClick={googleAuth}
-      className="border-box flex h-10 w-full items-center gap-3 rounded-md border-[2px] border-gray-200 px-3 hover:border-gray-300"
+      className="border-box flex h-10 w-full items-center gap-3 rounded-md border-2 border-gray-200 px-3 hover:border-gray-300"
     >
       <GoogleLogo />
       <p className="text-sm font-medium text-gray-500">

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useView } from "./ViewContext";
+import { useView } from "../contexts/ViewContext";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -29,8 +29,8 @@ export default function Home() {
   } = useView();
 
   return (
-    <div className="draggable grid h-screen w-screen place-items-center overflow-y-auto bg-slate-400 p-8 pt-[52px]">
-      <div className="no-drag w-full max-w-[400px] rounded-2xl bg-white p-8 shadow-xl">
+    <div className="grid h-screen w-screen place-items-center overflow-y-auto bg-slate-400 p-8 pt-[48px]">
+      <div className="w-full max-w-[400px] rounded-2xl bg-white p-8 shadow-xl">
         <h1 className="mb-2 text-2xl font-semibold">User Info:</h1>
         <div className="flex flex-wrap text-gray-600">
           <p className="font-semibold">UserID:</p>

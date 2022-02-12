@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
-import { ViewProvider } from "./components/ViewContext";
+import { ViewProvider } from "./contexts/ViewContext";
 import PrivateRoute from "./auth/PrivateRoute";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import ForgotPassword from "./auth/ForgotPassword";
+import MainView from "./pages/MainView";
 
 function App() {
   return (
@@ -15,7 +16,10 @@ function App() {
           <ViewProvider>
             <Routes>
               <Route exact path="/" element={<PrivateRoute />}>
-                <Route exact path="/" element={<Home />} />
+                <Route exact path="/" element={<MainView />} />
+              </Route>
+              <Route exact path="/debug" element={<PrivateRoute />}>
+                <Route exact path="/debug" element={<Home />} />
               </Route>
               <Route path="/signup" exact element={<Signup />} />
               <Route path="/login" exact element={<Login />} />

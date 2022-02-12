@@ -5,6 +5,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      transitionProperty: {
+        margin: "margin",
+      },
       colors: {
         main: colors.zinc,
         accent: ({ opacityValue }) => {
