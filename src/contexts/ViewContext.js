@@ -29,6 +29,7 @@ export function ViewProvider({ children }) {
   const value = {
     navbar,
     toggleNavbar,
+    setNavbar,
     sidebar,
     toggleSidebar,
     sidebarPanel,
