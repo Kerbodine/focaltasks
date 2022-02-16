@@ -2,7 +2,7 @@ import { useView } from "../contexts/ViewContext";
 import Shortcut from "./Shortcut";
 
 export default function NavbarItem({ icon, title, shortcut, active }) {
-  const { navbar, toggleNavbar } = useView();
+  const { navbar } = useView();
 
   return (
     <div
@@ -13,14 +13,16 @@ export default function NavbarItem({ icon, title, shortcut, active }) {
       <span className="flex-none fill-gray-600 text-xl text-gray-600">
         {icon}
       </span>
-      {navbar && (
-        <>
-          <p className="flex-auto truncate text-sm font-medium text-gray-600">
-            {title}
-          </p>
-          {shortcut && <Shortcut shortcut={shortcut} />}
-        </>
-      )}
+      <p
+        className={`${
+          !navbar && "hidden sm:block"
+        } flex-auto truncate text-sm font-medium text-gray-600`}
+      >
+        {title}
+      </p>
+      <span className={`${!navbar && "hidden sm:inline-flex"}`}>
+        {shortcut && <Shortcut shortcut={shortcut} />}
+      </span>
     </div>
   );
 }

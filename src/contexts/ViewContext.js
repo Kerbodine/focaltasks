@@ -7,7 +7,7 @@ export function useView() {
 }
 
 export function ViewProvider({ children }) {
-  const [navbar, setNavbar] = useState(true);
+  const [navbar, setNavbar] = useState(false);
   const [sidebar, setSidebar] = useState(true);
   const [sidebarPanel, setSidebarPanel] = useState(0);
   // 0: taskList statistics
