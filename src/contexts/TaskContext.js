@@ -6,7 +6,6 @@ import {
   doc,
   setDoc,
   deleteDoc,
-  getDoc,
   updateDoc,
 } from "firebase/firestore";
 import { useAuth } from "../auth/AuthContext";
@@ -34,7 +33,7 @@ export function TaskProvider({ children }) {
       remindDate: null,
       dueDate: null,
       important: false,
-      createdAt: Date.now(),
+      createdAt: new Date(),
     });
   };
 
@@ -49,6 +48,15 @@ export function TaskProvider({ children }) {
     );
   };
 
+  const newList = async () => {
+    const listId = uuidv4();
+    await setDoc(doc(db, `Users/${currentUser.uid}/Lists`, listId), {
+      id: listId,
+      title: "",
+      createdAt: new Date(),
+    });
+  };
+
   const value = {
     userInbox,
     setUserInbox,
@@ -57,6 +65,7 @@ export function TaskProvider({ children }) {
     createTask,
     deleteTask,
     updateTask,
+    newList,
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;

@@ -12,13 +12,10 @@ import NavbarItem from "./NavbarItem";
 import Shortcut from "./Shortcut";
 import { useAuth } from "../auth/AuthContext";
 import { useTasks } from "../contexts/TaskContext";
-import { useEffect, useState } from "react";
-import { collection, doc, getFirestore, onSnapshot } from "firebase/firestore";
-import { app } from "../firebase";
 
 export default function Navbar() {
   const { userData } = useAuth();
-  const { userLists } = useTasks();
+  const { userLists, newList } = useTasks();
   const { navbar, toggleNavbar } = useView();
 
   return (
@@ -32,7 +29,7 @@ export default function Navbar() {
         <div
           className={`${!navbar && "hidden sm:grid"} ${
             !userData.photoURL && "bg-accent font-semibold text-white"
-          } ring-accent grid h-8 w-8 flex-none cursor-pointer place-items-center rounded-lg ring-offset-2 hover:ring-2`}
+          } ring-accent grid h-8 w-8 flex-none cursor-pointer place-items-center overflow-hidden rounded-lg ring-offset-2 hover:ring-2`}
         >
           {userData.photoURL ? (
             <img
@@ -117,12 +114,13 @@ export default function Navbar() {
               icon={<IconUl />}
               key={list.id}
               title={list.listName}
-              link={list.id}
+              link={`/${list.id}`}
             />
           ))}
           {/* New list button */}
           <button
             className={`group hover:bg-accent flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 hover:text-white`}
+            onClick={newList}
           >
             <span className="flex-none text-xl">
               <HiPlusSm />

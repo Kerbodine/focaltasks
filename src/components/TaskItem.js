@@ -14,7 +14,9 @@ export default function TaskItem({ id, path, title, deleteTask, updateTask }) {
         placeholder="Task title"
         value={taskTitle}
         onChange={(e) => setTaskTitle(e.target.value)}
-        onBlur={() => updateTask(path, id, { title: taskTitle })}
+        onBlur={() =>
+          taskTitle !== title && updateTask(path, id, { title: taskTitle })
+        }
       />
       <button
         className="hidden flex-none text-xl text-gray-400 hover:text-gray-600 group-hover:inline-flex"

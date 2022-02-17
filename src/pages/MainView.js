@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { getFirestore, doc, collection, onSnapshot } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { app } from "../firebase";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -8,6 +15,7 @@ import { useAuth } from "../auth/AuthContext";
 import Loader from "../components/Loader";
 import Inbox from "./Inbox";
 import { useTasks } from "../contexts/TaskContext";
+import TaskList from "./TaskList";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
@@ -36,7 +44,10 @@ export default function MainView() {
   useEffect(() => {
     setLoading(true);
     const unsubscribe = onSnapshot(
-      collection(db, "Users", currentUser.uid, "Inbox"),
+      query(
+        collection(db, "Users", currentUser.uid, "Inbox"),
+        orderBy("createdAt")
+      ),
       (allTasks) => {
         let taskList = [];
         console.log("Updating tasks");
@@ -56,7 +67,10 @@ export default function MainView() {
   useEffect(() => {
     setLoading(true);
     const unsubscribe = onSnapshot(
-      collection(db, "Users", currentUser.uid, "Lists"),
+      query(
+        collection(db, "Users", currentUser.uid, "Lists"),
+        orderBy("createdAt")
+      ),
       (allTasks) => {
         let taskList = [];
         console.log("Updating lists");
@@ -91,6 +105,7 @@ export default function MainView() {
                 <Route exact path="/today" element={<p>Today</p>} />
                 <Route exact path="/upcoming" element={<p>Upcoming</p>} />
                 <Route exact path="/important" element={<p>Important</p>} />
+                <Route path="*" element={<TaskList />} />
               </Routes>
             </div>
             {/* Sidebar section */}

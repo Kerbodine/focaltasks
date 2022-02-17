@@ -10,7 +10,7 @@ export default function NavbarItem({ icon, title, shortcut, link }) {
     <Link
       to={link}
       className={`${
-        pathname === link && "bg-gray-100"
+        pathname === link && "!bg-gray-100"
       } flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 hover:bg-gray-50 active:bg-gray-100`}
     >
       <span className="flex-none fill-gray-500 text-xl text-gray-500">
