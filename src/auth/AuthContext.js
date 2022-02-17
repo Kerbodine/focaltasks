@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { auth, app } from "../firebase";
+import { v4 as uuidv4 } from "uuid";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
@@ -23,11 +24,32 @@ export function AuthProvider({ children }) {
 
   const db = getFirestore(app);
 
+  const createSignupDoc = async (cred) => {
+    const photoURL = cred.user.photoURL ? cred.user.photoURL : null;
+    const userDoc = {
+      displayName: cred.user.displayName,
+      email: cred.user.email,
+      photoURL,
+      createdAt: new Date(),
+    };
+    await setDoc(doc(db, "Users", cred.user.uid), userDoc);
+    const taskId = uuidv4();
+    await setDoc(doc(db, `Users/${cred.user.uid}/Inbox`, taskId), {
+      id: taskId,
+      title: "Welcome to your task list!",
+      description: "",
+      remindDate: null,
+      dueDate: null,
+      important: false,
+      createdAt: new Date(),
+    });
+  };
+
   const signup = async (email, password, firstName, lastName) => {
     try {
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      const userDoc = { displayName: `${firstName} ${lastName}`, email };
-      await setDoc(doc(db, "Users", cred.user.uid), userDoc);
+      let cred = await createUserWithEmailAndPassword(auth, email, password);
+      cred.user.displayName = `${firstName} ${lastName}`;
+      await createSignupDoc(cred);
     } catch (err) {
       console.log(err);
     }
@@ -50,11 +72,7 @@ export function AuthProvider({ children }) {
   const signInWithGoogle = async () => {
     try {
       const cred = await signInWithPopup(auth, provider);
-      const userDoc = {
-        displayName: cred.user.displayName,
-        email: cred.user.email,
-      };
-      await setDoc(doc(db, "Users", cred.user.uid), userDoc);
+      await createSignupDoc(cred);
     } catch (err) {
       console.log(err);
     }
@@ -70,11 +88,18 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
+  // User data states
   const [userData, setUserData] = useState("");
+  const [userInbox, setUserInbox] = useState([]);
+  const [userLists, setUserLists] = useState([]);
 
   const value = {
     userData,
     setUserData,
+    userInbox,
+    setUserInbox,
+    userLists,
+    setUserLists,
     currentUser,
     signup,
     login,

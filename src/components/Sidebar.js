@@ -17,7 +17,7 @@ export default function Sidebar() {
   return (
     <div
       className={`${
-        sidebar ? "w-[240px]" : "w-0 lg:w-[240px]"
+        sidebar ? "w-[240px]" : "hidden w-0 lg:block lg:w-[240px]"
       } absolute right-0 h-full border-l border-gray-200 bg-white lg:relative`}
     >
       <div>
