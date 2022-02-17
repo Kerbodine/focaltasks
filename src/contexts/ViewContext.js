@@ -7,12 +7,10 @@ export function useView() {
 }
 
 export function ViewProvider({ children }) {
+  const [loading, setLoading] = useState(true);
   const [navbar, setNavbar] = useState(false);
   const [sidebar, setSidebar] = useState(false);
   const [sidebarPanel, setSidebarPanel] = useState(0);
-  // 0: taskList statistics
-  // 1: pomodoro page
-  // 2: pomodoro statistics
 
   const toggleNavbar = () => {
     setNavbar(!navbar);
@@ -27,6 +25,8 @@ export function ViewProvider({ children }) {
   };
 
   const value = {
+    loading,
+    setLoading,
     navbar,
     toggleNavbar,
     setNavbar,

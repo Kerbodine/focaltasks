@@ -90,16 +90,10 @@ export function AuthProvider({ children }) {
 
   // User data states
   const [userData, setUserData] = useState("");
-  const [userInbox, setUserInbox] = useState([]);
-  const [userLists, setUserLists] = useState([]);
 
   const value = {
     userData,
     setUserData,
-    userInbox,
-    setUserInbox,
-    userLists,
-    setUserLists,
     currentUser,
     signup,
     login,

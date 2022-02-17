@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { getFirestore, doc, collection, onSnapshot } from "firebase/firestore";
 import { app } from "../firebase";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -13,58 +7,69 @@ import Sidebar from "../components/Sidebar";
 import { useAuth } from "../auth/AuthContext";
 import Loader from "../components/Loader";
 import Inbox from "./Inbox";
-
-const getUserInfo = async (db, id) => {
-  const userRef = doc(db, "Users", id);
-  const userSnap = await getDoc(userRef);
-  return userSnap;
-};
-
-const getListInfo = async (db, id) => {
-  const listSnap = getDocs(collection(db, `Users/${id}/Lists`));
-  return listSnap;
-};
-
-const getInboxInfo = async (db, id) => {
-  const listSnap = getDocs(collection(db, `Users/${id}/Inbox`));
-  return listSnap;
-};
+import { useTasks } from "../contexts/TaskContext";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
+  const { setUserData, currentUser } = useAuth();
+  const { setUserInbox, setUserLists } = useTasks();
 
-  const { setUserData, currentUser, setUserLists, setUserInbox } = useAuth();
   const db = getFirestore(app);
 
+  // Query snapshot for user data
   useEffect(() => {
-    const getData = async () => {
-      const userData = await getUserInfo(db, currentUser.uid);
-      setUserData(userData.data());
-      setLoading(false);
+    setLoading(true);
+    const unsubscribe = onSnapshot(
+      doc(db, "Users", currentUser.uid),
+      (document) => {
+        console.log(document.data());
+        setUserData(document.data());
+        setLoading(false);
+      }
+    );
+    return () => {
+      unsubscribe();
     };
-    const getInbox = async () => {
-      const inboxData = await getInboxInfo(db, currentUser.uid);
-      let list = [];
-      inboxData.forEach((doc) => {
-        list.push(doc.data());
-      });
-      console.log(list);
-      setUserInbox([...list]);
-      setLoading(false);
+  }, []);
+
+  // Query snapshot for user inbox
+  useEffect(() => {
+    setLoading(true);
+    const unsubscribe = onSnapshot(
+      collection(db, "Users", currentUser.uid, "Inbox"),
+      (allTasks) => {
+        let taskList = [];
+        console.log("Updating tasks");
+        allTasks.docs.forEach((task) => {
+          taskList.push(task.data());
+        });
+        setUserInbox(taskList);
+        setLoading(false);
+      }
+    );
+    return () => {
+      unsubscribe();
     };
-    const getLists = async () => {
-      const listData = await getListInfo(db, currentUser.uid);
-      let list = [];
-      listData.forEach((doc) => {
-        list.push(doc.data());
-      });
-      console.log(list);
-      setUserLists([...list]);
-      setLoading(false);
+  }, []);
+
+  // Query snapshot for user lists
+  useEffect(() => {
+    setLoading(true);
+    const unsubscribe = onSnapshot(
+      collection(db, "Users", currentUser.uid, "Lists"),
+      (allTasks) => {
+        let taskList = [];
+        console.log("Updating lists");
+        allTasks.docs.forEach((task) => {
+          taskList.push(task.data());
+        });
+        setUserLists(taskList);
+        setLoading(false);
+      }
+    );
+    return () => {
+      unsubscribe();
     };
-    getData();
-    getInbox();
-    getLists();
   }, []);
 
   return (

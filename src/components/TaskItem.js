@@ -1,8 +1,27 @@
-export default function TaskItem({ title }) {
+import { useState } from "react";
+import { HiX } from "react-icons/hi";
+
+export default function TaskItem({ id, path, title, deleteTask, updateTask }) {
+  const [taskTitle, setTaskTitle] = useState(title);
+
   return (
-    <div className="flex h-10 w-full items-center gap-2 px-2">
-      <div className="h-6 w-6 rounded-md border-2 border-gray-300"></div>
-      <p className="font-medium text-gray-500">{title}</p>
+    <div
+      className={`group flex h-9 w-full items-center gap-2 rounded-lg px-2 hover:bg-gray-50`}
+    >
+      <div className="h-5 w-5 flex-none rounded-md border-2 border-gray-400"></div>
+      <input
+        className="flex-auto bg-transparent font-medium text-gray-500 outline-none"
+        placeholder="Task title"
+        value={taskTitle}
+        onChange={(e) => setTaskTitle(e.target.value)}
+        onBlur={() => updateTask(path, id, { title: taskTitle })}
+      />
+      <button
+        className="hidden flex-none text-xl text-gray-400 hover:text-gray-600 group-hover:inline-flex"
+        onClick={() => deleteTask(path, id)}
+      >
+        <HiX />
+      </button>
     </div>
   );
 }
