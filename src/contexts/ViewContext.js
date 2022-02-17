@@ -8,7 +8,7 @@ export function useView() {
 
 export function ViewProvider({ children }) {
   const [navbar, setNavbar] = useState(false);
-  const [sidebar, setSidebar] = useState(true);
+  const [sidebar, setSidebar] = useState(false);
   const [sidebarPanel, setSidebarPanel] = useState(0);
   // 0: taskList statistics
   // 1: pomodoro page

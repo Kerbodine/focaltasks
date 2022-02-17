@@ -7,12 +7,14 @@ import {
   HiSearch,
   HiSun,
 } from "react-icons/hi";
-import { ReactComponent as IconUl } from "./icon-ul.svg";
+import { ReactComponent as IconUl } from "./icons/icon-ul.svg";
 import { useView } from "../contexts/ViewContext";
 import NavbarItem from "./NavbarItem";
 import Shortcut from "./Shortcut";
+import { useAuth } from "../auth/AuthContext";
 
 export default function Navbar() {
+  const { currentUser } = useAuth();
   const { navbar, toggleNavbar } = useView();
 
   return (
@@ -26,7 +28,7 @@ export default function Navbar() {
         <div
           className={`${
             !navbar && "hidden sm:grid"
-          } grid h-8 w-8 cursor-pointer place-items-center rounded-lg bg-accent font-semibold text-white ring-accent ring-offset-2 hover:ring-2`}
+          } grid h-8 w-8 flex-none cursor-pointer place-items-center rounded-lg bg-accent font-semibold text-white ring-accent ring-offset-2 hover:ring-2`}
         >
           M
         </div>
@@ -36,7 +38,7 @@ export default function Navbar() {
           } ml-3 flex-auto truncate text-sm`}
         >
           <p className="font-medium text-gray-700">Michael Tong</p>
-          <p className="-mt-1 text-gray-500">test@test.com</p>
+          <p className="-mt-1 truncate text-gray-500">{currentUser.email}</p>
         </div>
 
         <button
