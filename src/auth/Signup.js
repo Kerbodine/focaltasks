@@ -41,7 +41,7 @@ export default function Signup() {
     try {
       setError("");
       setLoading(true);
-      await signup(email, password);
+      await signup(email, password, firstName, lastName);
       setLoading(false);
       navigate("/");
     } catch (err) {

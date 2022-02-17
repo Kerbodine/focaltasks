@@ -1,4 +1,3 @@
-import { Fragment, useState } from "react";
 import { Tab } from "@headlessui/react";
 import { useView } from "../contexts/ViewContext";
 import { ReactComponent as IconInfo } from "./icons/icon-info.svg";

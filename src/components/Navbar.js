@@ -14,7 +14,7 @@ import Shortcut from "./Shortcut";
 import { useAuth } from "../auth/AuthContext";
 
 export default function Navbar() {
-  const { currentUser } = useAuth();
+  const { userData } = useAuth();
   const { navbar, toggleNavbar } = useView();
 
   return (
@@ -30,15 +30,15 @@ export default function Navbar() {
             !navbar && "hidden sm:grid"
           } grid h-8 w-8 flex-none cursor-pointer place-items-center rounded-lg bg-accent font-semibold text-white ring-accent ring-offset-2 hover:ring-2`}
         >
-          M
+          {userData.displayName[0]}
         </div>
         <div
           className={`${
             !navbar && "hidden sm:block"
           } ml-3 flex-auto truncate text-sm`}
         >
-          <p className="font-medium text-gray-700">Michael Tong</p>
-          <p className="-mt-1 truncate text-gray-500">{currentUser.email}</p>
+          <p className="truncate font-medium text-gray-700">{`${userData.displayName}`}</p>
+          <p className="-mt-1 truncate text-gray-500">{userData.email}</p>
         </div>
 
         <button
@@ -71,13 +71,29 @@ export default function Navbar() {
         </div>
         <div className="mt-3 flex flex-col gap-0.5">
           {/* Pinned lists */}
-          <NavbarItem icon={<HiInbox />} title="Inbox" shortcut="⌘1" />
-          <NavbarItem icon={<HiSun />} title="Today" shortcut="⌘2" />
-          <NavbarItem icon={<HiCalendar />} title="Upcoming" shortcut="⌘3" />
+          <NavbarItem
+            icon={<HiInbox />}
+            title="Inbox"
+            shortcut="⌘1"
+            link={"/"}
+          />
+          <NavbarItem
+            icon={<HiSun />}
+            title="Today"
+            shortcut="⌘2"
+            link={"/today"}
+          />
+          <NavbarItem
+            icon={<HiCalendar />}
+            title="Upcoming"
+            shortcut="⌘3"
+            link={"/upcoming"}
+          />
           <NavbarItem
             icon={<HiExclamationCircle />}
             title="Important"
             shortcut="⌘4"
+            link={"/important"}
           />
         </div>
         {/* Horizontal divider */}

@@ -15,9 +15,6 @@ function App() {
         <AuthProvider>
           <ViewProvider>
             <Routes>
-              <Route exact path="/" element={<PrivateRoute />}>
-                <Route exact path="/" element={<MainView />} />
-              </Route>
               <Route exact path="/debug" element={<PrivateRoute />}>
                 <Route exact path="/debug" element={<Home />} />
               </Route>
@@ -28,6 +25,9 @@ function App() {
                 exact
                 element={<ForgotPassword />}
               />
+              <Route path="*" element={<PrivateRoute />}>
+                <Route path="*" element={<MainView />} />
+              </Route>
             </Routes>
           </ViewProvider>
         </AuthProvider>
