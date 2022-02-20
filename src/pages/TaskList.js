@@ -1,32 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HiPlusSm } from "react-icons/hi";
 import { useLocation } from "react-router-dom";
+import TaskItem from "../components/TaskItem";
 import { useTasks } from "../contexts/TaskContext";
 
 export default function TaskList() {
   const { pathname } = useLocation();
-  const { createTask } = useTasks();
+  let listId = "";
+  if (pathname === "/") {
+    listId = "inbox";
+  } else {
+    listId = pathname.substring(1);
+  }
+
+  const { createTask, userLists, deleteTask, updateTask, updateList } =
+    useTasks();
 
   const newTask = () => {
-    createTask(`/Lists${pathname}/Tasks`);
+    createTask(listId);
   };
+
+  // Initialize list settings
+  const [currentList, setCurrentList] = useState(
+    userLists.filter((list) => list.id === listId)[0]
+  );
+  const [listTitle, setListTitle] = useState(currentList.title);
+
+  useEffect(() => {
+    setCurrentList(userLists.filter((list) => list.id === listId)[0]);
+    setListTitle(currentList.title);
+  }, [userLists, listId, currentList.title]);
 
   return (
     <div className="h-full w-full">
       <div className="h-[56px] w-full border-b border-gray-200"></div>
       <div className="h-full w-full p-8">
-        <h1 className="text-2xl font-semibold">Custom List</h1>
+        <h1>
+          <input
+            className="text-2xl font-semibold outline-none"
+            value={listTitle}
+            placeholder="Untitled List"
+            readOnly={currentList.id === "inbox"}
+            onChange={(e) => setListTitle(e.target.value)}
+            onBlur={() => {
+              currentList.title !== listTitle &&
+                updateList(listId, { title: listTitle });
+            }}
+          />
+        </h1>
         <div className="-mx-2 mt-2 flex flex-col gap-1">
-          {/* {userInbox.map((task) => (
+          {currentList.tasks.map((task) => (
             <TaskItem
               id={task.id}
               key={task.id}
               title={task.title}
-              path="Inbox"
+              listId={listId}
               deleteTask={deleteTask}
               updateTask={updateTask}
             />
-          ))} */}
+          ))}
         </div>
         <button
           className="mt-4 flex h-9 items-center gap-2 rounded-lg border-2 border-dashed border-gray-200 pr-4 pl-2 text-gray-400 hover:border-solid hover:bg-gray-50"

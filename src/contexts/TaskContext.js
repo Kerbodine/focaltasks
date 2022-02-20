@@ -7,6 +7,9 @@ import {
   setDoc,
   deleteDoc,
   updateDoc,
+  arrayUnion,
+  getDoc,
+  arrayRemove,
 } from "firebase/firestore";
 import { useAuth } from "../auth/AuthContext";
 
@@ -21,31 +24,58 @@ export function TaskProvider({ children }) {
 
   const db = getFirestore(app);
 
-  const [userInbox, setUserInbox] = useState([]);
   const [userLists, setUserLists] = useState([]);
 
-  const createTask = async (path) => {
-    const taskId = uuidv4();
-    await setDoc(doc(db, `Users/${currentUser.uid}${path}`, taskId), {
-      id: taskId,
-      title: "",
-      description: "",
-      remindDate: null,
-      dueDate: null,
-      important: false,
-      createdAt: new Date(),
+  const createTask = async (listId) => {
+    await updateDoc(doc(db, "Users", currentUser.uid, "Lists", listId), {
+      tasks: arrayUnion({
+        id: uuidv4(),
+        title: "",
+        description: "",
+        remindDate: null,
+        dueDate: null,
+        important: false,
+        createdAt: new Date(),
+        modifiedAt: new Date(),
+      }),
     });
   };
 
-  const deleteTask = async (path, id) => {
-    await deleteDoc(doc(db, `Users/${currentUser.uid}/${path}/${id}`));
+  const deleteTask = async (listId, id) => {
+    const listRef = doc(db, "Users", currentUser.uid, "Lists", listId);
+    let tempUserLists = userLists;
+    let deleteTask;
+    tempUserLists.forEach((list) => {
+      if (list.id === listId) {
+        list.tasks.forEach((task) => {
+          if (task.id === id) {
+            deleteTask = task;
+          }
+        });
+      }
+    });
+    await updateDoc(listRef, {
+      tasks: arrayRemove(deleteTask),
+    });
   };
 
-  const updateTask = async (path, id, updatedItems) => {
-    await updateDoc(
-      doc(db, `Users/${currentUser.uid}/${path}/${id}`),
-      updatedItems
+  const updateTask = async (listId, taskId, updatedItems) => {
+    const listRef = doc(db, "Users", currentUser.uid, "Lists", listId);
+    const docSnap = await getDoc(listRef);
+    const tasks = docSnap.data().tasks;
+    const task = tasks.find((task) => task.id === taskId);
+    const updatedTask = { ...task, ...updatedItems };
+    const updatedTasks = tasks.map((task) =>
+      task.id === taskId ? updatedTask : task
     );
+    await updateDoc(listRef, {
+      tasks: updatedTasks,
+    });
+  };
+
+  const updateList = async (listId, updatedItems) => {
+    const listRef = doc(db, "Users", currentUser.uid, "Lists", listId);
+    await updateDoc(listRef, updatedItems);
   };
 
   const newList = async () => {
@@ -53,15 +83,20 @@ export function TaskProvider({ children }) {
     await setDoc(doc(db, `Users/${currentUser.uid}/Lists`, listId), {
       id: listId,
       title: "",
+      notes: "",
+      icon: "",
+      tasks: [],
+      completedTasks: [],
+      sort: "createdAt",
       createdAt: new Date(),
+      modifiedAt: new Date(),
     });
   };
 
   const value = {
-    userInbox,
-    setUserInbox,
     userLists,
     setUserLists,
+    updateList,
     createTask,
     deleteTask,
     updateTask,

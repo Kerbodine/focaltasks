@@ -10,6 +10,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
+  getAdditionalUserInfo,
 } from "firebase/auth";
 
 const AuthContext = createContext();
@@ -33,15 +34,27 @@ export function AuthProvider({ children }) {
       createdAt: new Date(),
     };
     await setDoc(doc(db, "Users", cred.user.uid), userDoc);
-    const taskId = uuidv4();
-    await setDoc(doc(db, `Users/${cred.user.uid}/Inbox`, taskId), {
-      id: taskId,
-      title: "Welcome to your task list!",
-      description: "",
-      remindDate: null,
-      dueDate: null,
-      important: false,
+    await setDoc(doc(db, `Users/${cred.user.uid}/Lists`, "inbox"), {
+      id: "inbox",
+      title: "",
+      notes: "",
+      icon: "",
+      tasks: [
+        {
+          id: uuidv4(),
+          title: "Welcome to your task list!",
+          description: "",
+          remindDate: null,
+          dueDate: null,
+          important: false,
+          createdAt: new Date(),
+          modifiedAt: new Date(),
+        },
+      ],
+      completedTasks: [],
+      sort: "createdAt",
       createdAt: new Date(),
+      modifiedAt: new Date(),
     });
   };
 
@@ -72,7 +85,10 @@ export function AuthProvider({ children }) {
   const signInWithGoogle = async () => {
     try {
       const cred = await signInWithPopup(auth, provider);
-      await createSignupDoc(cred);
+      const { isNewUser } = getAdditionalUserInfo(cred);
+      if (isNewUser) {
+        await createSignupDoc(cred);
+      }
     } catch (err) {
       console.log(err);
     }

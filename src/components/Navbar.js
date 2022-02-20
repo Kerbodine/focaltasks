@@ -29,7 +29,7 @@ export default function Navbar() {
         <div
           className={`${!navbar && "hidden sm:grid"} ${
             !userData.photoURL && "bg-accent font-semibold text-white"
-          } ring-accent grid h-8 w-8 flex-none cursor-pointer place-items-center overflow-hidden rounded-lg ring-offset-2 hover:ring-2`}
+          } grid h-8 w-8 flex-none cursor-pointer place-items-center overflow-hidden rounded-lg ring-accent ring-offset-2 hover:ring-2`}
         >
           {userData.photoURL ? (
             <img
@@ -58,24 +58,6 @@ export default function Navbar() {
         </button>
       </div>
       <div className="px-3">
-        {/* Searchbar */}
-        {/* <div
-          className={`${
-            navbar ? "bg-gray-100" : "cursor-pointer hover:bg-gray-100"
-          } mt-3 flex h-8 w-full items-center gap-1.5 rounded-lg px-1.5 ring-accent focus-within:ring-2 sm:bg-gray-100`}
-        >
-          <HiSearch className="flex-none text-xl text-gray-600" />
-          <input
-            className={`${
-              !navbar && "hidden sm:block"
-            } w-full flex-auto bg-transparent text-sm text-gray-600 outline-none`}
-            type="text"
-            placeholder="Search"
-          />
-          <span className={`${!navbar && "hidden sm:inline-flex"}`}>
-            <Shortcut shortcut="⌘K" />
-          </span>
-        </div> */}
         <div className="mt-3">
           <NavbarItem
             icon={<HiInbox />}
@@ -109,17 +91,19 @@ export default function Navbar() {
         <hr className="my-3 h-[1px] w-full border-gray-200" />
         <div className="flex flex-col gap-0.5">
           {/* User lists */}
-          {userLists.map((list) => (
-            <NavbarItem
-              icon={<IconUl />}
-              key={list.id}
-              title={list.listName}
-              link={`/${list.id}`}
-            />
-          ))}
+          {userLists
+            .filter((list) => list.id !== "inbox")
+            .map((list) => (
+              <NavbarItem
+                icon={<IconUl />}
+                key={list.id}
+                title={list.title}
+                link={`/${list.id}`}
+              />
+            ))}
           {/* New list button */}
           <button
-            className={`group hover:bg-accent flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 hover:text-white`}
+            className={`group flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 hover:bg-accent hover:text-white`}
             onClick={newList}
           >
             <span className="flex-none text-xl">

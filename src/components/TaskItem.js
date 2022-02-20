@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { HiX } from "react-icons/hi";
 
-export default function TaskItem({ id, path, title, deleteTask, updateTask }) {
+export default function TaskItem({
+  id,
+  listId,
+  title,
+  deleteTask,
+  updateTask,
+}) {
   const [taskTitle, setTaskTitle] = useState(title);
 
   return (
@@ -15,12 +21,12 @@ export default function TaskItem({ id, path, title, deleteTask, updateTask }) {
         value={taskTitle}
         onChange={(e) => setTaskTitle(e.target.value)}
         onBlur={() =>
-          taskTitle !== title && updateTask(path, id, { title: taskTitle })
+          taskTitle !== title && updateTask(listId, id, { title: taskTitle })
         }
       />
       <button
         className="hidden flex-none text-xl text-gray-400 hover:text-gray-600 group-hover:inline-flex"
-        onClick={() => deleteTask(path, id)}
+        onClick={() => deleteTask(listId, id)}
       >
         <HiX />
       </button>
