@@ -6,10 +6,9 @@ import {
   HiPlusSm,
   HiSun,
 } from "react-icons/hi";
-import { ReactComponent as IconUl } from "./icons/icon-ul.svg";
+import { ReactComponent as IconUl } from "./svg/icon-ul.svg";
 import { useView } from "../contexts/ViewContext";
 import NavbarItem from "./NavbarItem";
-import Shortcut from "./Shortcut";
 import { useAuth } from "../auth/AuthContext";
 import { useTasks } from "../contexts/TaskContext";
 
@@ -44,7 +43,7 @@ export default function Navbar() {
         <div
           className={`${
             !navbar && "hidden sm:block"
-          } ml-3 flex-auto truncate text-sm`}
+          } no-select ml-3 flex-auto truncate text-sm`}
         >
           <p className="truncate font-medium text-gray-700">{`${userData.displayName}`}</p>
           <p className="-mt-1 truncate text-gray-500">{userData.email}</p>
@@ -59,31 +58,19 @@ export default function Navbar() {
       </div>
       <div className="px-3">
         <div className="mt-3">
-          <NavbarItem
-            icon={<HiInbox />}
-            title="Inbox"
-            shortcut="⌘1"
-            link={"/"}
-          />
+          <NavbarItem icon={<HiInbox />} title="Inbox" link={"/"} />
         </div>
         <div className="mt-3 flex flex-col gap-0.5">
           {/* Pinned lists */}
-          <NavbarItem
-            icon={<HiSun />}
-            title="Today"
-            shortcut="⌘2"
-            link={"/today"}
-          />
+          <NavbarItem icon={<HiSun />} title="Today" link={"/today"} />
           <NavbarItem
             icon={<HiCalendar />}
             title="Upcoming"
-            shortcut="⌘3"
             link={"/upcoming"}
           />
           <NavbarItem
             icon={<HiExclamationCircle />}
             title="Important"
-            shortcut="⌘4"
             link={"/important"}
           />
         </div>
@@ -116,9 +103,6 @@ export default function Navbar() {
             >
               New list
             </p>
-            <span className={`${!navbar && "hidden sm:inline-flex"}`}>
-              <Shortcut shortcut="⇧⌘N" />
-            </span>
           </button>
         </div>
       </div>

@@ -16,7 +16,7 @@ export default function TaskItem({
     >
       <div className="h-5 w-5 flex-none rounded-md border-2 border-gray-400"></div>
       <input
-        className="flex-auto bg-transparent font-medium text-gray-500 outline-none"
+        className="flex-auto truncate bg-transparent font-medium text-gray-500 outline-none"
         placeholder="Task title"
         value={taskTitle}
         onChange={(e) => setTaskTitle(e.target.value)}
