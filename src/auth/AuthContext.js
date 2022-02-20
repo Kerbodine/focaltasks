@@ -36,7 +36,7 @@ export function AuthProvider({ children }) {
     await setDoc(doc(db, "Users", cred.user.uid), userDoc);
     await setDoc(doc(db, `Users/${cred.user.uid}/Lists`, "inbox"), {
       id: "inbox",
-      title: "",
+      title: "Inbox",
       notes: "",
       icon: "",
       tasks: [
