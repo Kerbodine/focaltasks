@@ -39,7 +39,7 @@ export default function TaskList() {
         <div className="h-full w-full p-8">
           <h1>
             <input
-              className="text-2xl font-semibold outline-none"
+              className="w-full min-w-[12rem] truncate text-2xl font-semibold outline-none"
               value={listTitle}
               placeholder="Untitled List"
               readOnly={currentList.id === "inbox"}
