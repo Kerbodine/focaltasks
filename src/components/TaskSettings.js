@@ -36,15 +36,21 @@ const TaskSettings = ({ currentList }) => {
           <Menu.Items className="absolute right-0 mt-2 w-40 origin-top-right rounded-lg border border-gray-200 bg-white shadow-lg">
             <div className="p-2">
               <Menu.Item>
-                <div className="flex items-center">
-                  <p className="ml-1 flex-auto text-gray-600">Delete list</p>
-                  <button
-                    onClick={deleteCurrentList}
-                    className="grid h-8 w-8 place-items-center rounded-lg bg-red-100 text-2xl text-red-400 transition-colors hover:bg-red-400 hover:text-white"
-                  >
-                    <BiTrash />
-                  </button>
-                </div>
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active && "bg-gray-100"
+                      } flex w-full items-center rounded-md px-2 py-1 text-gray-600`}
+                      onClick={deleteCurrentList}
+                    >
+                      <p className="flex-auto text-left">Delete list</p>
+                      <span className="text-2xl">
+                        <BiTrash />
+                      </span>
+                    </button>
+                  )}
+                </Menu.Item>
               </Menu.Item>
             </div>
           </Menu.Items>
