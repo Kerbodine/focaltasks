@@ -1,20 +1,36 @@
 import { useState } from "react";
+import { BiCheck } from "react-icons/bi";
 import { HiX } from "react-icons/hi";
 
 export default function TaskItem({
   id,
   listId,
   title,
+  completed,
   deleteTask,
   updateTask,
+  toggleTask,
 }) {
   const [taskTitle, setTaskTitle] = useState(title);
+  const [taskCompleted, setTaskCompleted] = useState(completed);
+
+  const toggleTaskCompleted = () => {
+    toggleTask(listId, id);
+    setTaskCompleted(!taskCompleted);
+  };
 
   return (
     <div
-      className={`group flex h-9 w-full items-center gap-2 rounded-lg px-2 hover:bg-gray-50`}
+      className={`group flex h-9 w-full items-center gap-3 rounded-lg px-2 hover:bg-gray-50`}
     >
-      <div className="h-5 w-5 flex-none rounded-md border-2 border-gray-400"></div>
+      <button
+        className={`h-6 w-6 flex-none rounded-md text-2xl ${
+          taskCompleted ? "bg-accent text-white" : "border-2 border-gray-400"
+        }`}
+        onClick={toggleTaskCompleted}
+      >
+        {taskCompleted && <BiCheck />}
+      </button>
       <input
         className="w-full flex-auto truncate bg-transparent font-medium text-gray-500 outline-none"
         placeholder="Task title"

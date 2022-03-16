@@ -43,6 +43,7 @@ export function AuthProvider({ children }) {
         {
           id: uuidv4(),
           title: "Welcome to your task list!",
+          completed: false,
           description: "",
           remindDate: null,
           dueDate: null,
@@ -51,7 +52,6 @@ export function AuthProvider({ children }) {
           modifiedAt: new Date(),
         },
       ],
-      completedTasks: [],
       sort: "createdAt",
       createdAt: new Date(),
       modifiedAt: new Date(),

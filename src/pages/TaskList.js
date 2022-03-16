@@ -7,8 +7,14 @@ import { useTasks } from "../contexts/TaskContext";
 import TaskSettings from "../components/TaskSettings";
 
 export default function TaskList() {
-  const { createTask, userLists, deleteTask, updateTask, updateList } =
-    useTasks();
+  const {
+    createTask,
+    userLists,
+    deleteTask,
+    updateTask,
+    updateList,
+    toggleTask,
+  } = useTasks();
 
   const { pathname } = useLocation();
   let listId = "";
@@ -27,6 +33,7 @@ export default function TaskList() {
     userLists.filter((list) => list.id === listId)[0]
   );
   const [listTitle, setListTitle] = useState(currentList && currentList.title);
+  const [listNotes, setListNotes] = useState(currentList && currentList.notes);
 
   useEffect(() => {
     setCurrentList(userLists.filter((list) => list.id === listId)[0]);
@@ -54,6 +61,17 @@ export default function TaskList() {
               <TaskSettings currentList={currentList} />
             )}
           </div>
+          {currentList.id !== "inbox" && (
+            <div className="">
+              <input
+                className="w-full font-medium text-gray-600 outline-none"
+                placeholder="Notes"
+                value={listNotes}
+                onChange={(e) => setListNotes(e.target.value)}
+                onBlur={updateList(listId, { notes: listNotes })}
+              />
+            </div>
+          )}
           <div className="-mx-2 mt-4 flex flex-col gap-1">
             {currentList.tasks.map((task) => (
               <TaskItem
@@ -61,8 +79,10 @@ export default function TaskList() {
                 key={task.id}
                 title={task.title}
                 listId={listId}
+                completed={task.completed}
                 deleteTask={deleteTask}
                 updateTask={updateTask}
+                toggleTask={toggleTask}
               />
             ))}
           </div>
