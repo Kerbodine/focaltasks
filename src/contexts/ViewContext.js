@@ -11,7 +11,6 @@ export function ViewProvider({ children }) {
   const [navbar, setNavbar] = useState(false);
   const [sidebar, setSidebar] = useState(false);
   const [sidebarPanel, setSidebarPanel] = useState(0);
-  const [showSettings, setShowSettings] = useState(false);
 
   const toggleNavbar = () => {
     setNavbar(!navbar);
@@ -35,8 +34,6 @@ export function ViewProvider({ children }) {
     toggleSidebar,
     sidebarPanel,
     changeSidebarPanel,
-    showSettings,
-    setShowSettings,
   };
 
   return <ViewContext.Provider value={value}>{children}</ViewContext.Provider>;
