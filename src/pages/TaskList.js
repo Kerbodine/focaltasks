@@ -46,7 +46,7 @@ export default function TaskList() {
         <div className="h-full w-full p-8">
           <div className="flex w-full gap-2">
             <input
-              className="w-full min-w-0 truncate text-2xl font-semibold outline-none"
+              className="w-full min-w-0 truncate text-3xl font-semibold outline-none"
               value={listTitle}
               placeholder="Untitled List"
               readOnly={currentList.id === "inbox"}
@@ -63,7 +63,7 @@ export default function TaskList() {
           {currentList.id !== "inbox" && (
             <div className="">
               <input
-                className="w-full font-medium text-gray-600 outline-none"
+                className="w-full font-medium text-gray-600 placeholder-gray-400 outline-none"
                 placeholder="Notes"
                 value={listNotes}
                 onChange={(e) => setListNotes(e.target.value)}
