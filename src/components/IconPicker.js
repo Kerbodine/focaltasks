@@ -8,21 +8,21 @@ const IconPicker = ({ iconName, setIconName }) => {
   return (
     <div>
       <div className="rounded-lg bg-gray-100 p-2 text-gray-600">
-        <div className="flex items-center px-1">
+        <button
+          className="flex w-full items-center px-1 text-left outline-none"
+          type="button"
+          onClick={() => {
+            setShowIcons(!showIcons);
+          }}
+        >
           <p className="flex-auto font-medium">Icon</p>
           <span className="text-2xl text-gray-500">
             {listIcons.find((icon) => icon.name === iconName && icon).icon}
           </span>
-          <button
-            type="button"
-            onClick={() => {
-              setShowIcons(!showIcons);
-            }}
-            className="ml-1 text-2xl text-gray-500"
-          >
+          <span className="ml-1 text-2xl text-gray-500">
             {showIcons ? <BiChevronUp /> : <BiChevronDown />}
-          </button>
-        </div>
+          </span>
+        </button>
         <div
           className={`${
             showIcons ? "h-[176px]" : "h-0"
