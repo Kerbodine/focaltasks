@@ -25,7 +25,7 @@ export default function TaskItem({
         }
       />
       <button
-        className="hidden flex-none text-xl text-gray-400 hover:text-gray-600 group-hover:inline-flex"
+        className="mr-2 hidden flex-none text-xl text-gray-400 hover:text-gray-600 group-hover:inline-flex"
         onClick={() => deleteTask(listId, id)}
       >
         <HiX />

@@ -11,11 +11,19 @@ import { useView } from "../contexts/ViewContext";
 import NavbarItem from "./NavbarItem";
 import { useAuth } from "../auth/AuthContext";
 import { useTasks } from "../contexts/TaskContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const { userData } = useAuth();
   const { userLists, newList } = useTasks();
   const { navbar, toggleNavbar } = useView();
+
+  const navigate = useNavigate();
+
+  const createNewList = async () => {
+    const listId = await newList();
+    navigate(`/${listId}`);
+  };
 
   return (
     <div
@@ -60,7 +68,7 @@ export default function Navbar() {
         <div className="mt-3">
           <NavbarItem icon={<HiInbox />} title="Inbox" link={"/"} />
         </div>
-        <div className="mt-3 flex flex-col gap-0.5">
+        <div className="mt-3 flex flex-col gap-1">
           {/* Pinned lists */}
           <NavbarItem icon={<HiSun />} title="Today" link={"/today"} />
           <NavbarItem
@@ -76,7 +84,7 @@ export default function Navbar() {
         </div>
         {/* Horizontal divider */}
         <hr className="my-3 h-[1px] w-full border-gray-200" />
-        <div className="flex flex-col gap-0.5">
+        <div className="flex flex-col gap-1">
           {/* User lists */}
           {userLists
             .filter((list) => list.id !== "inbox")
@@ -91,7 +99,7 @@ export default function Navbar() {
           {/* New list button */}
           <button
             className={`group flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 hover:bg-accent hover:text-white`}
-            onClick={newList}
+            onClick={createNewList}
           >
             <span className="flex-none text-xl">
               <HiPlusSm />

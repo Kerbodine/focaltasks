@@ -7,8 +7,8 @@ import { ReactComponent as IconChart } from "./svg/icon-chart.svg";
 export default function Sidebar() {
   const { sidebar } = useView();
 
-  const sidebarIcons = [<IconInfo />, <IconClock />, <IconChart />];
-  const sidebarPanels = [<p>Panel 1</p>, <p>Panel 2</p>, <p>Panel 3</p>];
+  const sidebarIcons = [<IconClock />, <IconChart />];
+  const sidebarPanels = [<p>Panel 1</p>, <p>Panel 2</p>];
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");

@@ -9,6 +9,7 @@ import {
   arrayUnion,
   getDoc,
   arrayRemove,
+  deleteDoc,
 } from "firebase/firestore";
 import { useAuth } from "../auth/AuthContext";
 
@@ -77,6 +78,11 @@ export function TaskProvider({ children }) {
     await updateDoc(listRef, updatedItems);
   };
 
+  const deleteList = async (listId) => {
+    const listRef = doc(db, "Users", currentUser.uid, "Lists", listId);
+    await deleteDoc(listRef);
+  };
+
   const newList = async () => {
     const listId = uuidv4();
     await setDoc(doc(db, `Users/${currentUser.uid}/Lists`, listId), {
@@ -90,6 +96,7 @@ export function TaskProvider({ children }) {
       createdAt: new Date(),
       modifiedAt: new Date(),
     });
+    return listId;
   };
 
   const value = {
@@ -100,6 +107,7 @@ export function TaskProvider({ children }) {
     deleteTask,
     updateTask,
     newList,
+    deleteList,
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
