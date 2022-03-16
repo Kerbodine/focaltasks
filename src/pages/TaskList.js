@@ -68,7 +68,9 @@ export default function TaskList() {
                 placeholder="Notes"
                 value={listNotes}
                 onChange={(e) => setListNotes(e.target.value)}
-                onBlur={updateList(listId, { notes: listNotes })}
+                onBlur={() => {
+                  updateList(listId, { notes: listNotes });
+                }}
               />
             </div>
           )}

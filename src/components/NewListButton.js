@@ -5,6 +5,7 @@ import { HiPlusSm } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { useTasks } from "../contexts/TaskContext";
 import { useView } from "../contexts/ViewContext";
+import IconPicker from "./IconPicker";
 
 const NewListButton = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -13,6 +14,7 @@ const NewListButton = () => {
   const navigate = useNavigate();
 
   const [listTitle, setListTitle] = useState("");
+  const [iconName, setIconName] = useState("list");
 
   const openModal = () => {
     setModalOpen(true);
@@ -26,7 +28,7 @@ const NewListButton = () => {
     e.preventDefault();
     closeSettings();
     setListTitle("");
-    const listId = await newList(listTitle);
+    const listId = await newList(listTitle, iconName);
     navigate(`/${listId}`);
   };
 
@@ -88,21 +90,23 @@ const NewListButton = () => {
                 >
                   New List
                 </Dialog.Title>
-                <div className="mt-4">
+                <div className="mt-4 space-y-2">
                   <input
                     type="text"
                     value={listTitle}
                     onChange={(e) => setListTitle(e.target.value)}
                     placeholder="List title"
-                    className="w-full rounded-lg bg-gray-100 px-2 py-1 text-gray-600 outline-none"
+                    className="w-full rounded-lg bg-gray-100 px-3 py-2 font-medium text-gray-600 outline-none"
                   />
+                  <IconPicker iconName={iconName} setIconName={setIconName} />
                 </div>
                 <button
                   type="submit"
                   onClick={createNewList}
-                  className="mt-4 rounded-lg bg-gray-100 px-2 py-1 text-sm font-medium text-gray-600 transition-colors hover:bg-accent hover:text-white"
+                  {...(!listTitle && { disabled: true })}
+                  className="mt-4 w-full rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-accent hover:text-white disabled:cursor-not-allowed"
                 >
-                  Create list →
+                  Create list
                 </button>
                 <button
                   type="button"

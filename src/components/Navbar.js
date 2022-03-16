@@ -3,7 +3,6 @@ import {
   HiExclamationCircle,
   HiInbox,
   HiMenu,
-  HiPlusSm,
   HiSun,
 } from "react-icons/hi";
 import { ReactComponent as IconUl } from "./svg/icon-ul.svg";
@@ -11,20 +10,13 @@ import { useView } from "../contexts/ViewContext";
 import NavbarItem from "./NavbarItem";
 import { useAuth } from "../auth/AuthContext";
 import { useTasks } from "../contexts/TaskContext";
-import { useNavigate } from "react-router-dom";
 import NewListButton from "./NewListButton";
+import { listIcons } from "../config/icons";
 
 export default function Navbar() {
   const { userData } = useAuth();
-  const { userLists, newList } = useTasks();
+  const { userLists } = useTasks();
   const { navbar, toggleNavbar } = useView();
-
-  const navigate = useNavigate();
-
-  const createNewList = async () => {
-    const listId = await newList();
-    navigate(`/${listId}`);
-  };
 
   return (
     <div
@@ -91,7 +83,8 @@ export default function Navbar() {
             .filter((list) => list.id !== "inbox")
             .map((list) => (
               <NavbarItem
-                icon={<IconUl />}
+                icon={listIcons.find((icon) => icon.name === list.icon).icon}
+                // icon={<IconUl />}
                 key={list.id}
                 title={list.title}
                 link={`/${list.id}`}
