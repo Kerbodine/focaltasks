@@ -12,6 +12,7 @@ import NavbarItem from "./NavbarItem";
 import { useAuth } from "../auth/AuthContext";
 import { useTasks } from "../contexts/TaskContext";
 import { useNavigate } from "react-router-dom";
+import NewListButton from "./NewListButton";
 
 export default function Navbar() {
   const { userData } = useAuth();
@@ -97,21 +98,7 @@ export default function Navbar() {
               />
             ))}
           {/* New list button */}
-          <button
-            className={`group flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 hover:bg-accent hover:text-white`}
-            onClick={createNewList}
-          >
-            <span className="flex-none text-xl">
-              <HiPlusSm />
-            </span>
-            <p
-              className={`${
-                !navbar && "hidden sm:block"
-              } flex-auto text-left text-sm font-medium`}
-            >
-              New list
-            </p>
-          </button>
+          <NewListButton />
         </div>
       </div>
     </div>

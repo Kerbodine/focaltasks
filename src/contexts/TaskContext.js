@@ -84,11 +84,11 @@ export function TaskProvider({ children }) {
     await deleteDoc(listRef);
   };
 
-  const newList = async () => {
+  const newList = async (title) => {
     const listId = uuidv4();
     await setDoc(doc(db, `Users/${currentUser.uid}/Lists`, listId), {
       id: listId,
-      title: "",
+      title,
       notes: "",
       icon: "",
       tasks: [],
