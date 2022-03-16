@@ -18,11 +18,11 @@ export default function Sidebar() {
     <div
       className={`${
         sidebar ? "w-[240px]" : "hidden w-0 lg:block lg:w-[240px]"
-      } absolute right-0 h-full border-l border-gray-200 bg-white lg:relative`}
+      } absolute right-0 h-full border-l-2 border-gray-100 bg-white lg:relative`}
     >
       <div>
         <Tab.Group>
-          <div className="h-[56px] w-full items-center border-b border-gray-200 p-3">
+          <div className="h-[56px] w-full items-center border-b-2 border-gray-100 p-3">
             <Tab.List className="flex h-8 w-full gap-1 rounded-lg bg-gray-100 p-1">
               {sidebarIcons.map((icon, index) => (
                 <Tab

@@ -21,18 +21,20 @@ export default function TaskItem({
 
   return (
     <div
-      className={`group flex h-9 w-full items-center gap-3 rounded-lg px-2 hover:bg-gray-50`}
+      className={`group flex w-full items-center gap-3 rounded-lg p-2 transition-colors hover:bg-gray-50`}
     >
       <button
-        className={`h-6 w-6 flex-none rounded-md text-2xl ${
-          taskCompleted ? "bg-accent text-white" : "border-2 border-gray-400"
+        className={`h-6 w-6 flex-none rounded-md text-2xl text-white transition-colors ${
+          taskCompleted ? "bg-accent" : "border-2 border-gray-300"
         }`}
         onClick={toggleTaskCompleted}
       >
         {taskCompleted && <BiCheck />}
       </button>
       <input
-        className="w-full flex-auto truncate bg-transparent font-medium text-gray-500 outline-none"
+        className={`w-full flex-auto truncate bg-transparent font-medium placeholder-gray-400 outline-none ${
+          taskCompleted ? "text-gray-400 line-through" : "text-gray-600"
+        }`}
         placeholder="Task title"
         value={taskTitle}
         onChange={(e) => setTaskTitle(e.target.value)}
@@ -41,7 +43,7 @@ export default function TaskItem({
         }
       />
       <button
-        className="mr-2 hidden flex-none text-xl text-gray-400 hover:text-gray-600 group-hover:inline-flex"
+        className="mr-2 flex-none text-xl text-gray-400 opacity-0 transition-opacity hover:text-gray-600 group-hover:inline-flex group-hover:opacity-100"
         onClick={() => deleteTask(listId, id)}
       >
         <HiX />

@@ -35,7 +35,7 @@ const NewListButton = () => {
   return (
     <>
       <button
-        className={`group flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 outline-none hover:bg-accent hover:text-white`}
+        className={`group flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 outline-none transition-colors hover:bg-accent hover:text-white`}
         onClick={openModal}
       >
         <span className="flex-none text-xl">
@@ -104,7 +104,7 @@ const NewListButton = () => {
                   type="submit"
                   onClick={createNewList}
                   {...(!listTitle && { disabled: true })}
-                  className="mt-4 w-full rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-accent hover:text-white disabled:cursor-not-allowed"
+                  className="mt-4 w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:border-accent hover:bg-accent hover:text-white disabled:cursor-not-allowed"
                 >
                   Create list
                 </button>

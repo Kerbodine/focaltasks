@@ -41,8 +41,7 @@ export default function TaskList() {
   }, [userLists, listId, currentList]);
 
   return (
-    <div className="h-full w-full">
-      <div className="h-[56px] w-full border-b border-gray-200"></div>
+    <>
       {currentList ? (
         <div className="h-full w-full p-8">
           <div className="flex w-full gap-2">
@@ -101,6 +100,6 @@ export default function TaskList() {
       ) : (
         <NotFound />
       )}
-    </div>
+    </>
   );
 }

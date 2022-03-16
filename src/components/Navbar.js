@@ -1,11 +1,11 @@
 import {
   HiCalendar,
+  HiCog,
   HiExclamationCircle,
   HiInbox,
   HiMenu,
   HiSun,
 } from "react-icons/hi";
-import { ReactComponent as IconUl } from "./svg/icon-ul.svg";
 import { useView } from "../contexts/ViewContext";
 import NavbarItem from "./NavbarItem";
 import { useAuth } from "../auth/AuthContext";
@@ -18,18 +18,22 @@ export default function Navbar() {
   const { userLists } = useTasks();
   const { navbar, toggleNavbar } = useView();
 
+  const getLength = (list) => {
+    return list.tasks.filter((task) => !task.completed).length;
+  };
+
   return (
     <div
       className={`${
         navbar ? "w-[240px]" : "w-[56px] sm:w-[240px]"
-      } absolute h-full border-r border-gray-200 bg-white sm:relative`}
+      } absolute h-full border-r-2 border-gray-100 bg-white sm:relative`}
     >
-      <div className="flex h-[56px] w-full items-center border-b border-gray-200 px-3">
+      <div className="flex h-[56px] w-full items-center border-b-2 border-gray-100 px-3">
         {/* Account info and seettings */}
         <div
           className={`${!navbar && "hidden sm:grid"} ${
             !userData.photoURL && "bg-accent font-semibold text-white"
-          } grid h-8 w-8 flex-none cursor-pointer place-items-center overflow-hidden rounded-lg ring-accent ring-offset-2 hover:ring-2`}
+          } grid h-8 w-8 flex-none cursor-pointer place-items-center overflow-hidden rounded-lg`}
         >
           {userData.photoURL ? (
             <img
@@ -59,7 +63,12 @@ export default function Navbar() {
       </div>
       <div className="px-3">
         <div className="mt-3">
-          <NavbarItem icon={<HiInbox />} title="Inbox" link={"/"} />
+          <NavbarItem
+            icon={<HiInbox />}
+            title="Inbox"
+            link={"/"}
+            length={getLength(userLists.find((list) => list.id === "inbox"))}
+          />
         </div>
         <div className="mt-3 flex flex-col gap-1">
           {/* Pinned lists */}
@@ -75,8 +84,12 @@ export default function Navbar() {
             link={"/important"}
           />
         </div>
+        <div className="mt-3 flex flex-col gap-1">
+          {/* Pinned lists */}
+          <NavbarItem icon={<HiCog />} title="Settings" link={"/settings"} />
+        </div>
         {/* Horizontal divider */}
-        <hr className="my-3 h-[1px] w-full border-gray-200" />
+        <hr className="my-3 h-[2px] w-full border-0 bg-gray-100" />
         <div className="flex flex-col gap-1">
           {/* User lists */}
           {userLists
@@ -84,10 +97,10 @@ export default function Navbar() {
             .map((list) => (
               <NavbarItem
                 icon={listIcons.find((icon) => icon.name === list.icon).icon}
-                // icon={<IconUl />}
                 key={list.id}
                 title={list.title}
                 link={`/${list.id}`}
+                length={getLength(list)}
               />
             ))}
           {/* New list button */}

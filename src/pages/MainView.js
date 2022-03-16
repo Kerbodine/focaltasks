@@ -15,6 +15,7 @@ import { useAuth } from "../auth/AuthContext";
 import Loader from "../components/Loader";
 import { useTasks } from "../contexts/TaskContext";
 import TaskList from "./TaskList";
+import Settings from "./Settings";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
@@ -68,16 +69,18 @@ export default function MainView() {
         </div>
       ) : (
         <>
-          <hr className="absolute top-[55px] h-[1px] w-screen border-gray-200" />
+          <hr className="absolute top-[54px] h-[2px] w-screen border-0 bg-gray-100" />
           <div className="mx-auto flex h-full w-full max-w-screen-xl">
             {/* Navbar section */}
             <Navbar />
             {/* Main task area */}
             <div className="ml-[56px] h-full flex-auto sm:ml-0">
+              <div className="h-[56px] w-full"></div>
               <Routes>
                 <Route exact path="/today" element={<p>Today</p>} />
                 <Route exact path="/upcoming" element={<p>Upcoming</p>} />
                 <Route exact path="/important" element={<p>Important</p>} />
+                <Route exact path="/settings" element={<Settings />} />
                 <Route path="*" element={<TaskList />} />
               </Routes>
             </div>
