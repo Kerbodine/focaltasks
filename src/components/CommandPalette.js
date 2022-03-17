@@ -8,7 +8,7 @@ import { useTasks } from "../contexts/TaskContext";
 
 const CommandPalette = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [query, setQuery] = useState("");
+  const [rawQuery, setRawQuery] = useState("");
   const [results, setResults] = useState([]);
 
   const navigate = useNavigate();
@@ -18,29 +18,34 @@ const CommandPalette = () => {
   useEffect(() => {
     let filteredTasks = [];
     let filteredLists = [];
+    let query = rawQuery.toLowerCase().replace(/^[>-]\s*/, ""); // remove leading >, -, or whitespace
     if (query !== "") {
-      filteredTasks = userLists
-        .map((list) => {
-          return list.tasks.map((task) => {
+      if (!rawQuery.startsWith(">")) {
+        filteredTasks = userLists
+          .map((list) => {
+            return list.tasks.map((task) => {
+              if (task.title.toLowerCase().includes(query.toLowerCase())) {
+                return { ...task, type: "task", listId: list.id };
+              }
+              return null;
+            });
+          })
+          .flat() // Remove nested arrays for each list
+          .filter((list) => list); // Remove null values
+      }
+      if (!rawQuery.startsWith("-")) {
+        filteredLists = userLists
+          .map((task) => {
             if (task.title.toLowerCase().includes(query.toLowerCase())) {
-              return { ...task, type: "task", listId: list.id };
+              return { ...task, type: "list" };
             }
             return null;
-          });
-        })
-        .flat() // Remove nested arrays for each list
-        .filter((list) => list); // Remove null values
-      filteredLists = userLists
-        .map((task) => {
-          if (task.title.toLowerCase().includes(query.toLowerCase())) {
-            return { ...task, type: "list" };
-          }
-          return null;
-        })
-        .filter((task) => task); // Remove null values
+          })
+          .filter((task) => task); // Remove null values
+      }
     }
     setResults([...filteredTasks, ...filteredLists]);
-  }, [query, userLists]);
+  }, [rawQuery, userLists]);
 
   useEffect(() => {
     const onKeydown = (event) => {
@@ -64,15 +69,15 @@ const CommandPalette = () => {
           <HiSearch />
         </span>
         <p className="no-select w-full text-left text-gray-400">Quick Search</p>
-        <div className="absolute right-1.5 grid h-5 place-items-center rounded-md bg-gray-500 px-1 text-xs font-medium tracking-wider text-white">
+        <kbd className="absolute right-1.5 grid h-5 place-items-center rounded-md bg-gray-500 px-1 font-sans text-xs font-medium tracking-wider text-white">
           ⌘K
-        </div>
+        </kbd>
       </button>
       <Transition.Root
         show={isOpen}
         as={Fragment}
         afterLeave={() => {
-          setQuery("");
+          setRawQuery("");
         }}
       >
         <Dialog onClose={setIsOpen} className="fixed inset-0 pt-[25vh]">
@@ -105,17 +110,20 @@ const CommandPalette = () => {
                   setIsOpen(false);
                 }}
                 as="div"
-                className="relative mx-auto max-w-xl rounded-2xl bg-white p-2 shadow-lg ring-1 ring-black/5"
+                className="relative mx-auto max-w-xl rounded-2xl bg-white p-2 shadow-lg"
               >
-                <div className="flex items-center gap-2 rounded-lg bg-gray-100 px-3">
+                <div className="relative flex items-center gap-2 rounded-lg bg-gray-100 px-3">
                   <HiSearch className="h-6 w-6 text-gray-500" />
                   <Combobox.Input
                     onChange={(event) => {
-                      setQuery(event.target.value);
+                      setRawQuery(event.target.value);
                     }}
                     className="h-10 w-full border-0 bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none"
                     placeholder="Search..."
                   />
+                  <kbd className="absolute right-2 rounded-lg border-2 border-gray-300 px-2 py-1 font-sans text-xs font-bold text-gray-400">
+                    ESC
+                  </kbd>
                 </div>
                 {results.length > 0 ? (
                   <p className="mx-2 mt-3 mb-1 text-xs font-bold uppercase tracking-tight text-gray-400">
@@ -164,6 +172,31 @@ const CommandPalette = () => {
                     </Combobox.Option>
                   ))}
                 </Combobox.Options>
+                <div className="mt-2 flex items-center border-t-2 border-gray-100 p-2 text-xs font-medium text-gray-600">
+                  Type{" "}
+                  <kbd
+                    className={`${
+                      rawQuery.startsWith(">")
+                        ? "border-accent text-accent"
+                        : "border-gray-300 text-gray-600"
+                    }
+                      mx-1 flex h-5 w-5 items-center justify-center rounded-md border-2 bg-white font-semibold sm:mx-2`}
+                  >
+                    &gt;
+                  </kbd>{" "}
+                  <span>for lists and</span>
+                  <kbd
+                    className={`${
+                      rawQuery.startsWith("-")
+                        ? "border-accent text-accent"
+                        : "border-gray-300 text-gray-600"
+                    }
+                      "mx-1 flex h-5 w-5 items-center justify-center rounded-md border-2 bg-white font-semibold sm:mx-2`}
+                  >
+                    -
+                  </kbd>{" "}
+                  for tasks.
+                </div>
               </Combobox>
             </div>
           </Transition.Child>
