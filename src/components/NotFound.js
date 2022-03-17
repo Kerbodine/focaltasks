@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ReactComponent as PageNotFound } from "./svg/404.svg";
+import { ReactComponent as PageNotFound } from "../svg/404.svg";
 
 export default function NotFound() {
   return (

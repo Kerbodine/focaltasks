@@ -8,7 +8,7 @@ import {
 } from "react-icons/hi";
 import { useView } from "../contexts/ViewContext";
 import NavbarItem from "./NavbarItem";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import { useTasks } from "../contexts/TaskContext";
 import NewListButton from "./NewListButton";
 import { listIcons } from "../config/icons";

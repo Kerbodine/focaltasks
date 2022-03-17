@@ -11,7 +11,7 @@ import {
   arrayRemove,
   deleteDoc,
 } from "firebase/firestore";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "./AuthContext";
 
 const TaskContext = createContext();
 

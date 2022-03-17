@@ -11,7 +11,7 @@ import { app } from "../firebase";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import Loader from "../components/Loader";
 import { useTasks } from "../contexts/TaskContext";
 import TaskList from "./TaskList";

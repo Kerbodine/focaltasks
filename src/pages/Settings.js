@@ -1,8 +1,8 @@
 import React from "react";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const Settings = () => {
-  const { signOut, currentUser } = useAuth();
+  const { logout, currentUser } = useAuth();
 
   return (
     <div className="h-full w-full p-8">
@@ -14,7 +14,7 @@ const Settings = () => {
         </p>
         <button
           className="ml-auto rounded-md border-2 border-gray-200 bg-white px-3 py-1.5 text-sm font-semibold text-gray-500 transition-colors hover:border-accent hover:bg-accent hover:text-white"
-          onClick={signOut}
+          onClick={logout}
         >
           Sign Out
         </button>

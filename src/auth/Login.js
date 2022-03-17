@@ -1,29 +1,23 @@
 import { useState } from "react";
-import { BiHide, BiInfoCircle, BiShow } from "react-icons/bi";
+import { BiHide, BiInfoCircle, BiLoaderAlt, BiShow } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import Loader from "../components/Loader";
-import { useAuth } from "./AuthContext";
-import GoogleSignin from "./GoogleSignin";
+import { useAuth } from "../contexts/AuthContext";
+import { ReactComponent as GoogleIcon } from "../svg/google.svg";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login, signInWithGoogle } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { login } = useAuth();
-
-  const updateEmail = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const updatePassword = (e) => {
-    setPassword(e.target.value);
+  const googleSignIn = async () => {
+    await signInWithGoogle();
+    navigate("/");
   };
 
   const handleSubmit = async (e) => {
@@ -50,69 +44,84 @@ export default function Login() {
   };
 
   return (
-    <div className="auth-frame">
-      <div className="auth-container">
-        <div className="flex h-full w-full gap-8 p-8">
-          <div className="flex w-full items-center justify-center sm:w-1/2 xs:py-4">
-            {loading ? (
-              <Loader />
-            ) : (
-              <form onSubmit={handleSubmit} className="w-full max-w-[312px]">
-                <h1 className="mb-6 text-2xl font-semibold sm:text-3xl">
-                  Log in
-                </h1>
-                <GoogleSignin type={"login"} />
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  value={email}
-                  onChange={updateEmail}
-                  required
-                  className="form-input mt-2"
-                />
-                <div className="mt-2 flex items-center">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Password"
-                    value={password}
-                    onChange={updatePassword}
-                    required
-                    className="form-input"
-                  />
-                  <button
-                    type="button"
-                    className="-ml-7 rounded-full text-xl text-gray-400 hover:text-gray-600"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <BiShow /> : <BiHide />}
-                  </button>
-                </div>
-                <Link
-                  className="mt-1 block h-4 w-full text-right text-sm text-gray-500 hover:underline"
-                  to="/reset-password"
-                >
-                  Forgot password?
-                </Link>
-                {error && (
-                  <div className="error-alert mt-2">
-                    <BiInfoCircle className="rotate-180 text-xl" />
-                    <p className="flex-auto truncate">{error}</p>
-                  </div>
-                )}
-                <button type="submit" className="form-button mt-6">
-                  Log in
-                </button>
-                <p className="mt-2 ml-0.5 block text-sm text-gray-500">
-                  Need an account?{" "}
-                  <Link to="/signup" className="cursor-pointer hover:underline">
-                    Sign up
-                  </Link>
-                </p>
-              </form>
-            )}
+    <div className="grid h-screen w-screen place-items-center bg-white">
+      <div className="rounded-2xl border-gray-200 p-8 xs:border-2">
+        <form className="relative w-[240px]" onSubmit={handleSubmit}>
+          <h1 className="mb-4 text-2xl font-semibold xs:text-3xl">Log in</h1>
+          <button
+            type="button"
+            onClick={googleSignIn}
+            className="flex h-9 w-full items-center gap-2 rounded-lg border-2 border-gray-200 px-2 text-sm font-medium text-gray-600 hover:border-gray-400"
+          >
+            <span className="text-base">
+              <GoogleIcon />
+            </span>
+            Continue with Google
+          </button>
+          <div className="my-2 flex w-full items-center">
+            <div className="h-0.5 flex-auto bg-gray-200"></div>
+            <p className="mx-2 text-xs font-bold text-gray-500">OR</p>
+            <div className="h-0.5 flex-auto bg-gray-200"></div>
           </div>
-          <div className="hidden h-full w-1/2 rounded-xl bg-red-200 sm:block"></div>
-        </div>
+          <input
+            type="email"
+            placeholder="Email address"
+            className="mb-2 w-full rounded-lg border-2 border-gray-200 px-2 py-1 text-gray-600 focus:border-gray-400 focus:outline-none"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <div className="flex items-center">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="w-full rounded-lg border-2 border-gray-200 px-2 py-1 text-gray-600 focus:border-gray-400 focus:outline-none"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              className="-ml-7 text-xl text-gray-400 hover:text-gray-600"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <BiHide /> : <BiShow />}
+            </button>
+          </div>
+          {error && (
+            <div className="mt-2 flex w-full gap-1 rounded-lg border-2 border-red-400 bg-red-100 p-0.5 text-sm font-medium text-red-400">
+              <BiInfoCircle className="flex-none rotate-180 text-xl" />
+              <p className="flex-auto truncate">{error}</p>
+            </div>
+          )}
+          <div className="mt-1 flex text-sm text-gray-500 hover:underline">
+            <Link to="/reset-password" className="ml-auto">
+              Forgot password?
+            </Link>
+          </div>
+          <button
+            type="submit"
+            className="mt-4 rounded-lg border-2 border-gray-600 px-2 py-1 text-sm font-medium text-gray-600 hover:bg-gray-600 hover:text-white"
+          >
+            Log in →
+          </button>
+          <p className="mt-2 text-sm text-gray-500">
+            Need an account?{" "}
+            <Link
+              to="/signup"
+              className="font-medium text-gray-700 hover:underline"
+            >
+              Sign up
+            </Link>
+          </p>
+          {loading && (
+            <div className="absolute inset-0 grid place-items-center bg-white">
+              <span className="animate-spin text-2xl text-gray-500">
+                <BiLoaderAlt />
+              </span>
+            </div>
+          )}
+        </form>
       </div>
     </div>
   );
