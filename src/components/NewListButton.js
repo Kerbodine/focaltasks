@@ -2,7 +2,6 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useState } from "react";
 import { BiX } from "react-icons/bi";
 import { HiPlusSm } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
 import { useTasks } from "../contexts/TaskContext";
 import { useView } from "../contexts/ViewContext";
 import IconPicker from "./IconPicker";
@@ -11,7 +10,6 @@ const NewListButton = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { navbar } = useView();
   const { newList } = useTasks();
-  const navigate = useNavigate();
 
   const [listTitle, setListTitle] = useState("");
   const [iconName, setIconName] = useState("list");
@@ -24,12 +22,11 @@ const NewListButton = () => {
     setModalOpen(false);
   };
 
-  const createNewList = async (e) => {
+  const createNewList = (e) => {
     e.preventDefault();
     closeSettings();
     setListTitle("");
-    const listId = await newList(listTitle, iconName);
-    navigate(`/${listId}`);
+    newList(listTitle, iconName);
   };
 
   return (

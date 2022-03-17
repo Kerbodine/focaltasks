@@ -22,6 +22,8 @@ export default function Navbar() {
     return list.tasks.filter((task) => !task.completed).length;
   };
 
+  const specialLists = ["inbox", "today", "upcoming", "important"];
+
   return (
     <div
       className={`${
@@ -35,6 +37,7 @@ export default function Navbar() {
             !userData.photoURL && "bg-accent font-semibold text-white"
           } grid h-8 w-8 flex-none cursor-pointer place-items-center overflow-hidden rounded-lg`}
         >
+          {/* Account profile image or placeholder */}
           {userData.photoURL ? (
             <img
               className="h-full w-full"
@@ -45,6 +48,7 @@ export default function Navbar() {
             userData.displayName[0]
           )}
         </div>
+        {/* User account info (name, email) */}
         <div
           className={`${
             !navbar && "hidden sm:block"
@@ -53,7 +57,7 @@ export default function Navbar() {
           <p className="truncate font-medium text-gray-700">{`${userData.displayName}`}</p>
           <p className="-mt-1 truncate text-gray-500">{userData.email}</p>
         </div>
-
+        {/* Toggle mobile navbar */}
         <button
           onClick={toggleNavbar}
           className={`grid h-8 w-8 place-items-center text-xl text-gray-500 sm:hidden`}
@@ -62,6 +66,7 @@ export default function Navbar() {
         </button>
       </div>
       <div className="px-3">
+        {/* Default lists */}
         <div className="mt-3">
           <NavbarItem
             icon={<HiInbox />}
@@ -71,7 +76,6 @@ export default function Navbar() {
           />
         </div>
         <div className="mt-3 flex flex-col gap-1">
-          {/* Pinned lists */}
           <NavbarItem icon={<HiSun />} title="Today" link={"/today"} />
           <NavbarItem
             icon={<HiCalendar />}
@@ -85,7 +89,6 @@ export default function Navbar() {
           />
         </div>
         <div className="mt-3 flex flex-col gap-1">
-          {/* Pinned lists */}
           <NavbarItem icon={<HiCog />} title="Settings" link={"/settings"} />
         </div>
         {/* Horizontal divider */}
@@ -93,7 +96,7 @@ export default function Navbar() {
         <div className="flex flex-col gap-1">
           {/* User lists */}
           {userLists
-            .filter((list) => list.id !== "inbox")
+            .filter((list) => !specialLists.includes(list.id)) // Check if its not a default list
             .map((list) => (
               <NavbarItem
                 icon={listIcons.find((icon) => icon.name === list.icon).icon}

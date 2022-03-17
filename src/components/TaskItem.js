@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BiCheck } from "react-icons/bi";
 import { HiX } from "react-icons/hi";
 
@@ -18,6 +18,10 @@ export default function TaskItem({
     toggleTask(listId, id);
     setTaskCompleted(!taskCompleted);
   };
+
+  useEffect(() => {
+    setTaskCompleted(completed);
+  }, [completed]);
 
   return (
     <div

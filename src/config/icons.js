@@ -11,6 +11,7 @@ import {
   HiFolder,
   HiGlobeAlt,
   HiHeart,
+  HiInbox,
   HiInformationCircle,
   HiLibrary,
   HiLightBulb,
@@ -26,6 +27,11 @@ import {
 import { FiList } from "react-icons/fi";
 
 export const listIcons = [
+  {
+    name: "inbox",
+    icon: <HiInbox />,
+    hidden: true,
+  },
   {
     name: "list",
     icon: <FiList />,

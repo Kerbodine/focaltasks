@@ -16,6 +16,7 @@ import Loader from "../components/Loader";
 import { useTasks } from "../contexts/TaskContext";
 import TaskList from "./TaskList";
 import Settings from "./Settings";
+import CommandPalette from "../components/CommandPalette";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
@@ -75,7 +76,9 @@ export default function MainView() {
             <Navbar />
             {/* Main task area */}
             <div className="ml-[56px] h-full flex-auto sm:ml-0">
-              <div className="h-[56px] w-full"></div>
+              <div className="flex h-[56px] w-full items-center justify-end px-3">
+                <CommandPalette />
+              </div>
               <Routes>
                 <Route exact path="/today" element={<p>Today</p>} />
                 <Route exact path="/upcoming" element={<p>Upcoming</p>} />

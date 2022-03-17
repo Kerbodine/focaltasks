@@ -29,21 +29,23 @@ const IconPicker = ({ iconName, setIconName }) => {
           } overflow-hidden rounded-md transition-all`}
         >
           <div className="mt-2 flex w-full flex-wrap gap-2">
-            {listIcons.map((icon, index) => {
-              return (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => {
-                    setIconName(icon.name);
-                    setShowIcons(false);
-                  }}
-                  className="grid h-9 w-9 place-items-center rounded-md bg-white text-2xl text-gray-500 transition-colors hover:bg-accent hover:text-white"
-                >
-                  {icon.icon}
-                </button>
-              );
-            })}
+            {listIcons
+              .filter((icon) => !icon.hidden)
+              .map((icon, index) => {
+                return (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => {
+                      setIconName(icon.name);
+                      setShowIcons(false);
+                    }}
+                    className="grid h-9 w-9 place-items-center rounded-md bg-white text-2xl text-gray-500 transition-colors hover:bg-accent hover:text-white"
+                  >
+                    {icon.icon}
+                  </button>
+                );
+              })}
           </div>
         </div>
       </div>

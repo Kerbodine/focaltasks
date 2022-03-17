@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
       id: "inbox",
       title: "Inbox",
       notes: "",
-      icon: "",
+      icon: "inbox",
       tasks: [
         {
           id: uuidv4(),
