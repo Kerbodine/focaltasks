@@ -62,14 +62,14 @@ const CommandPalette = () => {
   return (
     <>
       <button
-        className="relative flex h-8 w-60 items-center gap-1 rounded-lg bg-gray-100 px-2 text-sm font-medium outline-none"
+        className="flex h-8 w-60 items-center gap-1 rounded-lg bg-gray-100 px-2 text-sm font-medium outline-none"
         onClick={() => setIsOpen(true)}
       >
         <span className="flex-none text-xl text-gray-500">
           <HiSearch />
         </span>
         <p className="no-select w-full text-left text-gray-400">Quick Search</p>
-        <kbd className="absolute right-1.5 grid h-5 place-items-center rounded-md bg-gray-500 px-1 font-sans text-xs font-medium tracking-wider text-white">
+        <kbd className="grid h-5 place-items-center rounded-md bg-gray-500 px-1 font-sans text-xs font-medium tracking-wider text-white">
           ⌘K
         </kbd>
       </button>
@@ -179,8 +179,7 @@ const CommandPalette = () => {
                       rawQuery.startsWith(">")
                         ? "border-accent text-accent"
                         : "border-gray-300 text-gray-600"
-                    }
-                      mx-1 flex h-5 w-5 items-center justify-center rounded-md border-2 bg-white font-semibold sm:mx-2`}
+                    } mx-1 flex h-5 w-5 items-center justify-center rounded-md border-2 bg-white font-semibold`}
                   >
                     &gt;
                   </kbd>{" "}
@@ -190,8 +189,7 @@ const CommandPalette = () => {
                       rawQuery.startsWith("-")
                         ? "border-accent text-accent"
                         : "border-gray-300 text-gray-600"
-                    }
-                      "mx-1 flex h-5 w-5 items-center justify-center rounded-md border-2 bg-white font-semibold sm:mx-2`}
+                    } mx-1 flex h-5 w-5 items-center justify-center rounded-md border-2 bg-white font-semibold`}
                   >
                     -
                   </kbd>{" "}
