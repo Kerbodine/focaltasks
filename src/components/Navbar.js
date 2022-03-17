@@ -71,7 +71,7 @@ export default function Navbar() {
           <NavbarItem
             icon={<HiInbox />}
             title="Inbox"
-            link={"/"}
+            link={"/inbox"}
             length={getLength(userLists.find((list) => list.id === "inbox"))}
           />
         </div>

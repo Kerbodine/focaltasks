@@ -17,12 +17,7 @@ export default function TaskList() {
   } = useTasks();
 
   const { pathname } = useLocation();
-  let listId = "";
-  if (pathname === "/") {
-    listId = "inbox";
-  } else {
-    listId = pathname.substring(1);
-  }
+  let listId = pathname.substring(1);
 
   const newTask = () => {
     createTask(listId);
