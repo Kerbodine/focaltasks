@@ -7,17 +7,13 @@ import { useTasks } from "../contexts/TaskContext";
 import TaskSettings from "../components/TaskSettings";
 
 export default function TaskList() {
-  const {
-    createTask,
-    userLists,
-    deleteTask,
-    updateTask,
-    updateList,
-    toggleTask,
-  } = useTasks();
+  const { createTask, userLists, deleteTask, updateTask, updateList } =
+    useTasks();
 
   const { pathname } = useLocation();
-  let listId = pathname.substring(1);
+  const path = pathname.split("/");
+
+  let listId = path[1];
 
   const newTask = () => {
     createTask(listId);
@@ -68,17 +64,14 @@ export default function TaskList() {
               />
             </div>
           )}
-          <div className="-mx-2 mt-4 flex flex-col gap-1">
+          <div className="relative -mx-2 mt-4 flex flex-col gap-2">
             {currentList.tasks.map((task) => (
               <TaskItem
-                id={task.id}
                 key={task.id}
-                title={task.title}
                 listId={listId}
-                completed={task.completed}
+                data={task}
                 deleteTask={deleteTask}
                 updateTask={updateTask}
-                toggleTask={toggleTask}
               />
             ))}
           </div>

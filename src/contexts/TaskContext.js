@@ -33,8 +33,7 @@ export function TaskProvider({ children }) {
         title: "",
         completed: false,
         description: "",
-        remindDate: null,
-        dueDate: null,
+        dueDate: "",
         important: false,
         createdAt: new Date(),
         modifiedAt: new Date(),
@@ -99,20 +98,6 @@ export function TaskProvider({ children }) {
     return listId;
   };
 
-  const toggleTask = async (listId, taskId) => {
-    const listRef = doc(db, "Users", currentUser.uid, "Lists", listId);
-    const docSnap = await getDoc(listRef);
-    const tasks = docSnap.data().tasks;
-    const task = tasks.find((task) => task.id === taskId);
-    const updatedTask = { ...task, completed: !task.completed };
-    const updatedTasks = tasks.map((task) =>
-      task.id === taskId ? updatedTask : task
-    );
-    await updateDoc(listRef, {
-      tasks: updatedTasks,
-    });
-  };
-
   const value = {
     userLists,
     setUserLists,
@@ -122,7 +107,6 @@ export function TaskProvider({ children }) {
     updateTask,
     newList,
     deleteList,
-    toggleTask,
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;

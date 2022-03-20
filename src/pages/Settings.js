@@ -6,7 +6,7 @@ const Settings = () => {
 
   return (
     <div className="h-full w-full p-8">
-      <h1 className="mb-4 w-full text-2xl font-semibold">Settings</h1>
+      <h1 className="mb-4 w-full text-3xl font-semibold">Settings</h1>
       <div className="flex">
         <p className="text-gray-700">
           <span className="font-medium">Current Account:</span>{" "}

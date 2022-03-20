@@ -2,16 +2,12 @@ import { Menu, Transition } from "@headlessui/react";
 import React, { Fragment, useState } from "react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { HiPencil, HiTrash } from "react-icons/hi";
-import { useTasks } from "../contexts/TaskContext";
 import DeleteListModal from "./DeleteListModal";
 import EditListModal from "./EditListModal";
 
 const TaskSettings = ({ currentList }) => {
-  const { userLists } = useTasks();
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-
-  console.log(userLists);
 
   return (
     <>
