@@ -17,6 +17,7 @@ import { useTasks } from "../contexts/TaskContext";
 import TaskList from "./TaskList";
 import Settings from "./Settings";
 import CommandPalette from "../components/CommandPalette";
+import { PomodoroProvider } from "../contexts/PomodoroContext";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
@@ -88,7 +89,9 @@ export default function MainView() {
               </Routes>
             </div>
             {/* Sidebar section */}
-            <Sidebar />
+            <PomodoroProvider>
+              <Sidebar />
+            </PomodoroProvider>
           </div>
         </>
       )}

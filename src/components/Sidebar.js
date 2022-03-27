@@ -2,12 +2,12 @@ import { Tab } from "@headlessui/react";
 import { useView } from "../contexts/ViewContext";
 import { ReactComponent as IconClock } from "../svg/icon-clock.svg";
 import { ReactComponent as IconChart } from "../svg/icon-chart.svg";
+import Pomodoro from "./Pomodoro";
 
 export default function Sidebar() {
   const { sidebar } = useView();
 
   const sidebarIcons = [<IconClock />, <IconChart />];
-  const sidebarPanels = [<p>Panel 1</p>, <p>Panel 2</p>];
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -39,9 +39,10 @@ export default function Sidebar() {
             </Tab.List>
           </div>
           <Tab.Panels className="w-full p-3">
-            {sidebarPanels.map((panel, index) => (
-              <Tab.Panel key={index}>{panel}</Tab.Panel>
-            ))}
+            <Tab.Panel>
+              <Pomodoro />
+            </Tab.Panel>
+            <Tab.Panel>2</Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </div>
