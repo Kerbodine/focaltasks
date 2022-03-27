@@ -9,7 +9,6 @@ export function usePomodoro() {
 export function PomodoroProvider({ children }) {
   const [workMinutes, setWorkMinutes] = useState(25);
   const [breakMinutes, setBreakMinutes] = useState(5);
-
   const [mode, setMode] = useState("work");
 
   const value = {
