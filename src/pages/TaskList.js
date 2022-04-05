@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { HiPlusSm } from "react-icons/hi";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import NotFound from "../components/NotFound";
 import TaskItem from "../components/TaskItem";
 import { useTasks } from "../contexts/TaskContext";
@@ -10,10 +10,7 @@ export default function TaskList() {
   const { createTask, userLists, deleteTask, updateTask, updateList } =
     useTasks();
 
-  const { pathname } = useLocation();
-  const path = pathname.split("/");
-
-  let listId = path[1];
+  const { listId } = useParams();
 
   const newTask = () => {
     createTask(listId);
@@ -23,6 +20,7 @@ export default function TaskList() {
   const [currentList, setCurrentList] = useState(
     userLists.filter((list) => list.id === listId)[0]
   );
+
   const [listTitle, setListTitle] = useState(currentList && currentList.title);
   const [listNotes, setListNotes] = useState(currentList && currentList.notes);
 

@@ -85,7 +85,7 @@ export default function MainView() {
                 <Route exact path="/upcoming" element={<p>Upcoming</p>} />
                 <Route exact path="/important" element={<p>Important</p>} />
                 <Route exact path="/settings" element={<Settings />} />
-                <Route path="*" element={<TaskList />} />
+                <Route path="/:listId" element={<TaskList />} />
               </Routes>
             </div>
             {/* Sidebar section */}
