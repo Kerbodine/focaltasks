@@ -87,7 +87,7 @@ export function AuthProvider({ children }) {
       listId: "inbox",
       createdAt: new Date(),
       modifiedAt: new Date(),
-      categories: ["today", "upcoming", "important"],
+      categories: [],
     };
     batch.set(doc(db, "Users", cred.user.uid), userDoc);
     batch.set(doc(db, "Users", cred.user.uid, "Lists", "inbox"), inboxList);

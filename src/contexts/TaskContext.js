@@ -7,6 +7,8 @@ import {
   setDoc,
   updateDoc,
   deleteDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
 
@@ -43,6 +45,20 @@ export function TaskProvider({ children }) {
   const updateTask = async (taskId, updatedItems) => {
     const taskRef = doc(db, "Users", currentUser.uid, "Tasks", taskId);
     await updateDoc(taskRef, updatedItems);
+  };
+
+  const addCategory = async (taskId, category) => {
+    const taskRef = doc(db, "Users", currentUser.uid, "Tasks", taskId);
+    await updateDoc(taskRef, {
+      categories: arrayUnion(category),
+    });
+  };
+
+  const removeCategory = async (taskId, category) => {
+    const taskRef = doc(db, "Users", currentUser.uid, "Tasks", taskId);
+    await updateDoc(taskRef, {
+      categories: arrayRemove(category),
+    });
   };
 
   const deleteTask = async (taskId) => {
@@ -84,6 +100,8 @@ export function TaskProvider({ children }) {
     updateTask,
     newList,
     deleteList,
+    addCategory,
+    removeCategory,
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;

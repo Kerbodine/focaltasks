@@ -1,16 +1,29 @@
 import { useState, useEffect } from "react";
 import { BiCheck } from "react-icons/bi";
-import { HiExclamationCircle, HiPlusSm, HiX } from "react-icons/hi";
+import {
+  HiExclamationCircle,
+  HiOutlineExclamationCircle,
+  HiOutlineStar,
+  HiOutlineSun,
+  HiStar,
+  HiSun,
+  HiX,
+} from "react-icons/hi";
+import { useTasks } from "../contexts/TaskContext";
 
 export default function TaskItem({
-  listId,
-  data: { id, title, completed, dueDate, today, important },
+  data: { id, title, completed, dueDate, categories },
   deleteTask,
   updateTask,
 }) {
+  const { addCategory, removeCategory } = useTasks();
+
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskCompleted, setTaskCompleted] = useState(completed);
-  const [taskImportant, setTaskImportant] = useState(important);
+  const [taskImportant, setTaskImportant] = useState(
+    categories.includes("important")
+  );
+  const [taskToday, setTaskToday] = useState(categories.includes("today"));
   const [taskDueDate, setTaskDueDate] = useState(dueDate);
   const [taskExpanded, setTaskExpanded] = useState(false);
 
@@ -20,8 +33,21 @@ export default function TaskItem({
   };
 
   const toggleTaskImportant = () => {
-    updateTask(id, { important: !taskImportant });
     setTaskImportant(!taskImportant);
+    if (categories.includes("important")) {
+      removeCategory(id, "important");
+    } else {
+      addCategory(id, "important");
+    }
+  };
+
+  const toggleTaskToday = () => {
+    setTaskToday(!taskToday);
+    if (categories.includes("today")) {
+      removeCategory(id, "today");
+    } else {
+      addCategory(id, "today");
+    }
   };
 
   useEffect(() => {
@@ -53,11 +79,19 @@ export default function TaskItem({
           onBlur={() => setTaskExpanded(false)}
         >
           {/* First row input */}
-          <div className="flex w-full items-center gap-1">
+          <div className="flex w-full items-center">
+            {/* Task today icon */}
+            <div
+              className={`${
+                taskToday ? "mr-1 h-5 w-5" : "h-0 w-0"
+              } flex-none overflow-hidden text-xl text-gray-500 transition-all`}
+            >
+              <HiSun />
+            </div>
             {/* Task important icon */}
             <div
               className={`${
-                taskImportant ? "h-5 w-5" : "h-0 w-0"
+                taskImportant ? "mr-1 h-5 w-5" : "h-0 w-0"
               } flex-none overflow-hidden text-xl text-gray-500 transition-all`}
             >
               <HiExclamationCircle />
@@ -74,19 +108,41 @@ export default function TaskItem({
                 taskTitle !== title && updateTask(id, { title: taskTitle });
               }}
             />
+            <button
+              className="grid h-6 w-6 flex-none place-items-center text-xl text-gray-400 opacity-0 transition-opacity hover:text-gray-600 group-hover:inline-flex group-hover:opacity-100"
+              onClick={() => deleteTask(id)}
+            >
+              <HiX />
+            </button>
           </div>
           {/* Second row */}
           <div className="flex w-full">
             <div className={`flex w-full gap-2`}>
+              {/* Toggle today button */}
+              <button
+                className={`${
+                  taskToday ? "bg-gray-500 text-white" : "bg-gray-200"
+                } ml-auto flex h-6 items-center gap-1 rounded-md px-1 text-sm font-medium text-gray-600 transition-colors`}
+                onClick={toggleTaskToday}
+              >
+                <span className="text-xl">
+                  {taskToday ? <HiSun /> : <HiOutlineSun />}
+                </span>
+                <p className="mr-1 hidden sm:block">Today</p>
+              </button>
               {/* Toggle important button */}
               <button
                 className={`${
                   taskImportant ? "bg-gray-500 text-white" : "bg-gray-200"
-                } ml-auto flex h-6 items-center gap-1 rounded-md px-1 text-sm font-medium text-gray-600 transition-colors`}
+                } flex h-6 items-center gap-1 rounded-md px-1 text-sm font-medium text-gray-600 transition-colors`}
                 onClick={toggleTaskImportant}
               >
                 <span className="text-xl">
-                  {taskImportant ? <HiExclamationCircle /> : <HiPlusSm />}
+                  {taskImportant ? (
+                    <HiExclamationCircle />
+                  ) : (
+                    <HiOutlineExclamationCircle />
+                  )}
                 </span>
                 <p className="mr-1 hidden sm:block">Important</p>
               </button>
@@ -105,12 +161,6 @@ export default function TaskItem({
             </div>
           </div>
         </div>
-        <button
-          className="mr-2 grid h-6 w-6 flex-none place-items-center text-xl text-gray-400 opacity-0 transition-opacity hover:text-gray-600 group-hover:inline-flex group-hover:opacity-100"
-          onClick={() => deleteTask(id)}
-        >
-          <HiX />
-        </button>
       </div>
     </div>
   );
