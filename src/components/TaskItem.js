@@ -15,12 +15,12 @@ export default function TaskItem({
   const [taskExpanded, setTaskExpanded] = useState(false);
 
   const toggleTaskCompleted = () => {
-    updateTask(listId, id, { completed: !taskCompleted });
+    updateTask(id, { completed: !taskCompleted });
     setTaskCompleted(!taskCompleted);
   };
 
   const toggleTaskImportant = () => {
-    updateTask(listId, id, { important: !taskImportant });
+    updateTask(id, { important: !taskImportant });
     setTaskImportant(!taskImportant);
   };
 
@@ -71,8 +71,7 @@ export default function TaskItem({
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
               onBlur={() => {
-                taskTitle !== title &&
-                  updateTask(listId, id, { title: taskTitle });
+                taskTitle !== title && updateTask(id, { title: taskTitle });
               }}
             />
           </div>
@@ -100,7 +99,7 @@ export default function TaskItem({
                 onChange={(e) => setTaskDueDate(e.target.value)}
                 onBlur={() =>
                   taskDueDate !== dueDate &&
-                  updateTask(listId, id, { dueDate: taskDueDate })
+                  updateTask(id, { dueDate: taskDueDate })
                 }
               />
             </div>
@@ -108,7 +107,7 @@ export default function TaskItem({
         </div>
         <button
           className="mr-2 grid h-6 w-6 flex-none place-items-center text-xl text-gray-400 opacity-0 transition-opacity hover:text-gray-600 group-hover:inline-flex group-hover:opacity-100"
-          onClick={() => deleteTask(listId, id)}
+          onClick={() => deleteTask(id)}
         >
           <HiX />
         </button>

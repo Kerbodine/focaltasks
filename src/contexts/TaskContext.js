@@ -22,6 +22,7 @@ export function TaskProvider({ children }) {
   const db = getFirestore(app);
 
   const [userLists, setUserLists] = useState([]);
+  const [userTasks, setUserTasks] = useState([]);
 
   const createTask = async (listId) => {
     const taskId = uuidv4();
@@ -32,42 +33,29 @@ export function TaskProvider({ children }) {
       description: "",
       dueDate: "",
       important: false,
+      listId,
       createdAt: new Date(),
       modifiedAt: new Date(),
     };
-    await setDoc(
-      doc(db, "Users", currentUser.uid, "Lists", listId, "Tasks", taskId),
-      task
-    );
+    await setDoc(doc(db, "Users", currentUser.uid, "Tasks", taskId), task);
   };
 
-  const updateTask = async (listId, taskId, updatedItems) => {
-    const taskRef = doc(
-      db,
-      "Users",
-      currentUser.uid,
-      "Lists",
-      listId,
-      "Tasks",
-      taskId
-    );
+  const updateTask = async (taskId, updatedItems) => {
+    const taskRef = doc(db, "Users", currentUser.uid, "Tasks", taskId);
     await updateDoc(taskRef, updatedItems);
   };
 
-  const deleteTask = async (listId, taskId) => {
-    await deleteDoc(
-      doc(db, "Users", currentUser.uid, "Lists", listId, "Tasks", taskId)
-    );
+  const deleteTask = async (taskId) => {
+    await deleteDoc(doc(db, "Users", currentUser.uid, "Tasks", taskId));
   };
 
   const newList = async (title, icon) => {
     const listId = uuidv4();
-    await setDoc(doc(db, `Users/${currentUser.uid}/Lists`, listId), {
+    await setDoc(doc(db, "Users", currentUser.uid, "Lists", listId), {
       id: listId,
       title,
       icon,
       notes: "",
-      tasks: [],
       sort: "createdAt",
       createdAt: new Date(),
       modifiedAt: new Date(),
@@ -88,6 +76,8 @@ export function TaskProvider({ children }) {
   const value = {
     userLists,
     setUserLists,
+    userTasks,
+    setUserTasks,
     updateList,
     createTask,
     deleteTask,

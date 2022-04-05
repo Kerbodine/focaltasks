@@ -44,14 +44,14 @@ export function AuthProvider({ children }) {
       modifiedAt: new Date(),
     });
     const taskId = uuidv4();
-    await setDoc(doc(db, `Users/${cred.user.uid}/Lists/inbox/Tasks`, taskId), {
+    await setDoc(doc(db, `Users/${cred.user.uid}/Tasks`, taskId), {
       id: taskId,
       title: "Welcome to your task list!",
       completed: false,
       description: "",
-      remindDate: null,
       dueDate: null,
       important: false,
+      listId: "inbox",
       createdAt: new Date(),
       modifiedAt: new Date(),
     });

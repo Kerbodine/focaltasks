@@ -22,7 +22,7 @@ import { PomodoroProvider } from "../contexts/PomodoroContext";
 export default function MainView() {
   const [loading, setLoading] = useState(true);
   const { setUserData, currentUser } = useAuth();
-  const { setUserLists } = useTasks();
+  const { userLists, setUserLists, userTasks, setUserTasks } = useTasks();
 
   const db = getFirestore(app);
 
@@ -43,23 +43,44 @@ export default function MainView() {
   // Query snapshot for user lists
   useEffect(() => {
     setLoading(true);
-    const unsubscribe = onSnapshot(
+    // Listener for user Lists collection
+    const unsubscribeLists = onSnapshot(
       query(
         collection(db, "Users", currentUser.uid, "Lists"),
         orderBy("createdAt")
       ),
       (allLists) => {
-        let tempUserLists = [];
+        let tempLists = [];
         allLists.docs.forEach((list) => {
-          tempUserLists.push(list.data());
+          tempLists.push(list.data());
         });
         console.log("Updating lists");
-        setUserLists(tempUserLists);
+        setUserLists(tempLists);
         setLoading(false);
       }
     );
+    // Listener for user Tasks collection
+    const unsubscribeTasks = onSnapshot(
+      query(
+        collection(db, "Users", currentUser.uid, "Tasks"),
+        orderBy("createdAt")
+      ),
+      (allTasks) => {
+        let tempTasks = [];
+        allTasks.docs.forEach((list) => {
+          tempTasks.push(list.data());
+        });
+        console.log("Updating tasks");
+        setUserTasks(tempTasks);
+        setLoading(false);
+      }
+    );
+    console.log(userLists);
+    console.log(userTasks);
+    // Cleanup listeners
     return () => {
-      unsubscribe();
+      unsubscribeLists();
+      unsubscribeTasks();
     };
   }, []);
 
