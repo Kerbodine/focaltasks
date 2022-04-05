@@ -13,7 +13,7 @@ const CommandPalette = () => {
 
   const navigate = useNavigate();
 
-  const { userLists } = useTasks();
+  const { userLists, userTasks } = useTasks();
 
   useEffect(() => {
     let filteredTasks = [];
@@ -21,17 +21,14 @@ const CommandPalette = () => {
     let query = rawQuery.toLowerCase().replace(/^[>-]\s*/, ""); // remove leading >, -, or whitespace
     if (query !== "") {
       if (!rawQuery.startsWith(">")) {
-        filteredTasks = userLists
-          .map((list) => {
-            return list.tasks.map((task) => {
-              if (task.title.toLowerCase().includes(query.toLowerCase())) {
-                return { ...task, type: "task", listId: list.id };
-              }
-              return null;
-            });
+        filteredTasks = userTasks
+          .map((task) => {
+            if (task.title.toLowerCase().includes(query.toLowerCase())) {
+              return { ...task, type: "task", listId: task.listId };
+            }
+            return null;
           })
-          .flat() // Remove nested arrays for each list
-          .filter((list) => list); // Remove null values
+          .filter((task) => task);
       }
       if (!rawQuery.startsWith("-")) {
         filteredLists = userLists
@@ -45,7 +42,7 @@ const CommandPalette = () => {
       }
     }
     setResults([...filteredTasks, ...filteredLists]);
-  }, [rawQuery, userLists]);
+  }, [rawQuery, userLists, userTasks]);
 
   useEffect(() => {
     const onKeydown = (event) => {
@@ -103,7 +100,7 @@ const CommandPalette = () => {
               <Combobox
                 onChange={(item) => {
                   if (item.type === "task") {
-                    navigate(`/${item.listId}/${item.id}`);
+                    navigate(`/${item.listId}`);
                   } else {
                     navigate(`/${item.id}`);
                   }
