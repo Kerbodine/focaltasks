@@ -39,20 +39,19 @@ export function AuthProvider({ children }) {
       title: "Inbox",
       notes: "",
       icon: "inbox",
-      tasks: [
-        {
-          id: uuidv4(),
-          title: "Welcome to your task list!",
-          completed: false,
-          description: "",
-          remindDate: null,
-          dueDate: null,
-          important: false,
-          createdAt: new Date(),
-          modifiedAt: new Date(),
-        },
-      ],
       sort: "createdAt",
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+    });
+    const taskId = uuidv4();
+    await setDoc(doc(db, `Users/${cred.user.uid}/Lists/inbox/Tasks`, taskId), {
+      id: taskId,
+      title: "Welcome to your task list!",
+      completed: false,
+      description: "",
+      remindDate: null,
+      dueDate: null,
+      important: false,
       createdAt: new Date(),
       modifiedAt: new Date(),
     });

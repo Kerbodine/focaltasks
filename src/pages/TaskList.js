@@ -1,14 +1,24 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { app } from "../firebase";
 import { HiPlusSm } from "react-icons/hi";
 import { useParams } from "react-router-dom";
 import NotFound from "../components/NotFound";
 import TaskItem from "../components/TaskItem";
 import { useTasks } from "../contexts/TaskContext";
 import TaskSettings from "../components/TaskSettings";
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function TaskList() {
   const { createTask, userLists, deleteTask, updateTask, updateList } =
     useTasks();
+  const { currentUser } = useAuth();
 
   const { listId } = useParams();
 
@@ -16,22 +26,53 @@ export default function TaskList() {
     createTask(listId);
   };
 
+  const [loading, setLoading] = useState(true);
+
   // Initialize list settings
   const [currentList, setCurrentList] = useState(
     userLists.filter((list) => list.id === listId)[0]
   );
 
-  const [listTitle, setListTitle] = useState(currentList && currentList.title);
-  const [listNotes, setListNotes] = useState(currentList && currentList.notes);
+  const [userTasks, setUserTasks] = useState([]);
+
+  const [listTitle, setListTitle] = useState(currentList.title);
+  const [listNotes, setListNotes] = useState(currentList.notes);
 
   useEffect(() => {
     setCurrentList(userLists.filter((list) => list.id === listId)[0]);
-    setListTitle(currentList && currentList.title);
+    setListTitle(currentList.title);
+    setListNotes(currentList.notes);
   }, [userLists, listId, currentList]);
+
+  const db = getFirestore(app);
+
+  useEffect(() => {
+    setLoading(true);
+    const unsubscribe = onSnapshot(
+      query(
+        collection(db, "Users", currentUser.uid, "Lists", listId, "Tasks"),
+        orderBy("createdAt")
+      ),
+      (allTasks) => {
+        let tempUserTasks = [];
+        allTasks.docs.forEach((task) => {
+          tempUserTasks.push(task.data());
+        });
+        console.log("Updating tasks");
+        setUserTasks(tempUserTasks);
+        setLoading(false);
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, [listId, currentUser, db]);
 
   return (
     <>
-      {currentList ? (
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
         <div className="h-full w-full p-8">
           <div className="flex w-full gap-2">
             <input
@@ -63,7 +104,7 @@ export default function TaskList() {
             </div>
           )}
           <div className="relative -mx-2 mt-4 flex flex-col gap-2">
-            {currentList.tasks.map((task) => (
+            {userTasks.map((task) => (
               <TaskItem
                 key={task.id}
                 listId={listId}
@@ -83,8 +124,6 @@ export default function TaskList() {
             <p className="text-sm font-medium">New Task</p>
           </button>
         </div>
-      ) : (
-        <NotFound />
       )}
     </>
   );

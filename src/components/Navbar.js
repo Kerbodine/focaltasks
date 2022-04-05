@@ -18,9 +18,9 @@ export default function Navbar() {
   const { userLists } = useTasks();
   const { navbar, toggleNavbar } = useView();
 
-  const getLength = (list) => {
-    return list.tasks.filter((task) => !task.completed).length;
-  };
+  // const getLength = (list) => {
+  //   return list.tasks.filter((task) => !task.completed).length;
+  // };
 
   const specialLists = ["inbox", "today", "upcoming", "important"];
 
@@ -72,7 +72,7 @@ export default function Navbar() {
             icon={<HiInbox />}
             title="Inbox"
             link={"/inbox"}
-            length={getLength(userLists.find((list) => list.id === "inbox"))}
+            // length={getLength(userLists.find((list) => list.id === "inbox"))}
           />
         </div>
         <div className="mt-3 flex flex-col gap-1">
@@ -103,7 +103,7 @@ export default function Navbar() {
                 key={list.id}
                 title={list.title}
                 link={`/${list.id}`}
-                length={getLength(list)}
+                // length={getLength(list)}
               />
             ))}
           {/* New list button */}

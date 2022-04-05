@@ -96,7 +96,7 @@ export default function TaskItem({
                 type="date"
                 className="h-6 w-40 rounded-md bg-gray-200 px-2 text-sm font-medium text-gray-600 placeholder-gray-400 outline-none"
                 placeholder="Due date"
-                value={taskDueDate}
+                value={taskDueDate ? taskDueDate : ""}
                 onChange={(e) => setTaskDueDate(e.target.value)}
                 onBlur={() =>
                   taskDueDate !== dueDate &&
