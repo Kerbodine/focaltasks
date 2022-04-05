@@ -18,6 +18,7 @@ import TaskList from "./TaskList";
 import Settings from "./Settings";
 import CommandPalette from "../components/CommandPalette";
 import { PomodoroProvider } from "../contexts/PomodoroContext";
+import ListRoute from "../components/ListRoute";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
@@ -106,7 +107,7 @@ export default function MainView() {
                 <Route exact path="/upcoming" element={<p>Upcoming</p>} />
                 <Route exact path="/important" element={<p>Important</p>} />
                 <Route exact path="/settings" element={<Settings />} />
-                <Route path="/:listId" element={<TaskList />} />
+                <Route path="/:listId" element={<ListRoute />} />
               </Routes>
             </div>
             {/* Sidebar section */}
