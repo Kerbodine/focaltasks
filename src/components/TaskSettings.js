@@ -11,7 +11,7 @@ const TaskSettings = ({ currentList }) => {
 
   return (
     <>
-      <Menu as="div" className="relative">
+      <Menu as="div" className="relative z-10">
         <div>
           <Menu.Button className="grid h-8 w-8 place-items-center rounded-lg text-2xl text-gray-500 outline-none transition-colors hover:bg-gray-100">
             <BiDotsVerticalRounded />

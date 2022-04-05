@@ -1,5 +1,6 @@
 import {
   HiBookOpen,
+  HiCalendar,
   HiCheckCircle,
   HiClipboardList,
   HiCode,
@@ -7,6 +8,7 @@ import {
   HiCurrencyDollar,
   HiDatabase,
   HiDocumentText,
+  HiExclamationCircle,
   HiFilm,
   HiFolder,
   HiGlobeAlt,
@@ -21,6 +23,7 @@ import {
   HiMoon,
   HiPencilAlt,
   HiShoppingBag,
+  HiSun,
   HiTag,
   HiViewGrid,
 } from "react-icons/hi";
@@ -30,6 +33,21 @@ export const listIcons = [
   {
     name: "inbox",
     icon: <HiInbox />,
+    hidden: true,
+  },
+  {
+    name: "today",
+    icon: <HiSun />,
+    hidden: true,
+  },
+  {
+    name: "upcoming",
+    icon: <HiCalendar />,
+    hidden: true,
+  },
+  {
+    name: "important",
+    icon: <HiExclamationCircle />,
     hidden: true,
   },
   {

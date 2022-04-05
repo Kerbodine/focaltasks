@@ -103,9 +103,9 @@ export default function MainView() {
                 <CommandPalette />
               </div>
               <Routes>
-                <Route exact path="/today" element={<p>Today</p>} />
+                {/* <Route exact path="/today" element={<p>Today</p>} />
                 <Route exact path="/upcoming" element={<p>Upcoming</p>} />
-                <Route exact path="/important" element={<p>Important</p>} />
+                <Route exact path="/important" element={<p>Important</p>} /> */}
                 <Route exact path="/settings" element={<Settings />} />
                 <Route path="/:listId" element={<ListRoute />} />
               </Routes>

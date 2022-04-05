@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { HiPlusSm } from "react-icons/hi";
 import { useOutletContext, useParams } from "react-router-dom";
 import NotFound from "../components/NotFound";
@@ -25,9 +25,20 @@ export default function TaskList({ listId }) {
     userLists.filter((list) => list.id === listId)[0]
   );
 
-  const [tasks, setTasks] = useState(
-    userTasks.filter((task) => task.listId === listId)
-  );
+  const filterTasks = useCallback(() => {
+    let categoryTasks = [];
+    if (list.category) {
+      categoryTasks = userTasks.filter((task) =>
+        task.categories.includes(list.id)
+      );
+    }
+    return [
+      ...categoryTasks,
+      ...userTasks.filter((task) => task.listId === listId),
+    ];
+  }, [list, userTasks, listId]);
+
+  const [tasks, setTasks] = useState(() => filterTasks());
 
   const [listTitle, setListTitle] = useState(list.title);
   const [listNotes, setListNotes] = useState(list.notes);
@@ -39,8 +50,9 @@ export default function TaskList({ listId }) {
   }, [userLists, userTasks, listId, list]);
 
   useEffect(() => {
-    setTasks(userTasks.filter((task) => task.listId === listId));
-  }, [userTasks, listId]);
+    const tasks = filterTasks();
+    setTasks(tasks);
+  }, [userTasks, listId, filterTasks]);
 
   return (
     <>
@@ -51,17 +63,15 @@ export default function TaskList({ listId }) {
               className="w-full min-w-0 truncate text-3xl font-semibold outline-none"
               value={listTitle}
               placeholder="Untitled List"
-              onChange={(e) =>
-                list.id !== "inbox" && setListTitle(e.target.value)
-              }
+              onChange={(e) => !list.default && setListTitle(e.target.value)}
               onBlur={() => {
                 list.title !== listTitle &&
                   updateList(listId, { title: listTitle });
               }}
             />
-            {list.id !== "inbox" && <TaskSettings currentList={list} />}
+            {!list.default && <TaskSettings currentList={list} />}
           </div>
-          {list.id !== "inbox" && (
+          {!list.default && (
             <div className="">
               <input
                 className="w-full font-medium text-gray-600 placeholder-gray-400 outline-none"

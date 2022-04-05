@@ -32,10 +32,10 @@ export function TaskProvider({ children }) {
       completed: false,
       description: "",
       dueDate: "",
-      important: false,
       listId,
       createdAt: new Date(),
       modifiedAt: new Date(),
+      categories: [],
     };
     await setDoc(doc(db, "Users", currentUser.uid, "Tasks", taskId), task);
   };

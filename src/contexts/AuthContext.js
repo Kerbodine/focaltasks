@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { auth, app } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, writeBatch } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -26,6 +26,7 @@ export function AuthProvider({ children }) {
   const db = getFirestore(app);
 
   const createSignupDoc = async (cred) => {
+    const batch = writeBatch(db);
     const photoURL = cred.user.photoURL ? cred.user.photoURL : null;
     const userDoc = {
       displayName: cred.user.displayName,
@@ -33,8 +34,7 @@ export function AuthProvider({ children }) {
       photoURL,
       createdAt: new Date(),
     };
-    await setDoc(doc(db, "Users", cred.user.uid), userDoc);
-    await setDoc(doc(db, `Users/${cred.user.uid}/Lists`, "inbox"), {
+    const inboxList = {
       id: "inbox",
       title: "Inbox",
       notes: "",
@@ -42,19 +42,66 @@ export function AuthProvider({ children }) {
       sort: "createdAt",
       createdAt: new Date(),
       modifiedAt: new Date(),
-    });
+      default: true,
+    };
+    const todayList = {
+      id: "today",
+      title: "Today",
+      notes: "",
+      icon: "today",
+      sort: "createdAt",
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      default: true,
+      category: "today",
+    };
+    const upcomingList = {
+      id: "upcoming",
+      title: "Upcoming",
+      notes: "",
+      icon: "upcoming",
+      sort: "createdAt",
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      default: true,
+      category: "upcoming",
+    };
+    const importantList = {
+      id: "important",
+      title: "Important",
+      notes: "",
+      icon: "important",
+      sort: "createdAt",
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      default: true,
+      category: "important",
+    };
     const taskId = uuidv4();
-    await setDoc(doc(db, `Users/${cred.user.uid}/Tasks`, taskId), {
+    const welcomeTask = {
       id: taskId,
       title: "Welcome to your task list!",
       completed: false,
       description: "",
       dueDate: null,
-      important: false,
       listId: "inbox",
       createdAt: new Date(),
       modifiedAt: new Date(),
-    });
+      categories: ["today", "upcoming", "important"],
+    };
+    batch.set(doc(db, "Users", cred.user.uid), userDoc);
+    batch.set(doc(db, "Users", cred.user.uid, "Lists", "inbox"), inboxList);
+    batch.set(doc(db, "Users", cred.user.uid, "Lists", "today"), todayList);
+    batch.set(
+      doc(db, "Users", cred.user.uid, "Lists", "upcoming"),
+      upcomingList
+    );
+    batch.set(
+      doc(db, "Users", cred.user.uid, "Lists", "important"),
+      importantList
+    );
+    batch.set(doc(db, `Users/${cred.user.uid}/Tasks`, taskId), welcomeTask);
+    await batch.commit();
   };
 
   const signup = async (email, password, firstName, lastName) => {
