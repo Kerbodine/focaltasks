@@ -88,7 +88,7 @@ export default function TaskList({ listId }) {
               }}
             />
           )}
-          <div className="relative -mx-2 mt-4 flex flex-col gap-2">
+          <div className="-mx-2 mt-4 flex flex-col gap-2">
             {tasks.map((task, index) => (
               <TaskItem
                 key={task.id + index}
