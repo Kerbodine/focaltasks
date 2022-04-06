@@ -30,6 +30,11 @@ export default function TaskList({ listId }) {
       categoryTasks = userTasks.filter((task) =>
         task.categories.includes(list.id)
       );
+      categoryTasks.sort(function (a, b) {
+        var dateA = new Date(a.dueDate),
+          dateB = new Date(b.dueDate);
+        return dateA - dateB;
+      });
     }
     return [
       ...categoryTasks,
@@ -37,7 +42,7 @@ export default function TaskList({ listId }) {
     ];
   }, [list, userTasks, listId]);
 
-  const [tasks, setTasks] = useState(() => filterTasks());
+  const [tasks, setTasks] = useState([]);
 
   const [listTitle, setListTitle] = useState(list.title);
   const [listNotes, setListNotes] = useState(list.notes);
@@ -46,12 +51,14 @@ export default function TaskList({ listId }) {
     setList(userLists.filter((list) => list.id === listId)[0]);
     setListTitle(list && list.title);
     setListNotes(list && list.notes);
-  }, [userLists, userTasks, listId, list]);
+    const newTasks = filterTasks();
+    setTasks([...newTasks]);
+  }, [userLists, userTasks, listId, list, filterTasks]);
 
-  useEffect(() => {
-    const tasks = filterTasks();
-    setTasks(tasks);
-  }, [userTasks, listId, filterTasks]);
+  // useEffect(() => {
+  //   const tasks = filterTasks();
+  //   setTasks(tasks);
+  // }, [userTasks, filterTasks, listId]);
 
   return (
     <>
@@ -71,22 +78,20 @@ export default function TaskList({ listId }) {
             {!list.default && <TaskSettings currentList={list} />}
           </div>
           {!list.default && (
-            <div className="">
-              <input
-                className="w-full font-medium text-gray-600 placeholder-gray-400 outline-none"
-                placeholder="Notes"
-                value={listNotes}
-                onChange={(e) => setListNotes(e.target.value)}
-                onBlur={() => {
-                  updateList(listId, { notes: listNotes });
-                }}
-              />
-            </div>
+            <input
+              className="w-full font-medium text-gray-600 placeholder-gray-400 outline-none"
+              placeholder="Notes"
+              value={listNotes}
+              onChange={(e) => setListNotes(e.target.value)}
+              onBlur={() => {
+                updateList(listId, { notes: listNotes });
+              }}
+            />
           )}
           <div className="relative -mx-2 mt-4 flex flex-col gap-2">
-            {tasks.map((task) => (
+            {tasks.map((task, index) => (
               <TaskItem
-                key={task.id}
+                key={task.id + index}
                 listId={listId}
                 data={task}
                 deleteTask={deleteTask}
