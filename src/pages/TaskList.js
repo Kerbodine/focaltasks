@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { HiPlusSm } from "react-icons/hi";
-import { useOutletContext, useParams } from "react-router-dom";
 import NotFound from "../components/NotFound";
 import TaskItem from "../components/TaskItem";
 import { useTasks } from "../contexts/TaskContext";

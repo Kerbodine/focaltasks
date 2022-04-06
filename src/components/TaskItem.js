@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BiCheck } from "react-icons/bi";
 import {
   HiExclamationCircle,
+  HiFlag,
   HiOutlineExclamationCircle,
   HiOutlineStar,
   HiOutlineSun,
@@ -47,6 +48,24 @@ export default function TaskItem({
       removeCategory(id, "today");
     } else {
       addCategory(id, "today");
+    }
+  };
+
+  const getDueInDays = () => {
+    const today = new Date();
+    const dueDate = new Date(taskDueDate);
+    const diffTime = dueDate - today.setHours(0, 0, 0, 0);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+    if (diffDays < -1) {
+      return `${Math.abs(diffDays)} days ago`;
+    } else if (diffDays === -1) {
+      return "Yesterday";
+    } else if (diffDays === 0) {
+      return "Today";
+    } else if (diffDays === 1) {
+      return "Tomorrow";
+    } else {
+      return `${diffDays} days`;
     }
   };
 
@@ -108,6 +127,14 @@ export default function TaskItem({
                 taskTitle !== title && updateTask(id, { title: taskTitle });
               }}
             />
+            {taskDueDate && (
+              <div className="mr-2 flex h-6 items-center rounded-md bg-gray-100 px-1 text-sm font-medium text-gray-600">
+                <span className="text-lg text-gray-500">
+                  <HiFlag />
+                </span>
+                <p className="mr-1 whitespace-nowrap">{getDueInDays()}</p>
+              </div>
+            )}
             <button
               className="grid h-6 w-6 flex-none place-items-center text-xl text-gray-400 opacity-0 transition-opacity hover:text-gray-600 group-hover:inline-flex group-hover:opacity-100"
               onClick={() => deleteTask(id)}
