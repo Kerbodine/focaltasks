@@ -4,9 +4,7 @@ import {
   HiExclamationCircle,
   HiFlag,
   HiOutlineExclamationCircle,
-  HiOutlineStar,
   HiOutlineSun,
-  HiStar,
   HiSun,
   HiX,
 } from "react-icons/hi";
@@ -48,6 +46,17 @@ export default function TaskItem({
       removeCategory(id, "today");
     } else {
       addCategory(id, "today");
+    }
+  };
+
+  const updateDueDate = () => {
+    if (taskDueDate !== dueDate) {
+      updateTask(id, { dueDate: taskDueDate });
+      if (taskDueDate === null) {
+        removeCategory(id, "upcoming");
+      } else {
+        addCategory(id, "upcoming");
+      }
     }
   };
 
@@ -180,10 +189,7 @@ export default function TaskItem({
                 placeholder="Due date"
                 value={taskDueDate ? taskDueDate : ""}
                 onChange={(e) => setTaskDueDate(e.target.value)}
-                onBlur={() =>
-                  taskDueDate !== dueDate &&
-                  updateTask(id, { dueDate: taskDueDate })
-                }
+                onBlur={updateDueDate}
               />
             </div>
           </div>
