@@ -21,3 +21,18 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+.CircularProgressbar {
+  @apply w-full align-middle;
+}
+
+.CircularProgressbar .CircularProgressbar-path {
+  stroke: rgb(var(--accent));
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease 0s;
+}
+
+.CircularProgressbar .CircularProgressbar-trail {
+  @apply stroke-gray-200;
+  stroke-linecap: round;
+}

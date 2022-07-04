@@ -31,11 +31,11 @@ const PomodoroTime = ({ minutes, seconds, time, isPaused }) => {
   };
 
   return (
-    <div className="mt-4 mb-1 flex items-center">
+    <div className="z-10 mt-4 mb-1 flex items-center">
       <p className="text-4xl font-medium text-gray-500">{`${minutes}:${seconds}`}</p>
       {isPaused &&
         time === (mode === "work" ? workMinutes : breakMinutes) * 60 && (
-          <div className="absolute right-12 flex flex-col -space-y-1 text-xl text-gray-400">
+          <div className="absolute right-9 flex flex-col -space-y-1 text-xl text-gray-400">
             <button
               onClick={increment}
               className="transition-colors hover:text-gray-600"

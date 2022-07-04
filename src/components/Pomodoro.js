@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { usePomodoro } from "../contexts/PomodoroContext";
 import { HiPause, HiPlay, HiXCircle } from "react-icons/hi";
 import PomodoroTime from "./PomodoroTime";
+import { CircularProgressbar } from "react-circular-progressbar";
 
 const Pomodoro = () => {
   // const settingsInfo = useContext(SettingsContext);
@@ -64,7 +65,7 @@ const Pomodoro = () => {
   };
 
   const totalSeconds = mode === "work" ? workMinutes * 60 : breakMinutes * 60;
-  const percentage = Math.round((secondsLeft / totalSeconds) * 100);
+  const percentage = Math.round((secondsLeft / totalSeconds) * 1000) / 10;
 
   const minutes = Math.floor(secondsLeft / 60);
   let seconds = secondsLeft % 60;
@@ -72,7 +73,7 @@ const Pomodoro = () => {
 
   return (
     <div>
-      <div className="flex aspect-square w-full flex-col items-center justify-center rounded-full border-2 border-gray-200">
+      <div className="relative flex aspect-square w-full flex-col items-center justify-center rounded-full">
         <PomodoroTime
           minutes={minutes}
           seconds={seconds}
@@ -82,8 +83,12 @@ const Pomodoro = () => {
         />
         <button className="flex h-6 items-center gap-1 rounded-full bg-gray-100 p-1">
           <div className="h-4 w-4 rounded-full bg-accent"></div>
-          <p className="mr-1 text-sm font-medium text-gray-600">School</p>
+          <p className="mr-1 text-sm font-medium text-gray-600">Tag</p>
         </button>
+        {/* Create circular progress bar with svg */}
+        <div className="absolute h-full w-full">
+          <CircularProgressbar value={percentage} strokeWidth={4} />
+        </div>
       </div>
       <div className="mt-4 flex justify-center gap-2">
         {isPaused ? (
