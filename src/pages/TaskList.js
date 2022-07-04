@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { HiPlusSm } from "react-icons/hi";
 import NotFound from "../components/NotFound";
 import TaskItem from "../components/TaskItem";
@@ -6,14 +6,7 @@ import { useTasks } from "../contexts/TaskContext";
 import TaskSettings from "../components/TaskSettings";
 
 export default function TaskList({ listId }) {
-  const {
-    createTask,
-    userLists,
-    userTasks,
-    deleteTask,
-    updateTask,
-    updateList,
-  } = useTasks();
+  const { createTask, userLists, userTasks, updateList } = useTasks();
 
   const newTask = () => {
     createTask(listId);
@@ -55,11 +48,6 @@ export default function TaskList({ listId }) {
     setTasks([...newTasks]);
   }, [userLists, userTasks, listId, list, filterTasks]);
 
-  // useEffect(() => {
-  //   const tasks = filterTasks();
-  //   setTasks(tasks);
-  // }, [userTasks, filterTasks, listId]);
-
   return (
     <>
       {list ? (
@@ -77,26 +65,18 @@ export default function TaskList({ listId }) {
             />
             {!list.default && <TaskSettings currentList={list} />}
           </div>
-          {!list.default && (
-            <input
-              className="w-full font-medium text-gray-600 placeholder-gray-400 outline-none"
-              placeholder="Notes"
-              value={listNotes}
-              onChange={(e) => setListNotes(e.target.value)}
-              onBlur={() => {
-                updateList(listId, { notes: listNotes });
-              }}
-            />
-          )}
+          <input
+            className="w-full font-medium text-gray-600 placeholder-gray-400 outline-none"
+            placeholder="Notes"
+            value={listNotes}
+            onChange={(e) => setListNotes(e.target.value)}
+            onBlur={() => {
+              updateList(listId, { notes: listNotes });
+            }}
+          />
           <div className="-mx-2 mt-4 flex flex-col gap-2">
             {tasks.map((task, index) => (
-              <TaskItem
-                key={task.id + index}
-                listId={listId}
-                data={task}
-                deleteTask={deleteTask}
-                updateTask={updateTask}
-              />
+              <TaskItem key={task.id + index} listId={listId} data={task} />
             ))}
           </div>
           <button

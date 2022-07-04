@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { auth, app } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
-import { getFirestore, doc, setDoc, writeBatch } from "firebase/firestore";
+import { getFirestore, doc, writeBatch } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -20,10 +20,11 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
   const db = getFirestore(app);
+
+  const [currentUser, setCurrentUser] = useState(null);
+  const [userData, setUserData] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const createSignupDoc = async (cred) => {
     const batch = writeBatch(db);
@@ -44,42 +45,9 @@ export function AuthProvider({ children }) {
       modifiedAt: new Date(),
       default: true,
     };
-    const todayList = {
-      id: "today",
-      title: "Today",
-      notes: "",
-      icon: "today",
-      sort: "createdAt",
-      createdAt: new Date(),
-      modifiedAt: new Date(),
-      default: true,
-      category: "today",
-    };
-    const upcomingList = {
-      id: "upcoming",
-      title: "Upcoming",
-      notes: "",
-      icon: "upcoming",
-      sort: "createdAt",
-      createdAt: new Date(),
-      modifiedAt: new Date(),
-      default: true,
-      category: "upcoming",
-    };
-    const importantList = {
-      id: "important",
-      title: "Important",
-      notes: "",
-      icon: "important",
-      sort: "createdAt",
-      createdAt: new Date(),
-      modifiedAt: new Date(),
-      default: true,
-      category: "important",
-    };
     const taskId = uuidv4();
     const welcomeTask = {
-      id: taskId,
+      id: uuidv4(),
       title: "Welcome to your task list!",
       completed: false,
       description: "",
@@ -91,16 +59,7 @@ export function AuthProvider({ children }) {
     };
     batch.set(doc(db, "Users", cred.user.uid), userDoc);
     batch.set(doc(db, "Users", cred.user.uid, "Lists", "inbox"), inboxList);
-    batch.set(doc(db, "Users", cred.user.uid, "Lists", "today"), todayList);
-    batch.set(
-      doc(db, "Users", cred.user.uid, "Lists", "upcoming"),
-      upcomingList
-    );
-    batch.set(
-      doc(db, "Users", cred.user.uid, "Lists", "important"),
-      importantList
-    );
-    batch.set(doc(db, `Users/${cred.user.uid}/Tasks`, taskId), welcomeTask);
+    batch.set(doc(db, "Users", cred.user.uid, "Tasks", taskId), welcomeTask);
     await batch.commit();
   };
 
@@ -126,7 +85,6 @@ export function AuthProvider({ children }) {
     return sendPasswordResetEmail(auth, email);
   };
 
-  // Sign up / sign in with google
   const provider = new GoogleAuthProvider();
   const signInWithGoogle = async () => {
     try {
@@ -149,9 +107,6 @@ export function AuthProvider({ children }) {
       unsubscribe();
     };
   }, []);
-
-  // User data states
-  const [userData, setUserData] = useState("");
 
   const value = {
     userData,

@@ -1,5 +1,6 @@
 import {
   HiCalendar,
+  HiCheckCircle,
   HiCog,
   HiExclamationCircle,
   HiInbox,
@@ -86,6 +87,11 @@ export default function Navbar() {
             icon={<HiExclamationCircle />}
             title="Important"
             link={"/important"}
+          />
+          <NavbarItem
+            icon={<HiCheckCircle />}
+            title="Completed"
+            link={"/completed"}
           />
         </div>
         <div className="mt-3 flex flex-col gap-1">

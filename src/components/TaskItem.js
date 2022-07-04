@@ -12,10 +12,8 @@ import { useTasks } from "../contexts/TaskContext";
 
 export default function TaskItem({
   data: { id, title, completed, dueDate, categories },
-  deleteTask,
-  updateTask,
 }) {
-  const { addCategory, removeCategory } = useTasks();
+  const { addCategory, removeCategory, deleteTask, updateTask } = useTasks();
 
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskCompleted, setTaskCompleted] = useState(completed);

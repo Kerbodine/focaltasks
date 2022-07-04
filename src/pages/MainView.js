@@ -14,11 +14,11 @@ import Sidebar from "../components/Sidebar";
 import { useAuth } from "../contexts/AuthContext";
 import Loader from "../components/Loader";
 import { useTasks } from "../contexts/TaskContext";
-import TaskList from "./TaskList";
 import Settings from "./Settings";
 import CommandPalette from "../components/CommandPalette";
 import { PomodoroProvider } from "../contexts/PomodoroContext";
 import ListRoute from "../components/ListRoute";
+import Category from "./Category";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
@@ -103,9 +103,46 @@ export default function MainView() {
                 <CommandPalette />
               </div>
               <Routes>
-                {/* <Route exact path="/today" element={<p>Today</p>} />
-                <Route exact path="/upcoming" element={<p>Upcoming</p>} />
-                <Route exact path="/important" element={<p>Important</p>} /> */}
+                <Route
+                  exact
+                  path="/today"
+                  element={
+                    <Category
+                      title="Today"
+                      sort={(task) => task.categories.includes("today")}
+                    />
+                  }
+                />
+                <Route
+                  exact
+                  path="/upcoming"
+                  element={
+                    <Category
+                      title="Upcoming"
+                      sort={(task) => task.categories.includes("upcoming")}
+                    />
+                  }
+                />
+                <Route
+                  exact
+                  path="/important"
+                  element={
+                    <Category
+                      title="Important"
+                      sort={(task) => task.categories.includes("important")}
+                    />
+                  }
+                />
+                <Route
+                  exact
+                  path="/completed"
+                  element={
+                    <Category
+                      title="Completed"
+                      sort={(task) => task.completed}
+                    />
+                  }
+                />
                 <Route exact path="/settings" element={<Settings />} />
                 <Route path="/:listId" element={<ListRoute />} />
               </Routes>
