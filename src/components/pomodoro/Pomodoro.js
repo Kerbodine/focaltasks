@@ -5,6 +5,7 @@ import { BiCaretDown } from "react-icons/bi";
 import PomodoroTime from "./PomodoroTime";
 import { CircularProgressbar } from "react-circular-progressbar";
 import PomodoroCard from "./PomodoroCard";
+import TagSelector from "./TagSelector";
 
 const Pomodoro = () => {
   // const settingsInfo = useContext(SettingsContext);
@@ -94,13 +95,14 @@ const Pomodoro = () => {
           mode={modeRef.current}
           isPaused={isPausedRef.current}
         />
-        <button className="flex h-6 max-w-[132px] items-center gap-1 rounded-full bg-gray-100 p-1">
+        {/* <button className="flex h-6 max-w-[132px] items-center gap-1 rounded-full bg-gray-100 p-1">
           <div className="h-4 w-4 flex-none rounded-full bg-accent"></div>
           <p className="truncate text-sm font-medium text-gray-600">School</p>
           <BiCaretDown className="-ml-1 flex-none text-xl text-gray-400" />
-        </button>
+        </button> */}
+        <TagSelector />
         {/* Create circular progress bar with svg */}
-        <div className="absolute h-full w-full">
+        <div className="absolute -z-10 h-full w-full">
           <CircularProgressbar value={percentage} strokeWidth={4} />
         </div>
       </div>

@@ -17,7 +17,7 @@ export default function Sidebar() {
     <div
       className={`${
         sidebar ? "w-[240px]" : "hidden w-0 lg:block lg:w-[240px]"
-      } absolute right-0 h-screen border-l-2 border-gray-100 bg-white lg:relative`}
+      } absolute right-0 h-screen border-l-2 border-gray-100 lg:relative`}
     >
       <Tab.Group className="flex h-full flex-col" as="div">
         <div className="h-[56px] w-full flex-none items-center border-b-2 border-gray-100 p-3">

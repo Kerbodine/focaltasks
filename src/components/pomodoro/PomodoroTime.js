@@ -31,7 +31,7 @@ const PomodoroTime = ({ minutes, seconds, time, isPaused }) => {
   };
 
   return (
-    <div className="z-10 mt-4 mb-1 flex items-center">
+    <div className="mt-4 mb-1 flex items-center">
       <p className="text-4xl font-medium text-gray-500">{`${minutes}:${seconds}`}</p>
       {isPaused &&
         time === (mode === "work" ? workMinutes : breakMinutes) * 60 && (
