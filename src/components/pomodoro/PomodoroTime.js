@@ -1,6 +1,6 @@
 import React from "react";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
-import { usePomodoro } from "../contexts/PomodoroContext";
+import { usePomodoro } from "../../contexts/PomodoroContext";
 
 const PomodoroTime = ({ minutes, seconds, time, isPaused }) => {
   const { mode, workMinutes, setWorkMinutes, breakMinutes, setBreakMinutes } =

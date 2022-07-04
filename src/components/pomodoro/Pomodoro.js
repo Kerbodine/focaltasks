@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { usePomodoro } from "../contexts/PomodoroContext";
+import { usePomodoro } from "../../contexts/PomodoroContext";
 import { HiPause, HiPlay, HiXCircle } from "react-icons/hi";
+import { BiCaretDown } from "react-icons/bi";
 import PomodoroTime from "./PomodoroTime";
 import { CircularProgressbar } from "react-circular-progressbar";
+import PomodoroCard from "./PomodoroCard";
 
 const Pomodoro = () => {
   // const settingsInfo = useContext(SettingsContext);
@@ -13,10 +15,13 @@ const Pomodoro = () => {
     setBreakMinutes,
     mode,
     setMode,
+    getPomodoros,
   } = usePomodoro();
 
   const [isPaused, setIsPaused] = useState(true);
   const [secondsLeft, setSecondsLeft] = useState(0);
+
+  const [pomodoros, setPomodoros] = useState([]);
 
   const secondsLeftRef = useRef(secondsLeft);
   const isPausedRef = useRef(isPaused);
@@ -71,6 +76,14 @@ const Pomodoro = () => {
   let seconds = secondsLeft % 60;
   if (seconds < 10) seconds = "0" + seconds;
 
+  useEffect(() => {
+    async function fetchData() {
+      const previousPomodoros = await getPomodoros();
+      setPomodoros(previousPomodoros);
+    }
+    fetchData();
+  }, [getPomodoros]);
+
   return (
     <div>
       <div className="relative flex aspect-square w-full flex-col items-center justify-center rounded-full">
@@ -81,9 +94,10 @@ const Pomodoro = () => {
           mode={modeRef.current}
           isPaused={isPausedRef.current}
         />
-        <button className="flex h-6 items-center gap-1 rounded-full bg-gray-100 p-1">
-          <div className="h-4 w-4 rounded-full bg-accent"></div>
-          <p className="mr-1 text-sm font-medium text-gray-600">Tag</p>
+        <button className="flex h-6 max-w-[132px] items-center gap-1 rounded-full bg-gray-100 p-1">
+          <div className="h-4 w-4 flex-none rounded-full bg-accent"></div>
+          <p className="truncate text-sm font-medium text-gray-600">School</p>
+          <BiCaretDown className="-ml-1 flex-none text-xl text-gray-400" />
         </button>
         {/* Create circular progress bar with svg */}
         <div className="absolute h-full w-full">
@@ -124,6 +138,12 @@ const Pomodoro = () => {
           </>
         )}
       </div>
+      <ul className="mt-8 space-y-1">
+        {JSON.stringify(pomodoros)}
+        {pomodoros.map((pomodoro) => (
+          <PomodoroCard />
+        ))}
+      </ul>
     </div>
   );
 };
