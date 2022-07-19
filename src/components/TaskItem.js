@@ -63,7 +63,7 @@ export default function TaskItem({
     const today = new Date();
     const dueDate = new Date(taskDueDate);
     const diffTime = dueDate - today.setHours(0, 0, 0, 0);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     if (diffDays < -1) {
       return `${Math.abs(diffDays)} days ago`;
     } else if (diffDays === -1) {
@@ -182,11 +182,17 @@ export default function TaskItem({
                 <p className="mr-1 hidden sm:block">Important</p>
               </button>
               {/* Due date input */}
-              <DatePicker
-                autoFocus
-                // selected={startDate}
-                // onChange={(date) => setStartDate(date)}
-              />
+              <div className="mr-1">
+                <DatePicker
+                  placeholderText="Enter deadline"
+                  selected={taskDueDate ? taskDueDate : ""}
+                  onChange={(date) => setTaskDueDate(date)}
+                  todayButton="☉Today"
+                  onBlur={updateDueDate}
+                  // selected={startDate}
+                  // onChange={(date) => setStartDate(date)}
+                />
+              </div>
               {/* <input
                 type="date"
                 className="h-6 w-40 rounded-md bg-gray-100 px-2 text-sm font-medium text-gray-600 placeholder-gray-400 outline-none"
