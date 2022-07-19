@@ -19,6 +19,7 @@ import CommandPalette from "../components/CommandPalette";
 import { PomodoroProvider } from "../contexts/PomodoroContext";
 import ListRoute from "../components/ListRoute";
 import Category from "./Category";
+import { SettingsProvider } from "../contexts/SettingsContext";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
@@ -92,7 +93,7 @@ export default function MainView() {
           <Loader />
         </div>
       ) : (
-        <>
+        <SettingsProvider>
           <hr className="absolute top-[54px] h-[2px] w-screen border-0 bg-gray-100" />
           <div className="mx-auto flex h-full w-full max-w-screen-xl">
             {/* Navbar section */}
@@ -152,7 +153,7 @@ export default function MainView() {
               <Sidebar />
             </PomodoroProvider>
           </div>
-        </>
+        </SettingsProvider>
       )}
     </div>
   );

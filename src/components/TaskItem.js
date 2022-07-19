@@ -10,11 +10,13 @@ import {
 } from "react-icons/hi";
 import { useTasks } from "../contexts/TaskContext";
 import DatePicker from "react-datepicker";
+import { useSettings } from "../contexts/SettingsContext";
 
 export default function TaskItem({
   data: { id, title, completed, dueDate, categories },
 }) {
   const { addCategory, removeCategory, deleteTask, updateTask } = useTasks();
+  const { calendarStartDay, completedAppearance } = useSettings();
 
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskCompleted, setTaskCompleted] = useState(completed);
@@ -122,8 +124,10 @@ export default function TaskItem({
             {/* Task title input */}
             <input
               className={`h-6 w-full flex-auto truncate bg-transparent font-medium placeholder-gray-400 outline-none transition-colors ${
-                taskCompleted ? "text-gray-400 line-through" : "text-gray-600"
-              } ${taskTitle === "" && "no-underline"}`}
+                taskCompleted ? `text-gray-400` : "text-gray-600"
+              } ${taskTitle === "" && "no-underline"} ${
+                completedAppearance !== "fade" && "line-through"
+              }`}
               placeholder="Task title"
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
@@ -190,6 +194,7 @@ export default function TaskItem({
                   todayButton="☉Today"
                   dateFormat="dd/MM/yyyy"
                   format="y-MM-dd"
+                  calendarStartDay={calendarStartDay}
                 />
               </div>
             </div>

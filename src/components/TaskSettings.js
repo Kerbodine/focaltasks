@@ -2,6 +2,8 @@ import { Menu, Transition } from "@headlessui/react";
 import React, { Fragment, useState } from "react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { HiCheckCircle, HiPencil, HiPrinter, HiTrash } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
+import { useSettings } from "../contexts/SettingsContext";
 import { useTasks } from "../contexts/TaskContext";
 import DeleteListModal from "./DeleteListModal";
 import EditListModal from "./EditListModal";
@@ -10,7 +12,10 @@ const TaskSettings = ({ currentList }) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  const { updateList } = useTasks();
+  const { hideDeleteWarning } = useSettings();
+  const { updateList, deleteList } = useTasks();
+
+  const navigate = useNavigate();
 
   const toggleShowCompleted = () => {
     updateList(currentList.id, { hideCompleted: !currentList.hideCompleted });
@@ -90,7 +95,14 @@ const TaskSettings = ({ currentList }) => {
                     className={`${
                       active && "bg-gray-100"
                     } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600`}
-                    onClick={() => setDeleteModalOpen(true)}
+                    onClick={() => {
+                      if (!hideDeleteWarning) {
+                        setDeleteModalOpen(true);
+                      } else {
+                        deleteList(currentList.id);
+                        navigate("/");
+                      }
+                    }}
                   >
                     <span className="text-xl">
                       <HiTrash />

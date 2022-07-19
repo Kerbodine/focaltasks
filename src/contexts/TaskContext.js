@@ -33,7 +33,7 @@ export function TaskProvider({ children }) {
       title: "",
       completed: false,
       description: "",
-      dueDate: "",
+      dueDate: null,
       listId,
       createdAt: new Date(),
       modifiedAt: new Date(),
