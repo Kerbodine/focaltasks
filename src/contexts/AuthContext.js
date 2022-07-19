@@ -47,7 +47,7 @@ export function AuthProvider({ children }) {
     };
     const taskId = uuidv4();
     const welcomeTask = {
-      id: uuidv4(),
+      id: taskId,
       title: "Welcome to your task list!",
       completed: false,
       description: "",

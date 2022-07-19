@@ -22,7 +22,7 @@ export default function TaskItem({
     categories.includes("important")
   );
   const [taskToday, setTaskToday] = useState(categories.includes("today"));
-  const [taskDueDate, setTaskDueDate] = useState(dueDate);
+  const [taskDueDate, setTaskDueDate] = useState(dueDate?.toDate());
   const [taskExpanded, setTaskExpanded] = useState(false);
 
   const toggleTaskCompleted = () => {
@@ -48,20 +48,18 @@ export default function TaskItem({
     }
   };
 
-  const updateDueDate = () => {
-    if (taskDueDate !== dueDate) {
-      updateTask(id, { dueDate: taskDueDate });
-      if (taskDueDate === null) {
-        removeCategory(id, "upcoming");
-      } else {
-        addCategory(id, "upcoming");
-      }
+  const updateDueDate = (date) => {
+    updateTask(id, { dueDate: date });
+    if (date === null) {
+      removeCategory(id, "upcoming");
+    } else {
+      addCategory(id, "upcoming");
     }
   };
 
   const getDueInDays = () => {
     const today = new Date();
-    const dueDate = new Date(taskDueDate);
+    const dueDate = taskDueDate;
     const diffTime = dueDate - today.setHours(0, 0, 0, 0);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     if (diffDays < -1) {
@@ -84,9 +82,7 @@ export default function TaskItem({
   return (
     <div
       className={`${
-        taskExpanded
-          ? "h-[72px] bg-white ring-gray-200 focus-within:ring-2"
-          : "h-10 "
+        taskExpanded ? "h-[72px] bg-white ring-2 ring-gray-200" : "h-10"
       } group flex w-full overflow-hidden rounded-lg p-2 outline-none transition-all`}
     >
       <div className="flex w-full gap-3">
@@ -185,22 +181,17 @@ export default function TaskItem({
               <div className="mr-1">
                 <DatePicker
                   placeholderText="Enter deadline"
-                  selected={taskDueDate ? taskDueDate : ""}
-                  onChange={(date) => setTaskDueDate(date)}
+                  selected={taskDueDate}
+                  onClickOutside={() => setTaskExpanded(false)}
+                  onChange={(date) => {
+                    setTaskDueDate(date);
+                    updateDueDate(date);
+                  }}
                   todayButton="☉Today"
-                  onBlur={updateDueDate}
-                  // selected={startDate}
-                  // onChange={(date) => setStartDate(date)}
+                  dateFormat="dd/MM/yyyy"
+                  format="y-MM-dd"
                 />
               </div>
-              {/* <input
-                type="date"
-                className="h-6 w-40 rounded-md bg-gray-100 px-2 text-sm font-medium text-gray-600 placeholder-gray-400 outline-none"
-                placeholder="Due date"
-                value={taskDueDate ? taskDueDate : ""}
-                onChange={(e) => setTaskDueDate(e.target.value)}
-                onBlur={updateDueDate}
-              /> */}
             </div>
           </div>
         </div>
