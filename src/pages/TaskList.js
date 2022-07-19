@@ -51,7 +51,7 @@ export default function TaskList({ listId }) {
   return (
     <>
       {list ? (
-        <div className="h-full w-full p-8">
+        <div className="h-full w-full p-6 sm:p-8">
           <div className="flex w-full gap-2">
             <input
               className="w-full min-w-0 truncate text-3xl font-semibold outline-none"
@@ -74,10 +74,16 @@ export default function TaskList({ listId }) {
               updateList(listId, { notes: listNotes });
             }}
           />
-          <div className="-mx-2 mt-4 flex flex-col gap-2">
-            {tasks.map((task, index) => (
-              <TaskItem key={task.id + index} listId={listId} data={task} />
-            ))}
+          <div className="-mx-2 mt-4 flex flex-col gap-0.5">
+            {tasks.map((task, index) =>
+              list.hideCompleted === true ? (
+                !task.completed && (
+                  <TaskItem key={task.id + index} listId={listId} data={task} />
+                )
+              ) : (
+                <TaskItem key={task.id + index} listId={listId} data={task} />
+              )
+            )}
           </div>
           <button
             className="mt-4 flex h-9 items-center gap-2 rounded-lg border-2 border-dashed border-gray-200 pr-4 pl-2 text-gray-400 transition-all hover:border-solid hover:bg-gray-50"

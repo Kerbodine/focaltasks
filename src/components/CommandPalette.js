@@ -65,7 +65,9 @@ const CommandPalette = () => {
         <span className="flex-none text-xl text-gray-500">
           <HiSearch />
         </span>
-        <p className="no-select w-full text-left text-gray-400">Quick Search</p>
+        <p className="no-select w-full cursor-text text-left text-gray-400">
+          Quick Search
+        </p>
         <kbd className="grid h-5 place-items-center rounded-md bg-gray-500 px-1 font-sans text-xs font-medium tracking-wider text-white">
           ⌘K
         </kbd>
@@ -127,9 +129,11 @@ const CommandPalette = () => {
                     All lists
                   </p>
                 ) : (
-                  <p className="p-2 pb-1 text-sm text-gray-500">
-                    No Results Found
-                  </p>
+                  rawQuery && (
+                    <p className="p-2 pb-1 text-sm text-gray-500">
+                      No Results Found
+                    </p>
+                  )
                 )}
                 <Combobox.Options
                   static

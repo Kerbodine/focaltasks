@@ -95,11 +95,6 @@ const Pomodoro = () => {
           mode={modeRef.current}
           isPaused={isPausedRef.current}
         />
-        {/* <button className="flex h-6 max-w-[132px] items-center gap-1 rounded-full bg-gray-100 p-1">
-          <div className="h-4 w-4 flex-none rounded-full bg-accent"></div>
-          <p className="truncate text-sm font-medium text-gray-600">School</p>
-          <BiCaretDown className="-ml-1 flex-none text-xl text-gray-400" />
-        </button> */}
         <TagSelector />
         {/* Create circular progress bar with svg */}
         <div className="absolute -z-10 h-full w-full">

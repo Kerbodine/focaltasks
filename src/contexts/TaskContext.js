@@ -75,6 +75,7 @@ export function TaskProvider({ children }) {
       sort: "createdAt",
       createdAt: new Date(),
       modifiedAt: new Date(),
+      hideCompleted: false,
     });
     return listId;
   };

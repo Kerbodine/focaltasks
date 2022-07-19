@@ -6,9 +6,16 @@ export default function Category({ title, sort }) {
   const { userTasks } = useTasks();
   const tasks = userTasks.filter(sort);
 
+  // get current date and weekday
+  const today = new Date().toLocaleString("en-us", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+
   return (
     <>
-      <div className="h-full w-full p-8">
+      <div className="h-full w-full p-6 sm:p-8">
         <div className="flex w-full gap-2">
           <h1
             className="w-full min-w-0 truncate text-3xl font-semibold outline-none"
@@ -17,7 +24,10 @@ export default function Category({ title, sort }) {
             {title}
           </h1>
         </div>
-        <div className="-mx-2 mt-4 flex flex-col gap-2">
+        {title === "Today" && (
+          <p className="font-medium text-gray-500">{today}</p>
+        )}
+        <div className="-mx-2 mt-4 flex flex-col gap-0.5">
           {tasks.length ? (
             tasks.map((task, index) => (
               <TaskItem
@@ -27,7 +37,7 @@ export default function Category({ title, sort }) {
               />
             ))
           ) : (
-            <p className="text-gray-700">No tasks</p>
+            <p className="ml-2 font-medium text-gray-700">No tasks</p>
           )}
         </div>
       </div>

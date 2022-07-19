@@ -9,7 +9,7 @@ module.exports = {
         margin: "margin",
       },
       colors: {
-        main: colors.zinc,
+        // gray: colors.zinc,
         accent: ({ opacityValue }) => {
           if (opacityValue !== undefined) {
             return `rgba(var(--accent), ${opacityValue})`;

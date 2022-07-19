@@ -84,11 +84,11 @@ export default function TaskItem({
     <div
       className={`${
         taskExpanded
-          ? "h-[72px] bg-gray-50 ring-gray-300 focus-within:ring-2"
-          : "h-10 hover:bg-gray-50"
+          ? "h-[72px] bg-white ring-gray-200 focus-within:ring-2"
+          : "h-10 "
       } group flex w-full overflow-hidden rounded-lg p-2 outline-none transition-all`}
     >
-      <div className="flex w-full gap-2">
+      <div className="flex w-full gap-3">
         <button
           className={`h-6 w-6 flex-none rounded-md text-2xl text-white outline-none transition-colors ${
             taskCompleted ? "bg-accent" : "border-2 border-gray-300"
@@ -151,11 +151,11 @@ export default function TaskItem({
           </div>
           {/* Second row */}
           <div className="flex w-full">
-            <div className={`flex w-full gap-2`}>
+            <div className={`flex w-full gap-1`}>
               {/* Toggle today button */}
               <button
                 className={`${
-                  taskToday ? "bg-gray-500 text-white" : "bg-gray-200"
+                  taskToday ? "bg-gray-500 text-white" : "hover:bg-gray-100"
                 } ml-auto flex h-6 items-center gap-1 rounded-md px-1 text-sm font-medium text-gray-600 transition-colors`}
                 onClick={toggleTaskToday}
               >
@@ -167,7 +167,7 @@ export default function TaskItem({
               {/* Toggle important button */}
               <button
                 className={`${
-                  taskImportant ? "bg-gray-500 text-white" : "bg-gray-200"
+                  taskImportant ? "bg-gray-500 text-white" : "hover:bg-gray-100"
                 } flex h-6 items-center gap-1 rounded-md px-1 text-sm font-medium text-gray-600 transition-colors`}
                 onClick={toggleTaskImportant}
               >
@@ -183,7 +183,7 @@ export default function TaskItem({
               {/* Due date input */}
               <input
                 type="date"
-                className="h-6 w-40 rounded-md bg-gray-200 px-2 text-sm font-medium text-gray-600 placeholder-gray-400 outline-none"
+                className="h-6 w-40 rounded-md bg-gray-100 px-2 text-sm font-medium text-gray-600 placeholder-gray-400 outline-none"
                 placeholder="Due date"
                 value={taskDueDate ? taskDueDate : ""}
                 onChange={(e) => setTaskDueDate(e.target.value)}

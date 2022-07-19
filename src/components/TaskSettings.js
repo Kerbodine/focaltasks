@@ -1,13 +1,22 @@
 import { Menu, Transition } from "@headlessui/react";
 import React, { Fragment, useState } from "react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { HiPencil, HiTrash } from "react-icons/hi";
+import { HiCheckCircle, HiPencil, HiPrinter, HiTrash } from "react-icons/hi";
+import { useTasks } from "../contexts/TaskContext";
 import DeleteListModal from "./DeleteListModal";
 import EditListModal from "./EditListModal";
 
 const TaskSettings = ({ currentList }) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const { updateList } = useTasks();
+
+  const toggleShowCompleted = () => {
+    updateList(currentList.id, { hideCompleted: !currentList.hideCompleted });
+  };
+
+  const printList = () => {};
 
   return (
     <>
@@ -26,22 +35,22 @@ const TaskSettings = ({ currentList }) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 mt-2 w-40 origin-top-right rounded-lg border-2 border-gray-100 bg-white shadow-lg outline-none">
-            <div className="space-y-1 p-2">
+          <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg border-2 border-gray-100 bg-white shadow-lg outline-none">
+            <div className="space-y-1 p-1.5">
               <Menu.Item>
                 {({ active }) => (
                   <button
                     className={`${
                       active && "bg-gray-100"
-                    } flex w-full items-center rounded-md px-2 py-1 text-gray-600`}
-                    onClick={() => setEditModalOpen(true)}
+                    } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600`}
+                    onClick={toggleShowCompleted}
                   >
-                    <p className="flex-auto text-left text-sm font-medium">
-                      Edit list
-                    </p>
                     <span className="text-xl">
-                      <HiPencil />
+                      <HiCheckCircle />
                     </span>
+                    <p className="ml-1.5 text-sm font-medium">
+                      {currentList.hideCompleted ? "Show" : "Hide"} completed
+                    </p>
                   </button>
                 )}
               </Menu.Item>
@@ -50,15 +59,43 @@ const TaskSettings = ({ currentList }) => {
                   <button
                     className={`${
                       active && "bg-gray-100"
-                    } flex w-full items-center rounded-md px-2 py-1 text-gray-600`}
+                    } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600`}
+                    onClick={() => setEditModalOpen(true)}
+                  >
+                    <span className="text-xl">
+                      <HiPencil />
+                    </span>
+                    <p className="ml-1.5 text-sm font-medium">Edit list</p>
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={`${
+                      active && "bg-gray-100"
+                    } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600`}
+                    onClick={printList}
+                  >
+                    <span className="text-xl">
+                      <HiPrinter />
+                    </span>
+                    <p className="ml-1.5 text-sm font-medium">Print list</p>
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={`${
+                      active && "bg-gray-100"
+                    } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600`}
                     onClick={() => setDeleteModalOpen(true)}
                   >
-                    <p className="flex-auto text-left text-sm font-medium">
-                      Delete list
-                    </p>
                     <span className="text-xl">
                       <HiTrash />
                     </span>
+                    <p className="ml-1.5 text-sm font-medium">Delete list</p>
                   </button>
                 )}
               </Menu.Item>
