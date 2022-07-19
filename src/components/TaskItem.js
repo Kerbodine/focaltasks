@@ -9,6 +9,7 @@ import {
   HiX,
 } from "react-icons/hi";
 import { useTasks } from "../contexts/TaskContext";
+import DatePicker from "react-datepicker";
 
 export default function TaskItem({
   data: { id, title, completed, dueDate, categories },
@@ -181,14 +182,19 @@ export default function TaskItem({
                 <p className="mr-1 hidden sm:block">Important</p>
               </button>
               {/* Due date input */}
-              <input
+              <DatePicker
+                autoFocus
+                // selected={startDate}
+                // onChange={(date) => setStartDate(date)}
+              />
+              {/* <input
                 type="date"
                 className="h-6 w-40 rounded-md bg-gray-100 px-2 text-sm font-medium text-gray-600 placeholder-gray-400 outline-none"
                 placeholder="Due date"
                 value={taskDueDate ? taskDueDate : ""}
                 onChange={(e) => setTaskDueDate(e.target.value)}
                 onBlur={updateDueDate}
-              />
+              /> */}
             </div>
           </div>
         </div>
