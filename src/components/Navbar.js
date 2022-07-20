@@ -22,10 +22,6 @@ export default function Navbar() {
   const { userLists } = useTasks();
   const { navbar, toggleNavbar, closeNavbar } = useView();
 
-  // const getLength = (list) => {
-  //   return list.tasks.filter((task) => !task.completed).length;
-  // };
-
   const specialLists = ["inbox", "today", "upcoming", "important"];
 
   const ref = useClickOutside(() => closeNavbar());
@@ -34,7 +30,7 @@ export default function Navbar() {
     <div
       ref={ref}
       className={`${
-        navbar ? "w-[240px]" : "w-[56px] sm:w-[240px]"
+        navbar ? "w-[240px] shadow-lg sm:shadow-none" : "w-[56px] sm:w-[240px] "
       } absolute box-content flex h-full flex-none flex-col border-r-2 border-gray-100 bg-white transition-all duration-300 sm:relative`}
     >
       <div className="flex h-[56px] w-full flex-none items-center border-b-2 border-gray-100 px-3">
@@ -76,12 +72,7 @@ export default function Navbar() {
       <div className="sidenav flex-auto space-y-3 overflow-y-auto p-3">
         {/* Default lists */}
         <div>
-          <NavbarItem
-            icon={<HiInbox />}
-            title="Inbox"
-            link={"/inbox"}
-            // length={getLength(userLists.find((list) => list.id === "inbox"))}
-          />
+          <NavbarItem icon={<HiInbox />} title="Inbox" link={"/inbox"} />
         </div>
         <div className="flex flex-col gap-1">
           <NavbarItem icon={<HiSun />} title="Today" link={"/today"} />
@@ -121,7 +112,6 @@ export default function Navbar() {
                 key={list.id}
                 title={list.title}
                 link={`/${list.id}`}
-                // length={getLength(list)}
               />
             ))}
           {/* New list button */}

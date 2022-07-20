@@ -55,7 +55,7 @@
 .react-datepicker-wrapper,
 .react-datepicker__input-container,
 .react-datepicker__input-container input {
-    @apply h-6 w-40 text-sm rounded-md bg-gray-100 px-1 font-medium text-gray-600 placeholder-gray-400 outline-none;
+    @apply w-auto bg-transparent placeholder-gray-400 font-medium outline-none;
 }
 
 .react-datepicker__year-read-view--down-arrow,

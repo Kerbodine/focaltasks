@@ -4,6 +4,7 @@ import {
   HiExclamationCircle,
   HiFlag,
   HiOutlineExclamationCircle,
+  HiOutlineFlag,
   HiOutlineSun,
   HiSun,
   HiX,
@@ -12,6 +13,7 @@ import { useTasks } from "../contexts/TaskContext";
 import DatePicker from "react-datepicker";
 import { useSettings } from "../contexts/SettingsContext";
 import DeleteTaskModal from "./DeleteTaskModal";
+import { iOS } from "../config/functions";
 
 export default function TaskItem({
   data: { id, title, completed, dueDate, categories },
@@ -94,25 +96,12 @@ export default function TaskItem({
     updateDueDate(taskDueDate);
   }, [taskDueDate]);
 
-  function iOS() {
-    return (
-      [
-        "iPad Simulator",
-        "iPhone Simulator",
-        "iPod Simulator",
-        "iPad",
-        "iPhone",
-        "iPod",
-      ].includes(navigator.platform) ||
-      // iPad on iOS 13 detection
-      (navigator.userAgent.includes("Mac") && "ontouchend" in document)
-    );
-  }
-
   return (
     <div
       className={`${
-        taskExpanded ? "h-[72px] bg-white ring-2 ring-gray-200" : "h-10"
+        taskExpanded
+          ? "h-[76px] bg-white shadow-lg ring-2 ring-gray-200"
+          : "h-10"
       } flex w-full overflow-hidden rounded-lg p-2 outline-none transition-all`}
     >
       <div className="flex w-full gap-3">
@@ -174,8 +163,8 @@ export default function TaskItem({
               </div>
             )}
             <button
-              className={`h-6 w-6 flex-none place-items-center text-xl text-gray-400 transition-opacity hover:text-gray-600 ${
-                taskExpanded ? "block" : "hidden"
+              className={`h-6 w-6 flex-none place-items-center text-xl text-gray-400 hover:text-gray-600 ${
+                taskExpanded ? "block" : "w-0 text-[0px]" // hide button patch
               }`}
               onClick={() => {
                 if (taskDeleteWarning) {
@@ -189,13 +178,17 @@ export default function TaskItem({
             </button>
           </div>
           {/* Second row */}
-          <div className="flex w-full">
-            <div className={`flex w-full gap-1`}>
+          <div
+            className={`mt-auto flex w-full ${
+              taskExpanded ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <div className={`flex w-full gap-2`}>
               {/* Toggle today button */}
               <button
                 className={`${
-                  taskToday ? "bg-gray-500 text-white" : "hover:bg-gray-100"
-                } ml-auto flex h-6 items-center gap-1 rounded-md px-1 text-sm font-medium text-gray-600 transition-colors`}
+                  taskToday ? "bg-gray-500 text-white" : "bg-gray-100"
+                } ml-auto flex h-7 items-center gap-1 rounded-md px-1.5 text-sm font-medium text-gray-600 transition-colors`}
                 onClick={toggleTaskToday}
               >
                 <span className="text-xl">
@@ -206,8 +199,8 @@ export default function TaskItem({
               {/* Toggle important button */}
               <button
                 className={`${
-                  taskImportant ? "bg-gray-500 text-white" : "hover:bg-gray-100"
-                } flex h-6 items-center gap-1 rounded-md px-1 text-sm font-medium text-gray-600 transition-colors`}
+                  taskImportant ? "bg-gray-500 text-white" : "bg-gray-100"
+                } flex h-7 items-center gap-1 rounded-md px-1.5 text-sm font-medium text-gray-600 transition-colors`}
                 onClick={toggleTaskImportant}
               >
                 <span className="text-xl">
@@ -220,11 +213,20 @@ export default function TaskItem({
                 <p className="mr-1 hidden sm:block">Important</p>
               </button>
               {/* Due date input */}
-              <div className="mr-1">
+              <div
+                className={`flex h-7 w-36 items-center rounded-md px-1.5 text-sm font-medium ${
+                  taskDueDate
+                    ? "bg-gray-500 text-white"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                <span className="mr-0.5 text-xl">
+                  {taskDueDate ? <HiFlag /> : <HiOutlineFlag />}
+                </span>
                 {iOS() ? (
                   <input
                     type="date"
-                    className="flex h-6 w-28 items-center rounded-md bg-gray-100 px-1 text-left text-sm font-medium text-gray-600 placeholder-gray-400 outline-none"
+                    className="w-auto bg-transparent text-left placeholder-gray-400 outline-none"
                     value={taskDueDate}
                     placeholder="Due date"
                     onInput={(e) => {
@@ -242,12 +244,16 @@ export default function TaskItem({
                 ) : (
                   <DatePicker
                     placeholderText="Enter deadline"
-                    selected={new Date(taskDueDate)}
+                    selected={taskDueDate ? new Date(taskDueDate) : ""}
                     onClickOutside={() => setTaskExpanded(false)}
                     onChange={(date) => {
-                      const dateString = date.toISOString().split("T")[0];
-                      setTaskDueDate(dateString);
-                      setTaskExpanded(false);
+                      if (date) {
+                        const dateString = date.toISOString().split("T")[0];
+                        setTaskDueDate(dateString);
+                        setTaskExpanded(false);
+                      } else {
+                        setTaskDueDate(null);
+                      }
                     }}
                     todayButton="☉Today"
                     dateFormat="dd/MM/yyyy"
