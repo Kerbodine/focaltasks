@@ -224,7 +224,7 @@ export default function TaskItem({
                 {iOS() ? (
                   <input
                     type="date"
-                    className="block h-6 w-24 rounded-md bg-gray-100 px-1 text-sm font-medium text-gray-600 placeholder-gray-400 outline-none"
+                    className="flex h-6 w-28 items-center rounded-md bg-gray-100 px-1 text-left text-sm font-medium text-gray-600 placeholder-gray-400 outline-none"
                     value={taskDueDate}
                     placeholder="Due date"
                     onInput={(e) => {

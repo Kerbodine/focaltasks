@@ -30,7 +30,7 @@ export default function Navbar() {
     <div
       className={`${
         navbar ? "w-[240px]" : "w-[56px] sm:w-[240px]"
-      } absolute box-content flex h-full flex-col border-r-2 border-gray-100 bg-white sm:relative`}
+      } absolute box-content flex h-full flex-col border-r-2 border-gray-100 bg-white transition-all sm:relative`}
     >
       <div className="flex h-[56px] w-full flex-none items-center border-b-2 border-gray-100 px-3">
         {/* Account info and seettings */}
