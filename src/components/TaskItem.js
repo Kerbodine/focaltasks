@@ -11,12 +11,14 @@ import {
 import { useTasks } from "../contexts/TaskContext";
 import DatePicker from "react-datepicker";
 import { useSettings } from "../contexts/SettingsContext";
+import DeleteTaskModal from "./DeleteTaskModal";
 
 export default function TaskItem({
   data: { id, title, completed, dueDate, categories },
 }) {
   const { addCategory, removeCategory, deleteTask, updateTask } = useTasks();
-  const { calendarStartDay, completedAppearance } = useSettings();
+  const { calendarStartDay, completedAppearance, taskDeleteWarning } =
+    useSettings();
 
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskCompleted, setTaskCompleted] = useState(completed);
@@ -26,6 +28,8 @@ export default function TaskItem({
   const [taskToday, setTaskToday] = useState(categories.includes("today"));
   const [taskDueDate, setTaskDueDate] = useState(dueDate?.toDate());
   const [taskExpanded, setTaskExpanded] = useState(false);
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const toggleTaskCompleted = () => {
     updateTask(id, { completed: !taskCompleted });
@@ -129,10 +133,12 @@ export default function TaskItem({
             {/* Task title input */}
             <input
               className={`h-6 w-full flex-auto truncate bg-transparent font-medium placeholder-gray-400 outline-none transition-colors ${
-                taskCompleted ? `text-gray-400` : "text-gray-600"
-              } ${taskTitle === "" && "no-underline"} ${
-                completedAppearance !== "fade" && "line-through"
-              }`}
+                taskCompleted
+                  ? `text-gray-400 ${
+                      completedAppearance !== "fade" && "line-through"
+                    }`
+                  : "text-gray-600"
+              } ${taskTitle === "" && "no-underline"}`}
               placeholder="Task title"
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
@@ -150,7 +156,13 @@ export default function TaskItem({
             )}
             <button
               className="grid h-6 w-6 flex-none place-items-center text-xl text-gray-400 opacity-0 transition-opacity hover:text-gray-600 group-hover:inline-flex group-hover:opacity-100"
-              onClick={() => deleteTask(id)}
+              onClick={() => {
+                if (taskDeleteWarning) {
+                  setDeleteModalOpen(true);
+                } else {
+                  deleteTask(id);
+                }
+              }}
             >
               <HiX />
             </button>
@@ -207,6 +219,11 @@ export default function TaskItem({
           </div>
         </div>
       </div>
+      <DeleteTaskModal
+        taskId={id}
+        modalOpen={deleteModalOpen}
+        setModalOpen={setDeleteModalOpen}
+      />
     </div>
   );
 }

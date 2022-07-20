@@ -23,6 +23,10 @@ export function SettingsProvider({ children }) {
     userData.settings.hideDeleteWarning
   );
 
+  const [taskDeleteWarning, setTaskDeleteWarning] = useState(
+    userData.settings.taskDeleteWarning
+  );
+
   const updateSettings = async (updatedItems) => {
     const key = Object.keys(updatedItems)[0];
     const value = updatedItems[key];
@@ -37,6 +41,8 @@ export function SettingsProvider({ children }) {
     setCompletedAppearance,
     hideDeleteWarning,
     setHideDeleteWarning,
+    taskDeleteWarning,
+    setTaskDeleteWarning,
     updateSettings,
   };
 
