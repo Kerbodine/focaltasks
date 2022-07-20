@@ -64,7 +64,12 @@ export default function TaskItem({
     const dueDate = taskDueDate;
     const diffTime = dueDate - today.setHours(0, 0, 0, 0);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays < -1) {
+    if (Math.abs(diffDays) > 99) {
+      return dueDate.toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+    } else if (diffDays < -1) {
       return `${Math.abs(diffDays)} days ago`;
     } else if (diffDays === -1) {
       return "Yesterday";
@@ -190,6 +195,7 @@ export default function TaskItem({
                   onChange={(date) => {
                     setTaskDueDate(date);
                     updateDueDate(date);
+                    setTaskExpanded(false);
                   }}
                   todayButton="☉Today"
                   dateFormat="dd/MM/yyyy"

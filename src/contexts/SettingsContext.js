@@ -16,7 +16,7 @@ export function SettingsProvider({ children }) {
   );
 
   const [completedAppearance, setCompletedAppearance] = useState(
-    userData.settings.completedFaded
+    userData.settings.completedAppearance
   );
 
   const [hideDeleteWarning, setHideDeleteWarning] = useState(

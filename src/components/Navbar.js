@@ -6,6 +6,7 @@ import {
   HiInbox,
   HiMenu,
   HiSun,
+  HiTrash,
 } from "react-icons/hi";
 import { useView } from "../contexts/ViewContext";
 import NavbarItem from "./NavbarItem";
@@ -29,9 +30,9 @@ export default function Navbar() {
     <div
       className={`${
         navbar ? "w-[240px]" : "w-[56px] sm:w-[240px]"
-      } absolute box-content h-full border-r-2 border-gray-100 bg-white sm:relative`}
+      } absolute box-content flex h-full flex-col border-r-2 border-gray-100 bg-white sm:relative`}
     >
-      <div className="flex h-[56px] w-full items-center border-b-2 border-gray-100 px-3">
+      <div className="flex h-[56px] w-full flex-none items-center border-b-2 border-gray-100 px-3">
         {/* Account info and seettings */}
         <div
           className={`${!navbar && "hidden sm:grid"} ${
@@ -66,9 +67,10 @@ export default function Navbar() {
           <HiMenu />
         </button>
       </div>
-      <div className="px-3">
+      {/* All lists */}
+      <div className="sidenav flex-auto space-y-3 overflow-y-auto p-3">
         {/* Default lists */}
-        <div className="mt-3">
+        <div>
           <NavbarItem
             icon={<HiInbox />}
             title="Inbox"
@@ -76,7 +78,7 @@ export default function Navbar() {
             // length={getLength(userLists.find((list) => list.id === "inbox"))}
           />
         </div>
-        <div className="mt-3 flex flex-col gap-1">
+        <div className="flex flex-col gap-1">
           <NavbarItem icon={<HiSun />} title="Today" link={"/today"} />
           <NavbarItem
             icon={<HiCalendar />}
@@ -94,11 +96,16 @@ export default function Navbar() {
             link={"/completed"}
           />
         </div>
-        <div className="mt-3 flex flex-col gap-1">
+        <div className="flex flex-col gap-1">
           <NavbarItem icon={<HiCog />} title="Settings" link={"/settings"} />
+          <NavbarItem
+            icon={<HiTrash />}
+            title="Recently Deleted"
+            link={"/deleted"}
+          />
         </div>
         {/* Horizontal divider */}
-        <hr className="my-3 h-[2px] w-full border-0 bg-gray-100" />
+        <hr className="h-[2px] w-full border-0 bg-gray-100" />
         <div className="flex flex-col gap-1">
           {/* User lists */}
           {userLists
