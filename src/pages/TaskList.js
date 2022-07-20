@@ -57,8 +57,11 @@ export default function TaskList({ listId }) {
   return (
     <>
       {list ? (
-        <div className="h-full w-full p-6 print:p-16 sm:p-8" ref={componentRef}>
-          <div className="flex w-full gap-2">
+        <div
+          className="flex h-full w-full flex-col overflow-y-auto p-6 print:p-16 sm:p-8"
+          ref={componentRef}
+        >
+          <div className="flex w-full flex-none gap-2">
             <input
               className="w-full min-w-0 truncate text-3xl font-semibold outline-none"
               value={listTitle}
@@ -74,7 +77,7 @@ export default function TaskList({ listId }) {
             )}
           </div>
           <input
-            className="w-full font-medium text-gray-600 placeholder-gray-400 outline-none print:placeholder:text-transparent"
+            className="w-full flex-none font-medium text-gray-600 placeholder-gray-400 outline-none print:placeholder:text-transparent"
             placeholder="Notes"
             value={listNotes}
             onChange={(e) => setListNotes(e.target.value)}
@@ -82,26 +85,32 @@ export default function TaskList({ listId }) {
               updateList(listId, { notes: listNotes });
             }}
           />
-          <div className="-mx-2 mt-4 flex flex-col gap-0.5">
-            {tasks.map((task, index) =>
-              list.hideCompleted === true ? (
-                !task.completed && (
+          <div className="flex-auto pb-14">
+            <div className="-mx-2 mt-4 flex flex-col gap-0.5">
+              {tasks.map((task, index) =>
+                list.hideCompleted === true ? (
+                  !task.completed && (
+                    <TaskItem
+                      key={task.id + index}
+                      listId={listId}
+                      data={task}
+                    />
+                  )
+                ) : (
                   <TaskItem key={task.id + index} listId={listId} data={task} />
                 )
-              ) : (
-                <TaskItem key={task.id + index} listId={listId} data={task} />
-              )
-            )}
-          </div>
-          <button
-            className="mt-4 flex h-9 items-center gap-2 rounded-lg border-2 border-dashed border-gray-200 pr-4 pl-2 text-gray-400 transition-all hover:border-solid hover:bg-gray-50 print:hidden"
-            onClick={newTask}
-          >
-            <div className="grid h-5 w-5 place-items-center text-xl">
-              <HiPlusSm />
+              )}
             </div>
-            <p className="text-sm font-medium">New Task</p>
-          </button>
+            <button
+              className="mt-4 flex h-9 flex-none items-center gap-2 rounded-lg border-2 border-dashed border-gray-200 pr-4 pl-2 text-gray-400 transition-all hover:border-solid hover:bg-gray-50 print:hidden"
+              onClick={newTask}
+            >
+              <div className="grid h-5 w-5 place-items-center text-xl">
+                <HiPlusSm />
+              </div>
+              <p className="text-sm font-medium">New Task</p>
+            </button>
+          </div>
         </div>
       ) : (
         <NotFound />

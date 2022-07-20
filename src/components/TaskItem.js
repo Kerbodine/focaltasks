@@ -140,7 +140,7 @@ export default function TaskItem({
             </div>
             {/* Task title input */}
             <input
-              className={`h-6 w-full flex-auto truncate bg-transparent font-medium placeholder-gray-400 outline-none transition-colors ${
+              className={`h-6 w-full flex-auto truncate bg-transparent placeholder-gray-400 outline-none transition-colors ${
                 taskCompleted
                   ? `text-gray-400 ${
                       completedAppearance !== "fade" && "line-through"
