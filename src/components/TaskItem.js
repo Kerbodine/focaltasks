@@ -175,7 +175,7 @@ export default function TaskItem({
             )}
             <button
               className={`h-6 w-6 flex-none place-items-center text-xl text-gray-400 transition-opacity hover:text-gray-600 ${
-                taskExpanded ? "inline-block" : "hidden"
+                taskExpanded ? "block" : "hidden"
               }`}
               onClick={() => {
                 if (taskDeleteWarning) {

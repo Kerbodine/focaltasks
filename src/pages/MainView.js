@@ -99,8 +99,8 @@ export default function MainView() {
             {/* Navbar section */}
             <Navbar />
             {/* Main task area */}
-            <div className="ml-[56px] h-full flex-auto sm:ml-0">
-              <div className="-ml-[44px] flex h-[56px] w-full items-center justify-end px-3 sm:ml-0">
+            <div className="ml-[56px] h-full flex-auto transition-margin duration-300 sm:ml-0">
+              <div className="flex h-[56px] w-full items-center justify-end px-3 sm:ml-0">
                 <CommandPalette />
               </div>
               <Routes>

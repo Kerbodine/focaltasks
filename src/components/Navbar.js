@@ -15,10 +15,12 @@ import { useTasks } from "../contexts/TaskContext";
 import NewListButton from "./NewListButton";
 import { listIcons } from "../config/icons";
 
+import { useClickOutside } from "@mantine/hooks";
+
 export default function Navbar() {
   const { userData } = useAuth();
   const { userLists } = useTasks();
-  const { navbar, toggleNavbar } = useView();
+  const { navbar, toggleNavbar, closeNavbar } = useView();
 
   // const getLength = (list) => {
   //   return list.tasks.filter((task) => !task.completed).length;
@@ -26,11 +28,14 @@ export default function Navbar() {
 
   const specialLists = ["inbox", "today", "upcoming", "important"];
 
+  const ref = useClickOutside(() => closeNavbar());
+
   return (
     <div
+      ref={ref}
       className={`${
         navbar ? "w-[240px]" : "w-[56px] sm:w-[240px]"
-      } absolute box-content flex h-full flex-col border-r-2 border-gray-100 bg-white transition-all sm:relative`}
+      } absolute box-content flex h-full flex-none flex-col border-r-2 border-gray-100 bg-white transition-all duration-300 sm:relative`}
     >
       <div className="flex h-[56px] w-full flex-none items-center border-b-2 border-gray-100 px-3">
         {/* Account info and seettings */}

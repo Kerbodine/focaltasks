@@ -20,6 +20,10 @@ export function ViewProvider({ children }) {
     setSidebar(!sidebar);
   };
 
+  const closeNavbar = () => {
+    setNavbar(false);
+  };
+
   const changeSidebarPanel = (panel) => {
     setSidebarPanel(panel);
   };
@@ -34,6 +38,7 @@ export function ViewProvider({ children }) {
     toggleSidebar,
     sidebarPanel,
     changeSidebarPanel,
+    closeNavbar,
   };
 
   return <ViewContext.Provider value={value}>{children}</ViewContext.Provider>;
