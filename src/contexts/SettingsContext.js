@@ -12,19 +12,19 @@ export function SettingsProvider({ children }) {
   const { currentUser, userData } = useAuth();
 
   const [calendarStartDay, setCalendarStartDay] = useState(
-    userData.settings.calendarStartDay
+    userData.settings?.calendarStartDay
   );
 
   const [completedAppearance, setCompletedAppearance] = useState(
-    userData.settings.completedAppearance
+    userData.settings?.completedAppearance
   );
 
   const [hideDeleteWarning, setHideDeleteWarning] = useState(
-    userData.settings.hideDeleteWarning
+    userData.settings?.hideDeleteWarning
   );
 
   const [taskDeleteWarning, setTaskDeleteWarning] = useState(
-    userData.settings.taskDeleteWarning
+    userData.settings?.taskDeleteWarning
   );
 
   const updateSettings = async (updatedItems) => {

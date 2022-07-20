@@ -26,7 +26,7 @@ export default function TaskItem({
     categories.includes("important")
   );
   const [taskToday, setTaskToday] = useState(categories.includes("today"));
-  const [taskDueDate, setTaskDueDate] = useState(dueDate?.toDate());
+  const [taskDueDate, setTaskDueDate] = useState(dueDate);
   const [taskExpanded, setTaskExpanded] = useState(false);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -65,9 +65,9 @@ export default function TaskItem({
 
   const getDueInDays = () => {
     const today = new Date();
-    const dueDate = taskDueDate;
+    const dueDate = new Date(taskDueDate);
     const diffTime = dueDate - today.setHours(0, 0, 0, 0);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
     if (Math.abs(diffDays) > 99) {
       return dueDate.toLocaleString("en-US", {
         month: "short",
@@ -90,11 +90,30 @@ export default function TaskItem({
     setTaskCompleted(completed);
   }, [completed]);
 
+  useEffect(() => {
+    updateDueDate(taskDueDate);
+  }, [taskDueDate]);
+
+  function iOS() {
+    return (
+      [
+        "iPad Simulator",
+        "iPhone Simulator",
+        "iPod Simulator",
+        "iPad",
+        "iPhone",
+        "iPod",
+      ].includes(navigator.platform) ||
+      // iPad on iOS 13 detection
+      (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    );
+  }
+
   return (
     <div
       className={`${
         taskExpanded ? "h-[72px] bg-white ring-2 ring-gray-200" : "h-10"
-      } group flex w-full overflow-hidden rounded-lg p-2 outline-none transition-all`}
+      } flex w-full overflow-hidden rounded-lg p-2 outline-none transition-all`}
     >
       <div className="flex w-full gap-3">
         <button
@@ -155,7 +174,9 @@ export default function TaskItem({
               </div>
             )}
             <button
-              className="grid h-6 w-6 flex-none place-items-center text-xl text-gray-400 opacity-0 transition-opacity hover:text-gray-600 group-hover:inline-flex group-hover:opacity-100"
+              className={`h-6 w-6 flex-none place-items-center text-xl text-gray-400 transition-opacity hover:text-gray-600 ${
+                taskExpanded ? "inline-block" : "hidden"
+              }`}
               onClick={() => {
                 if (taskDeleteWarning) {
                   setDeleteModalOpen(true);
@@ -200,20 +221,40 @@ export default function TaskItem({
               </button>
               {/* Due date input */}
               <div className="mr-1">
-                <DatePicker
-                  placeholderText="Enter deadline"
-                  selected={taskDueDate}
-                  onClickOutside={() => setTaskExpanded(false)}
-                  onChange={(date) => {
-                    setTaskDueDate(date);
-                    updateDueDate(date);
-                    setTaskExpanded(false);
-                  }}
-                  todayButton="☉Today"
-                  dateFormat="dd/MM/yyyy"
-                  format="y-MM-dd"
-                  calendarStartDay={calendarStartDay}
-                />
+                {iOS() ? (
+                  <input
+                    type="date"
+                    className="block h-6 w-24 rounded-md bg-gray-100 px-1 text-sm font-medium text-gray-600 placeholder-gray-400 outline-none"
+                    value={taskDueDate}
+                    placeholder="Due date"
+                    onInput={(e) => {
+                      const target = e.nativeEvent.target;
+                      function iosClearDefault() {
+                        target.defaultValue = "";
+                      }
+                      window.setTimeout(iosClearDefault, 0);
+                      setTaskDueDate(null);
+                    }}
+                    onChange={(e) => {
+                      setTaskDueDate(e.target.value);
+                    }}
+                  />
+                ) : (
+                  <DatePicker
+                    placeholderText="Enter deadline"
+                    selected={new Date(taskDueDate)}
+                    onClickOutside={() => setTaskExpanded(false)}
+                    onChange={(date) => {
+                      const dateString = date.toISOString().split("T")[0];
+                      setTaskDueDate(dateString);
+                      setTaskExpanded(false);
+                    }}
+                    todayButton="☉Today"
+                    dateFormat="dd/MM/yyyy"
+                    format="y-MM-dd"
+                    calendarStartDay={calendarStartDay}
+                  />
+                )}
               </div>
             </div>
           </div>

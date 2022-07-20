@@ -10,7 +10,11 @@
   }
   html {
     font-family: "Inter", sans-serif;
+    /* min-height: calc(100% + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    overflow: hidden; */
   }
+  html, body {touch-action: none;}
 }
 
 .no-select {
@@ -47,11 +51,10 @@
 
 /* React Datepicker */
 
-
 .react-datepicker-wrapper,
 .react-datepicker__input-container,
 .react-datepicker__input-container input {
-    @apply h-6 w-40 rounded-md bg-gray-100 px-1 text-sm font-medium text-gray-600 placeholder-gray-400 outline-none;
+    @apply h-6 w-40 text-sm rounded-md bg-gray-100 px-1 font-medium text-gray-600 placeholder-gray-400 outline-none;
 }
 
 .react-datepicker__year-read-view--down-arrow,
