@@ -66,8 +66,8 @@ export default function Navbar() {
         <button
           onClick={toggleNavbar}
           className={`${
-            mobile() && !navbar && "ml-[56px]"
-          } grid h-8 w-8 flex-none place-items-center text-xl text-gray-500 sm:hidden`}
+            mobile() && !navbar && "ml-[64px]"
+          } grid h-8 w-8 flex-none place-items-center text-2xl text-gray-500 sm:hidden`}
         >
           <HiMenu />
         </button>

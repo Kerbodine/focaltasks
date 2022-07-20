@@ -30,6 +30,7 @@ export default function TaskItem({
   const [taskToday, setTaskToday] = useState(categories.includes("today"));
   const [taskDueDate, setTaskDueDate] = useState(dueDate);
   const [taskExpanded, setTaskExpanded] = useState(false);
+  const [dueIn, setDueIn] = useState(null);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -65,9 +66,9 @@ export default function TaskItem({
     }
   };
 
-  const getDueInDays = () => {
+  const getDueInDays = (dueInDate) => {
     const today = new Date();
-    const dueDate = new Date(taskDueDate);
+    const dueDate = new Date(dueInDate);
     const diffTime = dueDate - today.setHours(0, 0, 0, 0);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
     if (Math.abs(diffDays) > 99) {
@@ -90,11 +91,17 @@ export default function TaskItem({
 
   useEffect(() => {
     setTaskCompleted(completed);
-  }, [completed]);
+    setTaskImportant(categories.includes("important"));
+    setTaskToday(categories.includes("today"));
+  }, [completed, title, categories]);
 
   useEffect(() => {
     updateDueDate(taskDueDate);
   }, [taskDueDate]);
+
+  useEffect(() => {
+    setDueIn(getDueInDays(dueDate));
+  }, [dueDate, taskDueDate]);
 
   return (
     <div
@@ -140,7 +147,7 @@ export default function TaskItem({
             </div>
             {/* Task title input */}
             <input
-              className={`h-6 w-full flex-auto truncate bg-transparent placeholder-gray-400 outline-none transition-colors ${
+              className={`h-6 w-full flex-auto truncate bg-transparent font-medium placeholder-gray-400 outline-none transition-colors ${
                 taskCompleted
                   ? `text-gray-400 ${
                       completedAppearance !== "fade" && "line-through"
@@ -153,13 +160,20 @@ export default function TaskItem({
               onBlur={() => {
                 taskTitle !== title && updateTask(id, { title: taskTitle });
               }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  taskTitle !== title && updateTask(id, { title: taskTitle });
+                  e.preventDefault();
+                  e.target.blur();
+                }
+              }}
             />
             {taskDueDate && (
               <div className="mr-2 flex h-6 items-center rounded-md bg-gray-100 px-1 text-sm font-medium text-gray-600">
                 <span className="text-lg text-gray-500">
                   <HiFlag />
                 </span>
-                <p className="mr-1 whitespace-nowrap">{getDueInDays()}</p>
+                <p className="mr-1 whitespace-nowrap">{dueIn}</p>
               </div>
             )}
             <button
@@ -179,7 +193,7 @@ export default function TaskItem({
           </div>
           {/* Second row */}
           <div
-            className={`mt-auto flex w-full ${
+            className={`flex w-full ${
               taskExpanded ? "opacity-100" : "opacity-0"
             }`}
           >
@@ -226,8 +240,12 @@ export default function TaskItem({
                 {iOS() ? (
                   <input
                     type="date"
-                    className="w-auto bg-transparent text-left placeholder-gray-400 outline-none"
-                    value={taskDueDate}
+                    className={`w-28 ${
+                      taskDueDate
+                        ? "bg-gray-500 text-white"
+                        : "bg-gray-100 text-gray-600"
+                    } text-left placeholder-gray-400 outline-none`}
+                    value={taskDueDate ? taskDueDate : ""}
                     placeholder="Due date"
                     onInput={(e) => {
                       const target = e.nativeEvent.target;
