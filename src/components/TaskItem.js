@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { BiCheck } from "react-icons/bi";
 import {
   HiExclamationCircle,
   HiFlag,
@@ -112,14 +111,12 @@ export default function TaskItem({
       } flex w-full overflow-hidden rounded-lg p-2 outline-none transition-all`}
     >
       <div className="flex w-full gap-3">
-        <button
-          className={`h-6 w-6 flex-none rounded-md text-2xl text-white outline-none transition-colors ${
-            taskCompleted ? "bg-accent" : "border-2 border-gray-300"
-          }`}
-          onClick={() => toggleTaskCompleted()}
-        >
-          {taskCompleted && <BiCheck />}
-        </button>
+        <input
+          type="checkbox"
+          checked={taskCompleted}
+          className="h-6 w-6 flex-none rounded-md border-2 border-gray-300 text-2xl text-accent transition-colors focus:outline-none focus:ring-0 focus:ring-offset-0"
+          onChange={() => toggleTaskCompleted()}
+        />
         {/* Task badges and input */}
         <div
           tabIndex="0"
@@ -147,7 +144,7 @@ export default function TaskItem({
             </div>
             {/* Task title input */}
             <input
-              className={`h-6 w-full flex-auto truncate bg-transparent font-medium placeholder-gray-400 outline-none transition-colors ${
+              className={`h-6 w-full flex-auto truncate bg-transparent font-medium placeholder-gray-300 outline-none transition-colors ${
                 taskCompleted
                   ? `text-gray-400 ${
                       completedAppearance !== "fade" && "line-through"
@@ -234,7 +231,7 @@ export default function TaskItem({
                     : "bg-gray-100 text-gray-600"
                 }`}
               >
-                <span className="mr-0.5 text-xl">
+                <span className="mr-1 text-xl">
                   {taskDueDate ? <HiFlag /> : <HiOutlineFlag />}
                 </span>
                 {iOS() ? (
@@ -244,7 +241,7 @@ export default function TaskItem({
                       taskDueDate
                         ? "bg-gray-500 text-white"
                         : "bg-gray-100 text-gray-600"
-                    } text-left placeholder-gray-400 outline-none`}
+                    } border-0 p-0 text-left text-sm placeholder-gray-400`}
                     value={taskDueDate ? taskDueDate : ""}
                     placeholder="Due date"
                     onInput={(e) => {

@@ -8,6 +8,9 @@
   :root {
     --accent: 0, 122, 255;
   }
+  input[type="email"], input[type="text"], input[type="password"], input[type="date"] {
+    @apply focus:ring-0 focus:outline-none;
+  }
   html {
     font-family: "Inter", sans-serif;
     /* min-height: calc(100% + env(safe-area-inset-top));
@@ -55,7 +58,7 @@
 .react-datepicker-wrapper,
 .react-datepicker__input-container,
 .react-datepicker__input-container input {
-    @apply w-auto bg-transparent placeholder-gray-400 font-medium outline-none;
+    @apply border-0 p-0 text-sm w-28 bg-transparent placeholder-gray-400 font-medium;
 }
 
 .react-datepicker__year-read-view--down-arrow,

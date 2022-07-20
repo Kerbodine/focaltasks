@@ -27,6 +27,10 @@ export function SettingsProvider({ children }) {
     userData.settings?.taskDeleteWarning
   );
 
+  const [sidebarLists, setSidebarLists] = useState(
+    userData.settings?.sidebarLists || false
+  );
+
   const updateSettings = async (updatedItems) => {
     const key = Object.keys(updatedItems)[0];
     const value = updatedItems[key];
@@ -43,6 +47,8 @@ export function SettingsProvider({ children }) {
     setHideDeleteWarning,
     taskDeleteWarning,
     setTaskDeleteWarning,
+    sidebarLists,
+    setSidebarLists,
     updateSettings,
   };
 

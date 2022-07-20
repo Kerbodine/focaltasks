@@ -3,6 +3,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { BiCheck } from "react-icons/bi";
 import { HiSearch } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import { mobile } from "../config/functions";
 import { listIcons } from "../config/icons";
 import { useTasks } from "../contexts/TaskContext";
 
@@ -68,9 +69,11 @@ const CommandPalette = () => {
         <p className="no-select w-full cursor-text text-left text-gray-400">
           Quick Search
         </p>
-        <kbd className="grid h-5 place-items-center rounded-md bg-gray-500 px-1 font-sans text-xs font-medium tracking-wider text-white">
-          ⌘K
-        </kbd>
+        {!mobile() && (
+          <kbd className="grid h-5 place-items-center rounded-md bg-gray-500 px-1 font-sans text-xs font-medium tracking-wider text-white">
+            ⌘K
+          </kbd>
+        )}
       </button>
       <Transition.Root
         show={isOpen}

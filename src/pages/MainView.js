@@ -105,7 +105,11 @@ export default function MainView() {
                 mobile() ? "ml-0" : "ml-[56px]"
               } h-full flex-auto transition-margin duration-300 sm:ml-0`}
             >
-              <div className="flex h-[56px] w-full items-center justify-end px-3 sm:ml-0">
+              <div
+                className={`${
+                  mobile() ? "justify-center" : "justify-end"
+                } flex h-[56px] w-full items-center px-3 sm:ml-0`}
+              >
                 <CommandPalette />
               </div>
               <Routes>
@@ -148,6 +152,11 @@ export default function MainView() {
                       sort={(task) => task.completed}
                     />
                   }
+                />
+                <Route
+                  exact
+                  path="/all"
+                  element={<Category title="All" sort={(task) => task} />}
                 />
                 <Route exact path="/settings" element={<Settings />} />
                 <Route path="/:listId" element={<ListRoute />} />

@@ -2,6 +2,7 @@ import {
   HiCalendar,
   HiCheckCircle,
   HiCog,
+  HiCollection,
   HiExclamationCircle,
   HiInbox,
   HiMenu,
@@ -16,11 +17,13 @@ import NewListButton from "./NewListButton";
 import { listIcons } from "../config/icons";
 import { useClickOutside } from "@mantine/hooks";
 import { mobile } from "../config/functions";
+import { useSettings } from "../contexts/SettingsContext";
 
 export default function Navbar() {
   const { userData } = useAuth();
   const { userLists } = useTasks();
   const { navbar, toggleNavbar, closeNavbar } = useView();
+  const { sidebarLists } = useSettings();
 
   const specialLists = ["inbox", "today", "upcoming", "important"];
 
@@ -81,20 +84,29 @@ export default function Navbar() {
         <div className="flex flex-col gap-1">
           <NavbarItem icon={<HiSun />} title="Today" link={"/today"} />
           <NavbarItem
-            icon={<HiCalendar />}
-            title="Upcoming"
-            link={"/upcoming"}
-          />
-          <NavbarItem
             icon={<HiExclamationCircle />}
             title="Important"
             link={"/important"}
           />
           <NavbarItem
-            icon={<HiCheckCircle />}
-            title="Completed"
-            link={"/completed"}
+            icon={<HiCalendar />}
+            title="Upcoming"
+            link={"/upcoming"}
           />
+          {sidebarLists.completed && (
+            <NavbarItem
+              icon={<HiCheckCircle />}
+              title="Completed"
+              link={"/completed"}
+            />
+          )}
+          {sidebarLists.all && (
+            <NavbarItem
+              icon={<HiCollection />}
+              title="All tasks"
+              link={"/all"}
+            />
+          )}
         </div>
         <div className="flex flex-col gap-1">
           <NavbarItem icon={<HiCog />} title="Settings" link={"/settings"} />
