@@ -18,7 +18,7 @@ const Settings = () => {
   } = useSettings();
 
   return (
-    <div className="h-full w-full p-8">
+    <div className="h-full w-full p-6 sm:p-8">
       <h1 className="mb-4 w-full text-3xl font-semibold">Settings</h1>
       <div className="space-y-2">
         {/* Sign out */}

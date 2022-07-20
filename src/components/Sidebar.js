@@ -20,7 +20,7 @@ export default function Sidebar() {
       } absolute right-0 h-screen border-l-2 border-gray-100 lg:relative`}
     >
       <Tab.Group className="flex h-full flex-col" as="div">
-        <div className="h-[56px] w-full flex-none items-center border-b-2 border-gray-100 p-3">
+        <div className="h-[56px] w-full flex-none items-center p-3">
           <Tab.List className="flex h-8 w-full gap-1 rounded-lg bg-gray-100 p-1">
             {sidebarIcons.map((icon, index) => (
               <Tab

@@ -20,6 +20,7 @@ import { PomodoroProvider } from "../contexts/PomodoroContext";
 import ListRoute from "../components/ListRoute";
 import Category from "./Category";
 import { SettingsProvider } from "../contexts/SettingsContext";
+import { mobile } from "../config/functions";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
@@ -94,12 +95,16 @@ export default function MainView() {
         </div>
       ) : (
         <SettingsProvider>
-          <hr className="absolute top-[54px] h-[2px] w-screen border-0 bg-gray-100" />
+          <hr className="absolute top-[56px] h-[2px] w-screen border-0 bg-gray-100" />
           <div className="mx-auto flex h-full w-full max-w-screen-xl">
             {/* Navbar section */}
             <Navbar />
             {/* Main task area */}
-            <div className="ml-[56px] h-full flex-auto transition-margin duration-300 sm:ml-0">
+            <div
+              className={`${
+                mobile() ? "ml-0" : "ml-[56px]"
+              } h-full flex-auto transition-margin duration-300 sm:ml-0`}
+            >
               <div className="flex h-[56px] w-full items-center justify-end px-3 sm:ml-0">
                 <CommandPalette />
               </div>

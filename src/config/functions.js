@@ -12,3 +12,7 @@ export function iOS() {
     (navigator.userAgent.includes("Mac") && "ontouchend" in document)
   );
 }
+
+export function mobile() {
+  return "ontouchstart" in document.documentElement;
+}

@@ -14,8 +14,8 @@ import { useAuth } from "../contexts/AuthContext";
 import { useTasks } from "../contexts/TaskContext";
 import NewListButton from "./NewListButton";
 import { listIcons } from "../config/icons";
-
 import { useClickOutside } from "@mantine/hooks";
+import { mobile } from "../config/functions";
 
 export default function Navbar() {
   const { userData } = useAuth();
@@ -30,10 +30,12 @@ export default function Navbar() {
     <div
       ref={ref}
       className={`${
-        navbar ? "w-[240px] shadow-lg sm:shadow-none" : "w-[56px] sm:w-[240px] "
-      } absolute box-content flex h-full flex-none flex-col border-r-2 border-gray-100 bg-white transition-all duration-300 sm:relative`}
+        navbar
+          ? "w-[240px]"
+          : `w-[56px] sm:w-[240px] ${mobile() && "-ml-[56px] sm:ml-0"}`
+      } absolute flex h-full flex-none flex-col border-r-2 border-gray-100 bg-white transition-all duration-300 sm:relative`}
     >
-      <div className="flex h-[56px] w-full flex-none items-center border-b-2 border-gray-100 px-3">
+      <div className="flex h-[58px] w-full flex-none items-center border-b-2 border-gray-100 px-3">
         {/* Account info and seettings */}
         <div
           className={`${!navbar && "hidden sm:grid"} ${
@@ -63,7 +65,9 @@ export default function Navbar() {
         {/* Toggle mobile navbar */}
         <button
           onClick={toggleNavbar}
-          className={`grid h-8 w-8 place-items-center text-xl text-gray-500 sm:hidden`}
+          className={`${
+            mobile() && !navbar && "ml-[56px]"
+          } grid h-8 w-8 flex-none place-items-center text-xl text-gray-500 sm:hidden`}
         >
           <HiMenu />
         </button>
