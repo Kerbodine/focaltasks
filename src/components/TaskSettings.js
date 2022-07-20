@@ -8,7 +8,7 @@ import { useTasks } from "../contexts/TaskContext";
 import DeleteListModal from "./DeleteListModal";
 import EditListModal from "./EditListModal";
 
-const TaskSettings = ({ currentList }) => {
+const TaskSettings = ({ currentList, handlePrint }) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -21,11 +21,13 @@ const TaskSettings = ({ currentList }) => {
     updateList(currentList.id, { hideCompleted: !currentList.hideCompleted });
   };
 
-  const printList = () => {};
+  const printList = () => {
+    handlePrint();
+  };
 
   return (
     <>
-      <Menu as="div" className="relative z-10">
+      <Menu as="div" className="relative z-10 print:hidden">
         <div>
           <Menu.Button className="grid h-8 w-8 place-items-center rounded-lg text-2xl text-gray-500 outline-none transition-colors hover:bg-gray-100">
             <BiDotsVerticalRounded />

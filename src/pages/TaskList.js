@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { HiPlusSm } from "react-icons/hi";
 import NotFound from "../components/NotFound";
 import TaskItem from "../components/TaskItem";
 import { useTasks } from "../contexts/TaskContext";
 import TaskSettings from "../components/TaskSettings";
+import { useReactToPrint } from "react-to-print";
 
 export default function TaskList({ listId }) {
   const { createTask, userLists, userTasks, updateList } = useTasks();
@@ -48,10 +49,15 @@ export default function TaskList({ listId }) {
     setTasks([...newTasks]);
   }, [userLists, userTasks, listId, list, filterTasks]);
 
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   return (
     <>
       {list ? (
-        <div className="h-full w-full p-6 sm:p-8">
+        <div className="h-full w-full p-6 print:p-16 sm:p-8" ref={componentRef}>
           <div className="flex w-full gap-2">
             <input
               className="w-full min-w-0 truncate text-3xl font-semibold outline-none"
@@ -63,10 +69,12 @@ export default function TaskList({ listId }) {
                   updateList(listId, { title: listTitle });
               }}
             />
-            {!list.default && <TaskSettings currentList={list} />}
+            {!list.default && (
+              <TaskSettings currentList={list} handlePrint={handlePrint} />
+            )}
           </div>
           <input
-            className="w-full font-medium text-gray-600 placeholder-gray-400 outline-none"
+            className="w-full font-medium text-gray-600 placeholder-gray-400 outline-none print:placeholder:text-transparent"
             placeholder="Notes"
             value={listNotes}
             onChange={(e) => setListNotes(e.target.value)}
@@ -86,7 +94,7 @@ export default function TaskList({ listId }) {
             )}
           </div>
           <button
-            className="mt-4 flex h-9 items-center gap-2 rounded-lg border-2 border-dashed border-gray-200 pr-4 pl-2 text-gray-400 transition-all hover:border-solid hover:bg-gray-50"
+            className="mt-4 flex h-9 items-center gap-2 rounded-lg border-2 border-dashed border-gray-200 pr-4 pl-2 text-gray-400 transition-all hover:border-solid hover:bg-gray-50 print:hidden"
             onClick={newTask}
           >
             <div className="grid h-5 w-5 place-items-center text-xl">
