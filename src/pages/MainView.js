@@ -103,12 +103,12 @@ export default function MainView() {
             <div
               className={`${
                 mobile() ? "ml-0" : "ml-[56px]"
-              } h-full flex-auto transition-margin duration-300 sm:ml-0`}
+              } transition-margin flex h-full flex-auto flex-col duration-300 sm:ml-0`}
             >
               <div
                 className={`${
                   mobile() ? "justify-center" : "justify-end"
-                } flex h-[56px] w-full items-center px-3 sm:ml-0`}
+                } flex h-[56px] w-full flex-none items-center px-3 sm:ml-0`}
               >
                 <CommandPalette />
               </div>

@@ -1,23 +1,24 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useState } from "react";
 import { BiX } from "react-icons/bi";
-import { useTasks } from "../contexts/TaskContext";
-import IconPicker from "./IconPicker";
+import { useAuth } from "../contexts/AuthContext";
 
-const EditListModal = ({ currentList, modalOpen, setModalOpen }) => {
-  const [listTitle, setListTitle] = useState(currentList.title);
-  const [iconName, setIconName] = useState(currentList.icon);
+const NameModal = ({ userData, modalOpen, setModalOpen }) => {
+  const { changeUserName } = useAuth();
 
-  const { updateList } = useTasks();
+  const [firstName, setFirstName] = useState(
+    userData.displayName.split(" ")[0]
+  );
+  const [lastName, setLastName] = useState(userData.displayName.split(" ")[1]);
 
   const closeModal = () => {
     setModalOpen(false);
   };
 
-  const handleUpdateList = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    changeUserName(firstName, lastName);
     closeModal();
-    updateList(currentList.id, { title: listTitle, icon: iconName });
   };
 
   return (
@@ -65,20 +66,25 @@ const EditListModal = ({ currentList, modalOpen, setModalOpen }) => {
               <div className="mt-4 space-y-2">
                 <input
                   type="text"
-                  value={listTitle}
-                  onChange={(e) => setListTitle(e.target.value)}
-                  placeholder="List title"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="First name"
                   className="w-full rounded-lg border-none bg-gray-100 px-3 py-2 font-medium text-gray-600 outline-none placeholder:text-gray-400"
                 />
-                <IconPicker iconName={iconName} setIconName={setIconName} />
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Last name"
+                  className="w-full rounded-lg border-none bg-gray-100 px-3 py-2 font-medium text-gray-600 outline-none placeholder:text-gray-400"
+                />
               </div>
               <button
                 type="submit"
-                onClick={handleUpdateList}
-                {...(!listTitle && { disabled: true })}
+                onClick={handleSubmit}
                 className="hover:border-accent hover:bg-accent mt-4 w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:text-white disabled:cursor-not-allowed"
               >
-                Update List
+                Save
               </button>
               <button
                 type="button"
@@ -95,4 +101,4 @@ const EditListModal = ({ currentList, modalOpen, setModalOpen }) => {
   );
 };
 
-export default EditListModal;
+export default NameModal;

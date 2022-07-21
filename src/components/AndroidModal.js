@@ -1,23 +1,10 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { BiX } from "react-icons/bi";
-import { useTasks } from "../contexts/TaskContext";
-import IconPicker from "./IconPicker";
 
-const EditListModal = ({ currentList, modalOpen, setModalOpen }) => {
-  const [listTitle, setListTitle] = useState(currentList.title);
-  const [iconName, setIconName] = useState(currentList.icon);
-
-  const { updateList } = useTasks();
-
+const AndroidModal = ({ modalOpen, setModalOpen }) => {
   const closeModal = () => {
     setModalOpen(false);
-  };
-
-  const handleUpdateList = (e) => {
-    e.preventDefault();
-    closeModal();
-    updateList(currentList.id, { title: listTitle, icon: iconName });
   };
 
   return (
@@ -55,31 +42,24 @@ const EditListModal = ({ currentList, modalOpen, setModalOpen }) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <form className="relative inline-block w-full max-w-xs transform rounded-2xl bg-white p-6 text-left align-middle shadow-lg">
+            <form className="relative inline-block w-full max-w-sm transform rounded-2xl bg-white p-6 text-left align-middle shadow-lg">
               <Dialog.Title
                 as="h3"
                 className="mt-1 text-xl font-medium leading-6"
               >
-                Edit List
+                Android Install Instructions
               </Dialog.Title>
               <div className="mt-4 space-y-2">
-                <input
-                  type="text"
-                  value={listTitle}
-                  onChange={(e) => setListTitle(e.target.value)}
-                  placeholder="List title"
-                  className="w-full rounded-lg border-none bg-gray-100 px-3 py-2 font-medium text-gray-600 outline-none placeholder:text-gray-400"
-                />
-                <IconPicker iconName={iconName} setIconName={setIconName} />
+                <p>
+                  Open up{" "}
+                  <span className="cursor-pointer rounded-md bg-gray-100 px-1.5 py-1 font-mono font-medium">
+                    app.focaltimer.com
+                  </span>{" "}
+                  in Chrome. (Tap to copy)
+                </p>
+                <p>Tap the “3 dot” menu in the top right corner</p>
+                <p>Tap “Add to Home screen”</p>
               </div>
-              <button
-                type="submit"
-                onClick={handleUpdateList}
-                {...(!listTitle && { disabled: true })}
-                className="hover:border-accent hover:bg-accent mt-4 w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:text-white disabled:cursor-not-allowed"
-              >
-                Update List
-              </button>
               <button
                 type="button"
                 className="absolute right-6 top-6 rounded-full p-1 text-2xl transition-colors hover:bg-gray-100"
@@ -95,4 +75,4 @@ const EditListModal = ({ currentList, modalOpen, setModalOpen }) => {
   );
 };
 
-export default EditListModal;
+export default AndroidModal;

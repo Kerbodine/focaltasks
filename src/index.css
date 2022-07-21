@@ -13,9 +13,10 @@
   }
   html {
     font-family: "Inter", sans-serif;
+    overflow: hidden;
+    scroll-behavior:smooth
     /* min-height: calc(100% + env(safe-area-inset-top));
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    overflow: hidden; */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);*/
   }
   html, body {touch-action: none;}
   * { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }

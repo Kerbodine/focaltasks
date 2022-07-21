@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { auth, app } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
-import { getFirestore, doc, writeBatch } from "firebase/firestore";
+import { getFirestore, doc, writeBatch, updateDoc } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -98,6 +98,13 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const changeUserName = async (firstName, lastName) => {
+    const newDisplayName = `${firstName} ${lastName}`;
+    await updateDoc(doc(db, "Users", auth.currentUser.uid), {
+      displayName: newDisplayName,
+    });
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
@@ -117,6 +124,7 @@ export function AuthProvider({ children }) {
     logout,
     resetPassword,
     signInWithGoogle,
+    changeUserName,
   };
 
   return (

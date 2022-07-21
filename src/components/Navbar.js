@@ -36,7 +36,7 @@ export default function Navbar() {
         navbar
           ? "w-[240px]"
           : `w-[56px] sm:w-[240px] ${mobile() && "-ml-[56px] sm:ml-0"}`
-      } absolute flex h-full flex-none flex-col border-r-2 border-gray-100 bg-white transition-all duration-300 sm:relative`}
+      } absolute box-content flex h-full flex-none flex-col border-r-2 border-gray-100 bg-white transition-all duration-300 sm:relative`}
     >
       <div className="flex h-[58px] w-full flex-none items-center border-b-2 border-gray-100 px-3">
         {/* Account info and seettings */}
@@ -81,7 +81,7 @@ export default function Navbar() {
         <div>
           <NavbarItem icon={<HiInbox />} title="Inbox" link={"/inbox"} />
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col">
           <NavbarItem icon={<HiSun />} title="Today" link={"/today"} />
           <NavbarItem
             icon={<HiExclamationCircle />}
@@ -108,7 +108,7 @@ export default function Navbar() {
             />
           )}
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col">
           <NavbarItem icon={<HiCog />} title="Settings" link={"/settings"} />
           <NavbarItem
             icon={<HiTrash />}
@@ -118,7 +118,7 @@ export default function Navbar() {
         </div>
         {/* Horizontal divider */}
         <hr className="h-[2px] w-full border-0 bg-gray-100" />
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col">
           {/* User lists */}
           {userLists
             .filter((list) => !specialLists.includes(list.id)) // Check if its not a default list

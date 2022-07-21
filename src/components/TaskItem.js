@@ -114,7 +114,7 @@ export default function TaskItem({
         <input
           type="checkbox"
           checked={taskCompleted}
-          className="h-6 w-6 flex-none rounded-md border-2 border-gray-300 text-2xl text-accent transition-colors focus:outline-none focus:ring-0 focus:ring-offset-0"
+          className="text-accent h-6 w-6 flex-none cursor-pointer rounded-md border-2 border-gray-300 text-2xl transition-colors focus:outline-none focus:ring-0 focus:ring-offset-0"
           onChange={() => toggleTaskCompleted()}
         />
         {/* Task badges and input */}
