@@ -33,8 +33,8 @@ const Settings = () => {
   return (
     <>
       <div className="h-full w-full overflow-y-auto p-6 sm:p-8">
-        <h1 className="mb-4 w-full text-3xl font-semibold">Settings</h1>
-        <div className="flex flex-col gap-2 leading-5 text-gray-700">
+        <h1 className="mb-4 text-3xl font-semibold">Settings</h1>
+        <div className="flex w-full flex-col gap-2 leading-5 text-gray-700">
           {/* Sign out */}
           <h3 className="text-lg font-semibold text-black">Account:</h3>
           <div className="flex gap-4">
@@ -211,7 +211,7 @@ const Settings = () => {
               onClick={() => {
                 setShowAndroidModal(true);
               }}
-              className="flex flex-1 cursor-pointer flex-col items-center rounded-lg border-2 border-gray-200 p-6 pb-0 hover:border-gray-600"
+              className="flex flex-1 cursor-pointer flex-col items-center rounded-lg border-2 border-gray-200 p-2 pb-0 hover:border-gray-600"
             >
               <p className="mb-4 text-lg font-semibold text-gray-500">
                 Android
@@ -222,7 +222,7 @@ const Settings = () => {
               onClick={() => {
                 setShowIOSModal(true);
               }}
-              className="flex flex-1 cursor-pointer flex-col items-center rounded-lg border-2 border-gray-200 p-6 pb-0 hover:border-gray-600"
+              className="flex flex-1 cursor-pointer flex-col items-center rounded-lg border-2 border-gray-200 p-2 pb-0 hover:border-gray-600"
             >
               <p className="mb-4 text-lg font-semibold text-gray-500">iOS</p>
               <IOS />

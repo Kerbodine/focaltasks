@@ -60,7 +60,7 @@ const CommandPalette = () => {
   return (
     <>
       <button
-        className="flex h-8 w-60 items-center gap-1 rounded-lg bg-gray-100 px-2 text-sm font-medium outline-none"
+        className="flex h-8 w-56 items-center gap-1 rounded-lg bg-gray-100 px-2 text-sm font-medium outline-none"
         onClick={() => setIsOpen(true)}
       >
         <span className="flex-none text-xl text-gray-500">
@@ -154,7 +154,7 @@ const CommandPalette = () => {
                           <span className="flex-none text-gray-500">
                             {item.type === "task" ? ( // Check item type (list or task)
                               item.completed === true ? (
-                                <div className="h-5 w-5 rounded-md bg-accent text-xl text-white">
+                                <div className="bg-accent h-5 w-5 rounded-md text-xl text-white">
                                   <BiCheck />
                                 </div>
                               ) : (

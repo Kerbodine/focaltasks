@@ -2,7 +2,13 @@ import { Menu, Transition } from "@headlessui/react";
 import React, { Fragment, useState } from "react";
 import toast from "react-hot-toast";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { HiCheckCircle, HiPencil, HiPrinter, HiTrash } from "react-icons/hi";
+import {
+  HiCheckCircle,
+  HiPencil,
+  HiPrinter,
+  HiShare,
+  HiTrash,
+} from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { useSettings } from "../contexts/SettingsContext";
 import { useTasks } from "../contexts/TaskContext";
@@ -74,6 +80,21 @@ const TaskSettings = ({ currentList, handlePrint }) => {
                       <HiPencil />
                     </span>
                     <p className="ml-1.5 text-sm font-medium">Edit list</p>
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={`${
+                      active && "bg-gray-100"
+                    } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600`}
+                    onClick={() => {}}
+                  >
+                    <span className="text-xl">
+                      <HiShare />
+                    </span>
+                    <p className="ml-1.5 text-sm font-medium">Share list</p>
                   </button>
                 )}
               </Menu.Item>

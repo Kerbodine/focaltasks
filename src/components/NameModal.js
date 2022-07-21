@@ -61,7 +61,7 @@ const NameModal = ({ userData, modalOpen, setModalOpen }) => {
                 as="h3"
                 className="mt-1 text-xl font-medium leading-6"
               >
-                Edit List
+                Change Name
               </Dialog.Title>
               <div className="mt-4 space-y-2">
                 <input
