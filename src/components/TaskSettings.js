@@ -1,5 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import React, { Fragment, useState } from "react";
+import toast from "react-hot-toast";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { HiCheckCircle, HiPencil, HiPrinter, HiTrash } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
@@ -102,6 +103,7 @@ const TaskSettings = ({ currentList, handlePrint }) => {
                         setDeleteModalOpen(true);
                       } else {
                         deleteList(currentList.id);
+                        toast.success("List deleted");
                         navigate("/");
                       }
                     }}

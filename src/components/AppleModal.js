@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
+import toast from "react-hot-toast";
 import { BiX } from "react-icons/bi";
 
 const AppleModal = ({ modalOpen, setModalOpen }) => {
@@ -52,7 +53,15 @@ const AppleModal = ({ modalOpen, setModalOpen }) => {
               <div className="mt-4 space-y-2">
                 <p>
                   Open up{" "}
-                  <span className="cursor-pointer rounded-md bg-gray-100 px-1.5 py-1 font-mono font-medium">
+                  <span
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        "https://app.focaltimer.com"
+                      );
+                      toast.success("Copied to clipboard!");
+                    }}
+                    className="cursor-pointer rounded-md bg-gray-100 px-1.5 py-1 font-mono font-medium"
+                  >
                     app.focaltimer.com
                   </span>{" "}
                   in Safari. (Tap to copy)

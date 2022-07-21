@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
+import toast from "react-hot-toast";
 import { BiX } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useTasks } from "../contexts/TaskContext";
@@ -16,6 +17,7 @@ const DeleteListModal = ({ currentList, modalOpen, setModalOpen }) => {
     e.preventDefault();
     closeModal();
     deleteList(currentList.id);
+    toast.success("List deleted");
     navigate("/");
   };
 

@@ -13,6 +13,7 @@ import DatePicker from "react-datepicker";
 import { useSettings } from "../contexts/SettingsContext";
 import DeleteTaskModal from "./DeleteTaskModal";
 import { iOS } from "../config/functions";
+import toast from "react-hot-toast";
 
 export default function TaskItem({
   data: { id, title, completed, dueDate, categories },
@@ -182,6 +183,7 @@ export default function TaskItem({
                   setDeleteModalOpen(true);
                 } else {
                   deleteTask(id);
+                  toast.success("Task deleted");
                 }
               }}
             >

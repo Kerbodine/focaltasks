@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
+import toast from "react-hot-toast";
 import { BiX } from "react-icons/bi";
 import { useTasks } from "../contexts/TaskContext";
 
@@ -14,6 +15,7 @@ const DeleteTaskModal = ({ taskId, modalOpen, setModalOpen }) => {
     e.preventDefault();
     closeModal();
     deleteTask(taskId);
+    toast.success("Task deleted");
   };
 
   return (
