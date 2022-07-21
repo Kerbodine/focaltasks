@@ -16,59 +16,48 @@ import { iOS } from "../config/functions";
 import toast from "react-hot-toast";
 
 export default function TaskItem({
-  data: { id, title, completed, dueDate, categories },
+  data: { id, title, completed, dueDate, today, important, upcoming, listId },
 }) {
-  const { addCategory, removeCategory, deleteTask, updateTask } = useTasks();
+  const { deleteTask, updateTask } = useTasks();
   const { calendarStartDay, completedAppearance, taskDeleteWarning } =
     useSettings();
 
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskCompleted, setTaskCompleted] = useState(completed);
-  const [taskImportant, setTaskImportant] = useState(
-    categories.includes("important")
-  );
-  const [taskToday, setTaskToday] = useState(categories.includes("today"));
+  const [taskImportant, setTaskImportant] = useState(important);
+  const [taskToday, setTaskToday] = useState(today);
   const [taskDueDate, setTaskDueDate] = useState(dueDate);
   const [taskExpanded, setTaskExpanded] = useState(false);
-  const [dueIn, setDueIn] = useState(null);
+  // const [dueIn, setDueIn] = useState(null);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const toggleTaskCompleted = () => {
-    updateTask(id, { completed: !taskCompleted });
+    updateTask(id, { completed: !taskCompleted }, listId);
     setTaskCompleted(!taskCompleted);
   };
 
   const toggleTaskImportant = () => {
     setTaskImportant(!taskImportant);
-    if (categories.includes("important")) {
-      removeCategory(id, "important");
+    if (important) {
+      updateTask(id, { important: false }, listId);
     } else {
-      addCategory(id, "important");
+      updateTask(id, { important: true }, listId);
     }
   };
 
   const toggleTaskToday = () => {
     setTaskToday(!taskToday);
-    if (categories.includes("today")) {
-      removeCategory(id, "today");
+    if (today) {
+      updateTask(id, { today: false }, listId);
     } else {
-      addCategory(id, "today");
+      updateTask(id, { today: true }, listId);
     }
   };
 
-  const updateDueDate = (date) => {
-    updateTask(id, { dueDate: date });
-    if (date === null) {
-      removeCategory(id, "upcoming");
-    } else {
-      addCategory(id, "upcoming");
-    }
-  };
-
-  const getDueInDays = (dueInDate) => {
+  const getDueInDays = () => {
     const today = new Date();
-    const dueDate = new Date(dueInDate);
+    const dueDate = new Date(taskDueDate);
     const diffTime = dueDate - today.setHours(0, 0, 0, 0);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
     if (Math.abs(diffDays) > 99) {
@@ -91,17 +80,21 @@ export default function TaskItem({
 
   useEffect(() => {
     setTaskCompleted(completed);
-    setTaskImportant(categories.includes("important"));
-    setTaskToday(categories.includes("today"));
-  }, [completed, title, categories]);
+    setTaskImportant(important);
+    setTaskToday(today);
+    setTaskDueDate(dueDate);
+  }, [completed, title, important, today, dueDate]);
 
-  useEffect(() => {
-    updateDueDate(taskDueDate);
-  }, [taskDueDate]);
-
-  useEffect(() => {
-    setDueIn(getDueInDays(dueDate));
-  }, [dueDate, taskDueDate]);
+  const updateDate = (date) => {
+    setTaskDueDate(date);
+    if (date !== taskDueDate) {
+      if (taskDueDate === null) {
+        updateTask(id, { dueDate: date, upcoming: true }, listId);
+      } else {
+        updateTask(id, { dueDate: date, upcoming: false }, listId);
+      }
+    }
+  };
 
   return (
     <div
@@ -156,12 +149,11 @@ export default function TaskItem({
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
               onBlur={() => {
-                taskTitle !== title && updateTask(id, { title: taskTitle });
+                taskTitle !== title &&
+                  updateTask(id, { title: taskTitle }, listId);
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  taskTitle !== title && updateTask(id, { title: taskTitle });
-                  e.preventDefault();
                   e.target.blur();
                 }
               }}
@@ -171,7 +163,7 @@ export default function TaskItem({
                 <span className="text-lg text-gray-500">
                   <HiFlag />
                 </span>
-                <p className="mr-1 whitespace-nowrap">{dueIn}</p>
+                <p className="mr-1 whitespace-nowrap">{`${getDueInDays()}`}</p>
               </div>
             )}
             <button
@@ -182,7 +174,7 @@ export default function TaskItem({
                 if (taskDeleteWarning) {
                   setDeleteModalOpen(true);
                 } else {
-                  deleteTask(id);
+                  deleteTask(id, listId);
                   toast.success("Task deleted");
                 }
               }}
@@ -252,10 +244,10 @@ export default function TaskItem({
                         target.defaultValue = "";
                       }
                       window.setTimeout(iosClearDefault, 0);
-                      setTaskDueDate(null);
+                      updateDate(null);
                     }}
                     onChange={(e) => {
-                      setTaskDueDate(e.target.value);
+                      updateDate(e.target.value);
                     }}
                   />
                 ) : (
@@ -266,10 +258,10 @@ export default function TaskItem({
                     onChange={(date) => {
                       if (date) {
                         const dateString = date.toISOString().split("T")[0];
-                        setTaskDueDate(dateString);
+                        updateDate(dateString);
                         setTaskExpanded(false);
                       } else {
-                        setTaskDueDate(null);
+                        updateDate(null);
                       }
                     }}
                     todayButton="☉Today"
@@ -285,6 +277,7 @@ export default function TaskItem({
       </div>
       <DeleteTaskModal
         taskId={id}
+        listId={listId}
         modalOpen={deleteModalOpen}
         setModalOpen={setDeleteModalOpen}
       />

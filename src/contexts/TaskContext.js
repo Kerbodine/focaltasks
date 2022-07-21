@@ -9,6 +9,7 @@ import {
   deleteDoc,
   arrayUnion,
   arrayRemove,
+  deleteField,
 } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
 
@@ -24,7 +25,6 @@ export function TaskProvider({ children }) {
   const db = getFirestore(app);
 
   const [userLists, setUserLists] = useState([]);
-  const [userTasks, setUserTasks] = useState([]);
 
   const createTask = async (listId) => {
     const taskId = uuidv4();
@@ -39,30 +39,35 @@ export function TaskProvider({ children }) {
       modifiedAt: new Date(),
       categories: [],
     };
-    await setDoc(doc(db, "Users", currentUser.uid, "Tasks", taskId), task);
-  };
-
-  const updateTask = async (taskId, updatedItems) => {
-    const taskRef = doc(db, "Users", currentUser.uid, "Tasks", taskId);
-    await updateDoc(taskRef, updatedItems);
-  };
-
-  const addCategory = async (taskId, category) => {
-    const taskRef = doc(db, "Users", currentUser.uid, "Tasks", taskId);
-    await updateDoc(taskRef, {
-      categories: arrayUnion(category),
+    await updateDoc(doc(db, "Users", currentUser.uid, "Lists", listId), {
+      tasks: {
+        ...Object.values(userLists[listId].tasks),
+        [taskId]: task,
+      },
     });
   };
 
-  const removeCategory = async (taskId, category) => {
-    const taskRef = doc(db, "Users", currentUser.uid, "Tasks", taskId);
-    await updateDoc(taskRef, {
-      categories: arrayRemove(category),
+  const updateTask = async (taskId, updatedItems, listId) => {
+    await updateDoc(doc(db, "Users", currentUser.uid, "Lists", listId), {
+      tasks: {
+        ...Object.values(userLists[listId].tasks).filter(
+          (task) => task.id !== taskId
+        ),
+        [taskId]: {
+          ...Object.values(userLists[listId].tasks).filter(
+            (task) => task.id === taskId
+          )[0],
+          ...updatedItems,
+          modifiedAt: new Date(),
+        },
+      },
     });
   };
 
-  const deleteTask = async (taskId) => {
-    await deleteDoc(doc(db, "Users", currentUser.uid, "Tasks", taskId));
+  const deleteTask = async (taskId, listId) => {
+    await updateDoc(doc(db, "Users", currentUser.uid, "Lists", listId), {
+      [`tasks.${taskId}`]: deleteField(),
+    });
   };
 
   const newList = async (title, icon) => {
@@ -76,6 +81,7 @@ export function TaskProvider({ children }) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       hideCompleted: false,
+      tasks: {},
     });
     return listId;
   };
@@ -93,16 +99,12 @@ export function TaskProvider({ children }) {
   const value = {
     userLists,
     setUserLists,
-    userTasks,
-    setUserTasks,
     updateList,
     createTask,
     deleteTask,
     updateTask,
     newList,
     deleteList,
-    addCategory,
-    removeCategory,
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;

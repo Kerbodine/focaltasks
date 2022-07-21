@@ -35,6 +35,7 @@ export function AuthProvider({ children }) {
       photoURL,
       createdAt: new Date(),
     };
+    const taskId = uuidv4();
     const inboxList = {
       id: "inbox",
       title: "Inbox",
@@ -44,22 +45,22 @@ export function AuthProvider({ children }) {
       createdAt: new Date(),
       modifiedAt: new Date(),
       default: true,
-    };
-    const taskId = uuidv4();
-    const welcomeTask = {
-      id: taskId,
-      title: "Welcome to your task list!",
-      completed: false,
-      description: "",
-      dueDate: null,
-      listId: "inbox",
-      createdAt: new Date(),
-      modifiedAt: new Date(),
-      categories: [],
+      tasks: {
+        [taskId]: {
+          id: taskId,
+          title: "Welcome to your task list!",
+          completed: false,
+          description: "",
+          dueDate: null,
+          listId: "inbox",
+          createdAt: new Date(),
+          modifiedAt: new Date(),
+          categories: [],
+        },
+      },
     };
     batch.set(doc(db, "Users", cred.user.uid), userDoc);
     batch.set(doc(db, "Users", cred.user.uid, "Lists", "inbox"), inboxList);
-    batch.set(doc(db, "Users", cred.user.uid, "Tasks", taskId), welcomeTask);
     await batch.commit();
   };
 

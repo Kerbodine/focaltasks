@@ -120,7 +120,7 @@ export default function Navbar() {
         <hr className="h-[2px] w-full border-0 bg-gray-100" />
         <div className="flex flex-col">
           {/* User lists */}
-          {userLists
+          {Object.values(userLists)
             .filter((list) => !specialLists.includes(list.id)) // Check if its not a default list
             .map((list) => (
               <NavbarItem

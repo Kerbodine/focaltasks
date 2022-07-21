@@ -2,9 +2,16 @@ import React from "react";
 import TaskItem from "../components/TaskItem";
 import { useTasks } from "../contexts/TaskContext";
 
-export default function Category({ title, sort }) {
-  const { userTasks } = useTasks();
-  const tasks = userTasks.filter(sort);
+export default function Category({ title, sort, listId }) {
+  const { userLists } = useTasks();
+
+  // const tasks = userLists[listId].tasks.flat().filter(sort);
+  const tasks = Object.values(
+    Object.values(userLists)
+      .map((list) => Object.values(list.tasks))
+      .flat()
+      .filter(sort)
+  );
 
   // get current date and weekday
   const today = new Date().toLocaleString("en-us", {

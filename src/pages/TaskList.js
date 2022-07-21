@@ -7,7 +7,7 @@ import TaskSettings from "../components/TaskSettings";
 import { useReactToPrint } from "react-to-print";
 
 export default function TaskList({ listId }) {
-  const { createTask, userLists, userTasks, updateList } = useTasks();
+  const { createTask, userLists, updateList } = useTasks();
 
   const newTask = () => {
     createTask(listId);
@@ -15,13 +15,13 @@ export default function TaskList({ listId }) {
 
   // Initialize list settings
   const [list, setList] = useState(
-    userLists.filter((list) => list.id === listId)[0]
+    Object.values(userLists).filter((list) => list.id === listId)[0]
   );
 
   const filterTasks = useCallback(() => {
     let categoryTasks = [];
     if (list.category) {
-      categoryTasks = userTasks.filter((task) =>
+      categoryTasks = userLists[listId].tasks.filter((task) =>
         task.categories.includes(list.id)
       );
       categoryTasks.sort(function (a, b) {
@@ -32,9 +32,11 @@ export default function TaskList({ listId }) {
     }
     return [
       ...categoryTasks,
-      ...userTasks.filter((task) => task.listId === listId),
+      ...Object.values(userLists[listId].tasks).filter(
+        (task) => task.listId === listId
+      ),
     ];
-  }, [list, userTasks, listId]);
+  }, [list, userLists, listId]);
 
   const [tasks, setTasks] = useState([]);
 
@@ -42,12 +44,12 @@ export default function TaskList({ listId }) {
   const [listNotes, setListNotes] = useState(list.notes);
 
   useEffect(() => {
-    setList(userLists.filter((list) => list.id === listId)[0]);
+    setList(Object.values(userLists).filter((list) => list.id === listId)[0]);
     setListTitle(list && list.title);
     setListNotes(list && list.notes);
     const newTasks = filterTasks();
     setTasks([...newTasks]);
-  }, [userLists, userTasks, listId, list, filterTasks]);
+  }, [userLists, listId, list, filterTasks]);
 
   const componentRef = useRef();
   const handlePrint = useReactToPrint({

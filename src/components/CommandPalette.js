@@ -14,7 +14,7 @@ const CommandPalette = () => {
 
   const navigate = useNavigate();
 
-  const { userLists, userTasks } = useTasks();
+  const { userLists } = useTasks();
 
   useEffect(() => {
     let filteredTasks = [];
@@ -22,7 +22,13 @@ const CommandPalette = () => {
     let query = rawQuery.toLowerCase().replace(/^[>-]\s*/, ""); // remove leading >, -, or whitespace
     if (query !== "") {
       if (!rawQuery.startsWith(">")) {
-        filteredTasks = userTasks
+        filteredTasks = userLists
+          .map((list) => {
+            return list.tasks.map((key) => {
+              return userLists[list].tasks[key];
+            });
+          })
+          .flat()
           .map((task) => {
             if (task.title.toLowerCase().includes(query.toLowerCase())) {
               return { ...task, type: "task", listId: task.listId };
@@ -43,7 +49,7 @@ const CommandPalette = () => {
       }
     }
     setResults([...filteredTasks, ...filteredLists]);
-  }, [rawQuery, userLists, userTasks]);
+  }, [rawQuery, userLists]);
 
   useEffect(() => {
     const onKeydown = (event) => {

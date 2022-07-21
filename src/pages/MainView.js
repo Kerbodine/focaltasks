@@ -25,7 +25,7 @@ import { mobile } from "../config/functions";
 export default function MainView() {
   const [loading, setLoading] = useState(true);
   const { setUserData, currentUser } = useAuth();
-  const { userLists, setUserLists, userTasks, setUserTasks } = useTasks();
+  const { setUserLists } = useTasks();
 
   const db = getFirestore(app);
 
@@ -41,7 +41,7 @@ export default function MainView() {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [setUserData, currentUser, db]);
 
   // Query snapshot for user lists
   useEffect(() => {
@@ -57,35 +57,31 @@ export default function MainView() {
         allLists.docs.forEach((list) => {
           tempLists.push(list.data());
         });
+        const objectList = tempLists.reduce((obj, item) => {
+          return Object.assign(
+            obj,
+            {
+              // sort item.tasks by createdAt
+              [item.id]: {
+                ...item,
+                tasks: Object.values(item.tasks).sort(
+                  (a, b) => a.createdAt - b.createdAt
+                ),
+              },
+            },
+            {}
+          );
+        }, {});
         console.log("Updating lists");
-        setUserLists(tempLists);
+        setUserLists(objectList);
         setLoading(false);
       }
     );
-    // Listener for user Tasks collection
-    const unsubscribeTasks = onSnapshot(
-      query(
-        collection(db, "Users", currentUser.uid, "Tasks"),
-        orderBy("createdAt")
-      ),
-      (allTasks) => {
-        let tempTasks = [];
-        allTasks.docs.forEach((list) => {
-          tempTasks.push(list.data());
-        });
-        console.log("Updating tasks");
-        setUserTasks(tempTasks);
-        setLoading(false);
-      }
-    );
-    console.log(userLists);
-    console.log(userTasks);
     // Cleanup listeners
     return () => {
       unsubscribeLists();
-      unsubscribeTasks();
     };
-  }, []);
+  }, [currentUser.uid, setUserLists, setLoading, db]);
 
   return (
     <div className="h-screen w-screen">
@@ -117,20 +113,14 @@ export default function MainView() {
                   exact
                   path="/today"
                   element={
-                    <Category
-                      title="Today"
-                      sort={(task) => task.categories.includes("today")}
-                    />
+                    <Category title="Today" sort={(task) => task.today} />
                   }
                 />
                 <Route
                   exact
                   path="/upcoming"
                   element={
-                    <Category
-                      title="Upcoming"
-                      sort={(task) => task.categories.includes("upcoming")}
-                    />
+                    <Category title="Upcoming" sort={(task) => task.upcoming} />
                   }
                 />
                 <Route
@@ -139,7 +129,7 @@ export default function MainView() {
                   element={
                     <Category
                       title="Important"
-                      sort={(task) => task.categories.includes("important")}
+                      sort={(task) => task.important}
                     />
                   }
                 />
