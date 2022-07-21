@@ -1,9 +1,8 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
-import toast from "react-hot-toast";
 import { BiX } from "react-icons/bi";
 
-const AndroidModal = ({ modalOpen, setModalOpen }) => {
+const ModalWrapper = ({ modalOpen, setModalOpen, children }) => {
   const closeModal = () => {
     setModalOpen(false);
   };
@@ -43,35 +42,11 @@ const AndroidModal = ({ modalOpen, setModalOpen }) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <form className="relative inline-block w-full max-w-sm transform rounded-2xl bg-white p-6 text-left align-middle shadow-lg">
-              <Dialog.Title
-                as="h3"
-                className="mt-1 text-xl font-medium leading-6"
-              >
-                Android Install Instructions
-              </Dialog.Title>
-              <div className="mt-4 space-y-2">
-                <p>
-                  Open up{" "}
-                  <span
-                    onClick={() => {
-                      navigator.clipboard.writeText(
-                        "https://app.focaltimer.com"
-                      );
-                      toast.success("Copied to clipboard!");
-                    }}
-                    className="cursor-pointer rounded-md bg-gray-100 px-1.5 py-1 font-mono font-medium"
-                  >
-                    app.focaltimer.com
-                  </span>{" "}
-                  in Chrome. (Tap to copy)
-                </p>
-                <p>Tap the “3 dot” menu in the top right corner</p>
-                <p>Tap “Add to Home screen”</p>
-              </div>
+            <form className="relative inline-block w-full max-w-xs transform rounded-2xl border-2 border-gray-200 bg-white p-4 text-left align-middle shadow-lg">
+              {children}
               <button
                 type="button"
-                className="absolute right-6 top-6 rounded-full p-1 text-2xl transition-colors hover:bg-gray-100"
+                className="absolute right-4 top-4 rounded-full p-1 text-2xl transition-colors hover:bg-gray-100"
                 onClick={closeModal}
               >
                 <BiX />
@@ -84,4 +59,4 @@ const AndroidModal = ({ modalOpen, setModalOpen }) => {
   );
 };
 
-export default AndroidModal;
+export default ModalWrapper;

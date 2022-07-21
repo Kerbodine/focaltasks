@@ -11,7 +11,7 @@ import {
 import { useTasks } from "../contexts/TaskContext";
 import DatePicker from "react-datepicker";
 import { useSettings } from "../contexts/SettingsContext";
-import DeleteTaskModal from "./DeleteTaskModal";
+import DeleteTaskModal from "./modals/DeleteTaskModal";
 import { iOS } from "../config/functions";
 import toast from "react-hot-toast";
 

@@ -25,7 +25,7 @@ const IconPicker = ({ iconName, setIconName }) => {
         </button>
         <div
           className={`${
-            showIcons ? "h-[176px]" : "h-0"
+            showIcons ? "h-[184px]" : "h-0"
           } overflow-hidden rounded-md transition-all`}
         >
           <div className="mt-2 flex w-full flex-wrap gap-2">
@@ -40,7 +40,7 @@ const IconPicker = ({ iconName, setIconName }) => {
                       setIconName(icon.name);
                       setShowIcons(false);
                     }}
-                    className="grid h-9 w-9 place-items-center rounded-md bg-white text-2xl text-gray-500 transition-colors hover:bg-accent hover:text-white"
+                    className="hover:bg-accent grid h-[38px] w-[38px] place-items-center rounded-md bg-white text-2xl text-gray-500 transition-colors hover:text-white"
                   >
                     {icon.icon}
                   </button>

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   getFirestore,
   doc,
-  collection,
   onSnapshot,
   orderBy,
   query,

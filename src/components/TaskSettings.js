@@ -12,12 +12,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useSettings } from "../contexts/SettingsContext";
 import { useTasks } from "../contexts/TaskContext";
-import DeleteListModal from "./DeleteListModal";
-import EditListModal from "./EditListModal";
+import DeleteListModal from "./modals/DeleteListModal";
+import EditListModal from "./modals/EditListModal";
+import ShareModal from "./modals/ShareModal";
 
 const TaskSettings = ({ currentList, handlePrint }) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
 
   const { hideDeleteWarning } = useSettings();
   const { updateList, deleteList } = useTasks();
@@ -93,7 +95,7 @@ const TaskSettings = ({ currentList, handlePrint }) => {
                     className={`${
                       active && "bg-gray-100"
                     } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600`}
-                    onClick={() => {}}
+                    onClick={() => setShareModalOpen(true)}
                   >
                     <span className="text-xl">
                       <HiShare />
@@ -154,6 +156,7 @@ const TaskSettings = ({ currentList, handlePrint }) => {
         modalOpen={deleteModalOpen}
         setModalOpen={setDeleteModalOpen}
       />
+      <ShareModal modalOpen={shareModalOpen} setModalOpen={setShareModalOpen} />
     </>
   );
 };

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { FiDribbble, FiInstagram } from "react-icons/fi";
-import NameModal from "../components/NameModal";
+import NameModal from "../components/modals/NameModal";
 import ToggleIcon from "../components/ToggleIcon";
 import { useAuth } from "../contexts/AuthContext";
 import { useSettings } from "../contexts/SettingsContext";
 import { ReactComponent as FocalTimerLogo } from "../svg/focaltimer.svg";
 import { ReactComponent as Android } from "../svg/android.svg";
 import { ReactComponent as IOS } from "../svg/ios.svg";
-import AppleModal from "../components/AppleModal";
-import AndroidModal from "../components/AndroidModal";
+import AppleModal from "../components/modals/AppleModal";
+import AndroidModal from "../components/modals/AndroidModal";
 
 const Settings = () => {
   const { logout, currentUser, userData } = useAuth();
