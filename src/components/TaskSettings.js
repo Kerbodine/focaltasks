@@ -25,7 +25,11 @@ const TaskSettings = ({ currentList, handlePrint }) => {
   const navigate = useNavigate();
 
   const toggleShowCompleted = () => {
-    updateList(currentList.id, { hideCompleted: !currentList.hideCompleted });
+    updateList(
+      currentList.id,
+      { hideCompleted: !currentList.hideCompleted },
+      currentList.author
+    );
   };
 
   const printList = () => {

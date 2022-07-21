@@ -17,7 +17,11 @@ const EditListModal = ({ currentList, modalOpen, setModalOpen }) => {
   const handleUpdateList = (e) => {
     e.preventDefault();
     closeModal();
-    updateList(currentList.id, { title: listTitle, icon: iconName });
+    updateList(
+      currentList.id,
+      { title: listTitle, icon: iconName },
+      currentList.author
+    );
   };
 
   return (

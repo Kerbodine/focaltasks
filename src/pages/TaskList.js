@@ -6,11 +6,11 @@ import { useTasks } from "../contexts/TaskContext";
 import TaskSettings from "../components/TaskSettings";
 import { useReactToPrint } from "react-to-print";
 
-export default function TaskList({ listId }) {
+export default function TaskList({ listId, author }) {
   const { createTask, userLists, updateList } = useTasks();
 
   const newTask = () => {
-    createTask(listId);
+    createTask(listId, author);
   };
 
   // Initialize list settings
@@ -71,7 +71,7 @@ export default function TaskList({ listId }) {
               onChange={(e) => !list.default && setListTitle(e.target.value)}
               onBlur={() => {
                 list.title !== listTitle &&
-                  updateList(listId, { title: listTitle });
+                  updateList(listId, { title: listTitle }, author);
               }}
             />
             {!list.default && (
@@ -84,23 +84,27 @@ export default function TaskList({ listId }) {
             value={listNotes}
             onChange={(e) => setListNotes(e.target.value)}
             onBlur={() => {
-              updateList(listId, { notes: listNotes });
+              updateList(listId, { notes: listNotes }, author);
             }}
           />
           <div className="flex-auto pb-14">
             <div className="-mx-2 mt-4 flex flex-col gap-0.5">
-              {tasks.map((task, index) =>
-                list.hideCompleted === true ? (
-                  !task.completed && (
+              {tasks.map(
+                (task, index) =>
+                  (list.hideCompleted
+                    ? list.hideCompleted && !task.completed
+                    : true) && (
                     <TaskItem
                       key={task.id + index}
                       listId={listId}
                       data={task}
+                      author={
+                        Object.values(userLists).filter(
+                          (list) => list.id === task.listId
+                        )[0].author
+                      }
                     />
                   )
-                ) : (
-                  <TaskItem key={task.id + index} listId={listId} data={task} />
-                )
               )}
             </div>
             <button

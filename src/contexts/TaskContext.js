@@ -7,8 +7,6 @@ import {
   setDoc,
   updateDoc,
   deleteDoc,
-  arrayUnion,
-  arrayRemove,
   deleteField,
 } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
@@ -26,7 +24,7 @@ export function TaskProvider({ children }) {
 
   const [userLists, setUserLists] = useState([]);
 
-  const createTask = async (listId) => {
+  const createTask = async (listId, author) => {
     const taskId = uuidv4();
     const task = {
       id: taskId,
@@ -39,7 +37,7 @@ export function TaskProvider({ children }) {
       modifiedAt: new Date(),
       categories: [],
     };
-    await updateDoc(doc(db, "Users", currentUser.uid, "Lists", listId), {
+    await updateDoc(doc(db, "Users", author, "Lists", listId), {
       tasks: {
         ...Object.values(userLists[listId].tasks),
         [taskId]: task,
@@ -47,8 +45,8 @@ export function TaskProvider({ children }) {
     });
   };
 
-  const updateTask = async (taskId, updatedItems, listId) => {
-    await updateDoc(doc(db, "Users", currentUser.uid, "Lists", listId), {
+  const updateTask = async (taskId, updatedItems, listId, author) => {
+    await updateDoc(doc(db, "Users", author, "Lists", listId), {
       tasks: {
         ...Object.values(userLists[listId].tasks).filter(
           (task) => task.id !== taskId
@@ -64,8 +62,8 @@ export function TaskProvider({ children }) {
     });
   };
 
-  const deleteTask = async (taskId, listId) => {
-    await updateDoc(doc(db, "Users", currentUser.uid, "Lists", listId), {
+  const deleteTask = async (taskId, listId, author) => {
+    await updateDoc(doc(db, "Users", author, "Lists", listId), {
       [`tasks.${taskId}`]: deleteField(),
     });
   };
@@ -77,22 +75,23 @@ export function TaskProvider({ children }) {
       title,
       icon,
       notes: "",
-      sort: "createdAt",
       createdAt: new Date(),
       modifiedAt: new Date(),
       hideCompleted: false,
+      author: currentUser.uid,
+      users: [`${currentUser.uid}`],
       tasks: {},
     });
     return listId;
   };
 
-  const updateList = async (listId, updatedItems) => {
-    const listRef = doc(db, "Users", currentUser.uid, "Lists", listId);
+  const updateList = async (listId, updatedItems, author) => {
+    const listRef = doc(db, "Users", author, "Lists", listId);
     await updateDoc(listRef, updatedItems);
   };
 
-  const deleteList = async (listId) => {
-    const listRef = doc(db, "Users", currentUser.uid, "Lists", listId);
+  const deleteList = async (listId, author) => {
+    const listRef = doc(db, "Users", author, "Lists", listId);
     await deleteDoc(listRef);
   };
 

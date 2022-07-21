@@ -41,10 +41,11 @@ export function AuthProvider({ children }) {
       title: "Inbox",
       notes: "",
       icon: "inbox",
-      sort: "createdAt",
       createdAt: new Date(),
       modifiedAt: new Date(),
       default: true,
+      author: cred.user.uid,
+      users: [`${cred.user.uid}`],
       tasks: {
         [taskId]: {
           id: taskId,

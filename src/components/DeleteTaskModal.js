@@ -4,7 +4,13 @@ import toast from "react-hot-toast";
 import { BiX } from "react-icons/bi";
 import { useTasks } from "../contexts/TaskContext";
 
-const DeleteTaskModal = ({ taskId, listId, modalOpen, setModalOpen }) => {
+const DeleteTaskModal = ({
+  taskId,
+  listId,
+  modalOpen,
+  setModalOpen,
+  author,
+}) => {
   const { deleteTask } = useTasks();
 
   const closeModal = () => {
@@ -14,7 +20,7 @@ const DeleteTaskModal = ({ taskId, listId, modalOpen, setModalOpen }) => {
   const handleDeleteTask = (e) => {
     e.preventDefault();
     closeModal();
-    deleteTask(taskId, listId);
+    deleteTask(taskId, listId, author);
     toast.success("Task deleted");
   };
 

@@ -9,5 +9,9 @@ export default function ListRoute({ component: Component, ...rest }) {
 
   const list = Object.values(userLists).filter((list) => list.id === listId)[0];
 
-  return list ? <TaskList listId={listId} /> : <NotFound />;
+  return list ? (
+    <TaskList listId={listId} author={list.author} />
+  ) : (
+    <NotFound />
+  );
 }

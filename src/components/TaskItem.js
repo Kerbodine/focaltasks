@@ -16,7 +16,8 @@ import { iOS } from "../config/functions";
 import toast from "react-hot-toast";
 
 export default function TaskItem({
-  data: { id, title, completed, dueDate, today, important, upcoming, listId },
+  author,
+  data: { id, title, completed, dueDate, today, important, listId },
 }) {
   const { deleteTask, updateTask } = useTasks();
   const { calendarStartDay, completedAppearance, taskDeleteWarning } =
@@ -33,25 +34,25 @@ export default function TaskItem({
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const toggleTaskCompleted = () => {
-    updateTask(id, { completed: !taskCompleted }, listId);
+    updateTask(id, { completed: !taskCompleted }, listId, author);
     setTaskCompleted(!taskCompleted);
   };
 
   const toggleTaskImportant = () => {
     setTaskImportant(!taskImportant);
     if (important) {
-      updateTask(id, { important: false }, listId);
+      updateTask(id, { important: false }, listId, author);
     } else {
-      updateTask(id, { important: true }, listId);
+      updateTask(id, { important: true }, listId, author);
     }
   };
 
   const toggleTaskToday = () => {
     setTaskToday(!taskToday);
     if (today) {
-      updateTask(id, { today: false }, listId);
+      updateTask(id, { today: false }, listId, author);
     } else {
-      updateTask(id, { today: true }, listId);
+      updateTask(id, { today: true }, listId, author);
     }
   };
 
@@ -80,6 +81,7 @@ export default function TaskItem({
 
   useEffect(() => {
     setTaskCompleted(completed);
+    setTaskTitle(title);
     setTaskImportant(important);
     setTaskToday(today);
     setTaskDueDate(dueDate);
@@ -89,9 +91,9 @@ export default function TaskItem({
     setTaskDueDate(date);
     if (date !== taskDueDate) {
       if (taskDueDate === null) {
-        updateTask(id, { dueDate: date, upcoming: true }, listId);
+        updateTask(id, { dueDate: date, upcoming: true }, listId, author);
       } else {
-        updateTask(id, { dueDate: date, upcoming: false }, listId);
+        updateTask(id, { dueDate: date, upcoming: false }, listId, author);
       }
     }
   };
@@ -150,7 +152,7 @@ export default function TaskItem({
               onChange={(e) => setTaskTitle(e.target.value)}
               onBlur={() => {
                 taskTitle !== title &&
-                  updateTask(id, { title: taskTitle }, listId);
+                  updateTask(id, { title: taskTitle }, listId, author);
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -174,7 +176,7 @@ export default function TaskItem({
                 if (taskDeleteWarning) {
                   setDeleteModalOpen(true);
                 } else {
-                  deleteTask(id, listId);
+                  deleteTask(id, listId, author);
                   toast.success("Task deleted");
                 }
               }}
@@ -278,6 +280,7 @@ export default function TaskItem({
       <DeleteTaskModal
         taskId={id}
         listId={listId}
+        author={author}
         modalOpen={deleteModalOpen}
         setModalOpen={setDeleteModalOpen}
       />

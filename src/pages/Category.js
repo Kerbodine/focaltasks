@@ -2,7 +2,7 @@ import React from "react";
 import TaskItem from "../components/TaskItem";
 import { useTasks } from "../contexts/TaskContext";
 
-export default function Category({ title, sort, listId }) {
+export default function Category({ title, sort }) {
   const { userLists } = useTasks();
 
   // const tasks = userLists[listId].tasks.flat().filter(sort);
@@ -41,6 +41,11 @@ export default function Category({ title, sort, listId }) {
                 key={task.id + index}
                 listId={task.listId}
                 data={task}
+                author={
+                  Object.values(userLists).filter(
+                    (list) => list.id === task.listId
+                  )[0].author
+                }
               />
             ))
           ) : (

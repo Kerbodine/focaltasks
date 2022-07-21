@@ -6,6 +6,8 @@ import {
   onSnapshot,
   orderBy,
   query,
+  collectionGroup,
+  where,
 } from "firebase/firestore";
 import { app } from "../firebase";
 import { Route, Routes } from "react-router-dom";
@@ -49,7 +51,9 @@ export default function MainView() {
     // Listener for user Lists collection
     const unsubscribeLists = onSnapshot(
       query(
-        collection(db, "Users", currentUser.uid, "Lists"),
+        collectionGroup(db, "Lists"),
+        where("users", "array-contains", currentUser.uid),
+        // collection(db, "Users", currentUser.uid, "Lists"),
         orderBy("createdAt")
       ),
       (allLists) => {
