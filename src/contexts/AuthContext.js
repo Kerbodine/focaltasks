@@ -47,7 +47,7 @@ export function AuthProvider({ children }) {
       author: cred.user.uid,
       users: [`${cred.user.uid}`],
       tasks: {
-        [taskId]: {
+        [`${taskId}`]: {
           id: taskId,
           title: "Welcome to your task list!",
           completed: false,
@@ -56,7 +56,6 @@ export function AuthProvider({ children }) {
           listId: "inbox",
           createdAt: new Date(),
           modifiedAt: new Date(),
-          categories: [],
         },
       },
     };

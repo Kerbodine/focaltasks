@@ -35,23 +35,25 @@ export function TaskProvider({ children }) {
       listId,
       createdAt: new Date(),
       modifiedAt: new Date(),
-      categories: [],
     };
     await updateDoc(doc(db, "Users", author, "Lists", listId), {
       tasks: {
-        ...Object.values(userLists[listId].tasks),
-        [taskId]: task,
+        ...Object.values(userLists[listId].tasks)
+          .filter((task) => task.id !== taskId)
+          .reduce((obj, item) => Object.assign(obj, { [item.id]: item }), {}),
+        [`${taskId}`]: task,
       },
+      modifiedAt: new Date(),
     });
   };
 
   const updateTask = async (taskId, updatedItems, listId, author) => {
     await updateDoc(doc(db, "Users", author, "Lists", listId), {
       tasks: {
-        ...Object.values(userLists[listId].tasks).filter(
-          (task) => task.id !== taskId
-        ),
-        [taskId]: {
+        ...Object.values(userLists[listId].tasks)
+          .filter((task) => task.id !== taskId)
+          .reduce((obj, item) => Object.assign(obj, { [item.id]: item }), {}),
+        [`${taskId}`]: {
           ...Object.values(userLists[listId].tasks).filter(
             (task) => task.id === taskId
           )[0],
@@ -59,12 +61,14 @@ export function TaskProvider({ children }) {
           modifiedAt: new Date(),
         },
       },
+      modifiedAt: new Date(),
     });
   };
 
   const deleteTask = async (taskId, listId, author) => {
     await updateDoc(doc(db, "Users", author, "Lists", listId), {
       [`tasks.${taskId}`]: deleteField(),
+      modifiedAt: new Date(),
     });
   };
 
@@ -87,7 +91,7 @@ export function TaskProvider({ children }) {
 
   const updateList = async (listId, updatedItems, author) => {
     const listRef = doc(db, "Users", author, "Lists", listId);
-    await updateDoc(listRef, updatedItems);
+    await updateDoc(listRef, { ...updatedItems, modifiedAt: new Date() });
   };
 
   const deleteList = async (listId, author) => {

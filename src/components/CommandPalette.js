@@ -22,13 +22,11 @@ const CommandPalette = () => {
     let query = rawQuery.toLowerCase().replace(/^[>-]\s*/, ""); // remove leading >, -, or whitespace
     if (query !== "") {
       if (!rawQuery.startsWith(">")) {
-        filteredTasks = userLists
-          .map((list) => {
-            return list.tasks.map((key) => {
-              return userLists[list].tasks[key];
-            });
-          })
-          .flat()
+        filteredTasks = Object.values(
+          Object.values(userLists)
+            .map((list) => Object.values(list.tasks))
+            .flat()
+        ) // array of tasks
           .map((task) => {
             if (task.title.toLowerCase().includes(query.toLowerCase())) {
               return { ...task, type: "task", listId: task.listId };
@@ -38,7 +36,8 @@ const CommandPalette = () => {
           .filter((task) => task);
       }
       if (!rawQuery.startsWith("-")) {
-        filteredLists = userLists
+        filteredLists = Object.values(userLists) // array of lists
+          .flat()
           .map((task) => {
             if (task.title.toLowerCase().includes(query.toLowerCase())) {
               return { ...task, type: "list" };
@@ -160,7 +159,7 @@ const CommandPalette = () => {
                           <span className="flex-none text-gray-500">
                             {item.type === "task" ? ( // Check item type (list or task)
                               item.completed === true ? (
-                                <div className="bg-accent h-5 w-5 rounded-md text-xl text-white">
+                                <div className="h-5 w-5 rounded-md bg-accent text-xl text-white">
                                   <BiCheck />
                                 </div>
                               ) : (

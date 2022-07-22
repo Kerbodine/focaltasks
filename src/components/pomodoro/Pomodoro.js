@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { usePomodoro } from "../../contexts/PomodoroContext";
 import { HiPause, HiPlay, HiXCircle } from "react-icons/hi";
-import { BiCaretDown } from "react-icons/bi";
 import PomodoroTime from "./PomodoroTime";
 import { CircularProgressbar } from "react-circular-progressbar";
 import PomodoroCard from "./PomodoroCard";
@@ -9,15 +8,8 @@ import TagSelector from "./TagSelector";
 
 const Pomodoro = () => {
   // const settingsInfo = useContext(SettingsContext);
-  const {
-    workMinutes,
-    setWorkMinutes,
-    breakMinutes,
-    setBreakMinutes,
-    mode,
-    setMode,
-    getPomodoros,
-  } = usePomodoro();
+  const { workMinutes, breakMinutes, mode, setMode, getPomodoros } =
+    usePomodoro();
 
   const [isPaused, setIsPaused] = useState(true);
   const [secondsLeft, setSecondsLeft] = useState(0);

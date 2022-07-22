@@ -16,7 +16,7 @@ const DeleteListModal = ({ currentList, modalOpen, setModalOpen }) => {
   const handleDeleteList = (e) => {
     e.preventDefault();
     closeModal();
-    deleteList(currentList.id);
+    deleteList(currentList.id, currentList.author);
     toast.success("List deleted");
     navigate("/");
   };

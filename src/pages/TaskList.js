@@ -21,8 +21,8 @@ export default function TaskList({ listId, author }) {
   const filterTasks = useCallback(() => {
     let categoryTasks = [];
     if (list.category) {
-      categoryTasks = userLists[listId].tasks.filter((task) =>
-        task.categories.includes(list.id)
+      categoryTasks = userLists[listId].tasks.filter(
+        (task) => task.today || task.upcoming || task.important
       );
       categoryTasks.sort(function (a, b) {
         var dateA = new Date(a.dueDate),

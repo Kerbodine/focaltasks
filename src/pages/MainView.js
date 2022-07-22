@@ -102,7 +102,7 @@ export default function MainView() {
             <div
               className={`${
                 mobile() ? "ml-0" : "ml-[56px]"
-              } transition-margin flex h-full flex-auto flex-col duration-300 sm:ml-0`}
+              } flex h-full flex-auto flex-col transition-margin duration-300 sm:ml-0`}
             >
               <div
                 className={`${

@@ -129,7 +129,7 @@ const TaskSettings = ({ currentList, handlePrint }) => {
                       if (!hideDeleteWarning) {
                         setDeleteModalOpen(true);
                       } else {
-                        deleteList(currentList.id);
+                        deleteList(currentList.id, currentList.author);
                         toast.success("List deleted");
                         navigate("/");
                       }
