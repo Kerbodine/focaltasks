@@ -96,7 +96,7 @@ const Settings = () => {
                   "sidebarLists.completed": !sidebarLists.completed,
                 });
               }}
-              className="text-accent mr-2 h-5 w-5 rounded-md border-2 border-gray-200 focus:ring-0 focus:ring-offset-0"
+              className="mr-2 h-5 w-5 rounded-md border-2 border-gray-200 text-accent focus:ring-0 focus:ring-offset-0"
             />
             <label htmlFor="showCompleted">Completed</label>
           </div>
@@ -114,7 +114,7 @@ const Settings = () => {
                   "sidebarLists.all": !sidebarLists.all,
                 });
               }}
-              className="text-accent mr-2 h-5 w-5 rounded-md border-2 border-gray-200 focus:ring-0 focus:ring-offset-0"
+              className="mr-2 h-5 w-5 rounded-md border-2 border-gray-200 text-accent focus:ring-0 focus:ring-offset-0"
             />
             <label htmlFor="showAll">All tasks</label>
           </div>
@@ -165,15 +165,15 @@ const Settings = () => {
           <div className="flex w-full items-center">
             <FocalTimerLogo className="h-16 w-16 rounded-2xl border-2 border-gray-200" />
             <div className="ml-4">
-              <p className="font-semibold text-gray-700">FocalTimer</p>
+              <p className="font-semibold text-gray-700">FocalTasks</p>
               <p className="font-mono text-gray-500">v0.8 (Beta)</p>
             </div>
             <div className="ml-auto flex gap-2">
               <a
-                href="https://www.instagram.com/focaltimer/"
+                href="https://www.instagram.com/focaltasks/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:bg-accent block rounded-lg bg-gray-100 p-3 text-2xl text-gray-700 transition-colors hover:text-white"
+                className="block rounded-lg bg-gray-100 p-3 text-2xl text-gray-700 transition-colors hover:bg-accent hover:text-white"
               >
                 <FiInstagram />
               </a>
@@ -181,7 +181,7 @@ const Settings = () => {
                 href="https://dribbble.com/Kerbodine"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:bg-accent block rounded-lg bg-gray-100 p-3 text-2xl text-gray-700 transition-colors hover:text-white"
+                className="block rounded-lg bg-gray-100 p-3 text-2xl text-gray-700 transition-colors hover:bg-accent hover:text-white"
               >
                 <FiDribbble />
               </a>
@@ -203,7 +203,7 @@ const Settings = () => {
             Mobile App:
           </h3>
           <p>
-            If you are using a mobile device, FocalTimer works a lot better with
+            If you are using a mobile device, FocalTasks works a lot better with
             the installable progressive web app
           </p>
           <div className="mt-2 flex max-w-md gap-2">

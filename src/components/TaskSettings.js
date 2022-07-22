@@ -87,7 +87,7 @@ const TaskSettings = ({ currentList, handlePrint }) => {
                     <span className="text-xl">
                       <HiPencil />
                     </span>
-                    <p className="ml-1.5 text-sm font-medium">Edit list</p>
+                    <p className="ml-1.5 text-sm font-medium">Edit</p>
                   </button>
                 )}
               </Menu.Item>
@@ -102,7 +102,7 @@ const TaskSettings = ({ currentList, handlePrint }) => {
                     <span className="text-xl">
                       <HiShare />
                     </span>
-                    <p className="ml-1.5 text-sm font-medium">Share list</p>
+                    <p className="ml-1.5 text-sm font-medium">Share</p>
                   </button>
                 )}
               </Menu.Item>
@@ -117,7 +117,7 @@ const TaskSettings = ({ currentList, handlePrint }) => {
                     <span className="text-xl">
                       <HiPrinter />
                     </span>
-                    <p className="ml-1.5 text-sm font-medium">Print list</p>
+                    <p className="ml-1.5 text-sm font-medium">Print</p>
                   </button>
                 )}
               </Menu.Item>

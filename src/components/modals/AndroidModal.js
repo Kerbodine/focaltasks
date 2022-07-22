@@ -14,12 +14,12 @@ const AndroidModal = ({ modalOpen, setModalOpen }) => {
           Open up{" "}
           <span
             onClick={() => {
-              navigator.clipboard.writeText("https://app.focaltimer.com");
+              navigator.clipboard.writeText("https://app.focaltasks.com");
               toast.success("Copied to clipboard!");
             }}
             className="cursor-pointer rounded-md bg-gray-100 px-1.5 py-1 font-mono font-medium"
           >
-            app.focaltimer.com
+            app.focaltasks.com
           </span>{" "}
           in Chrome. (Tap to copy)
         </p>
