@@ -16,36 +16,54 @@ const CommandPalette = () => {
 
   const { userLists } = useTasks();
 
+  const defaultLists = [
+    {
+      type: "list",
+      title: "Today",
+      icon: "today",
+      id: "today",
+    },
+    {
+      type: "list",
+      title: "Upcoming",
+      icon: "upcoming",
+      id: "upcoming",
+    },
+    {
+      type: "list",
+      title: "Important",
+      icon: "important",
+      id: "important",
+    },
+  ];
+
   useEffect(() => {
     let filteredTasks = [];
     let filteredLists = [];
     let query = rawQuery.toLowerCase().replace(/^[>-]\s*/, ""); // remove leading >, -, or whitespace
-    if (query !== "") {
-      if (!rawQuery.startsWith(">")) {
-        filteredTasks = Object.values(
-          Object.values(userLists)
-            .map((list) => Object.values(list.tasks))
-            .flat()
-        ) // array of tasks
-          .map((task) => {
-            if (task.title.toLowerCase().includes(query.toLowerCase())) {
-              return { ...task, type: "task", listId: task.listId };
-            }
-            return null;
-          })
-          .filter((task) => task);
-      }
-      if (!rawQuery.startsWith("-")) {
-        filteredLists = Object.values(userLists) // array of lists
+    if (!rawQuery.startsWith(">")) {
+      filteredTasks = Object.values(
+        Object.values(userLists)
+          .map((list) => Object.values(list.tasks))
           .flat()
-          .map((task) => {
-            if (task.title.toLowerCase().includes(query.toLowerCase())) {
-              return { ...task, type: "list" };
-            }
-            return null;
-          })
-          .filter((task) => task); // Remove null values
-      }
+      ) // array of tasks
+        .map((task) => {
+          if (task.title.toLowerCase().includes(query.toLowerCase())) {
+            return { ...task, type: "task", listId: task.listId };
+          }
+          return null;
+        })
+        .filter((task) => task);
+    }
+    if (!rawQuery.startsWith("-")) {
+      filteredLists = [...Object.values(userLists), ...defaultLists] // array of lists
+        .map((task) => {
+          if (task.title.toLowerCase().includes(query.toLowerCase())) {
+            return { ...task, type: "list" };
+          }
+          return null;
+        })
+        .filter((task) => task); // Remove null values
     }
     setResults([...filteredTasks, ...filteredLists]);
   }, [rawQuery, userLists]);
@@ -134,7 +152,7 @@ const CommandPalette = () => {
                 </div>
                 {results.length > 0 ? (
                   <p className="mx-2 mt-3 mb-1 text-xs font-bold uppercase tracking-tight text-gray-400">
-                    All lists
+                    All items
                   </p>
                 ) : (
                   rawQuery && (
@@ -159,7 +177,7 @@ const CommandPalette = () => {
                           <span className="flex-none text-gray-500">
                             {item.type === "task" ? ( // Check item type (list or task)
                               item.completed === true ? (
-                                <div className="h-5 w-5 rounded-md bg-accent text-xl text-white">
+                                <div className="bg-accent h-5 w-5 rounded-md text-xl text-white">
                                   <BiCheck />
                                 </div>
                               ) : (
