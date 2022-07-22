@@ -1,10 +1,25 @@
 import { Transition } from "@headlessui/react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTasks } from "../contexts/TaskContext";
 import { useView } from "../contexts/ViewContext";
 
-export default function NavbarItem({ icon, title, link, length }) {
+export default function NavbarItem({ icon, title, link, listId }) {
   const { navbar } = useView();
   const { pathname } = useLocation();
+  const { userLists } = useTasks();
+
+  const [length, setLength] = useState(0);
+
+  useEffect(() => {
+    console.log(listId);
+    if (listId) {
+      const list = userLists[listId];
+      if (list) {
+        setLength(list.tasks.filter((task) => !task.completed).length);
+      }
+    }
+  }, [userLists, listId]);
 
   return (
     <Link

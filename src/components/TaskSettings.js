@@ -156,7 +156,11 @@ const TaskSettings = ({ currentList, handlePrint }) => {
         modalOpen={deleteModalOpen}
         setModalOpen={setDeleteModalOpen}
       />
-      <ShareModal modalOpen={shareModalOpen} setModalOpen={setShareModalOpen} />
+      <ShareModal
+        currentList={currentList}
+        modalOpen={shareModalOpen}
+        setModalOpen={setShareModalOpen}
+      />
     </>
   );
 };

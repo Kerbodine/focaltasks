@@ -36,9 +36,9 @@ export default function ForgotPassword() {
 
   return (
     <div className="grid h-screen w-screen place-items-center bg-white">
-      <div className="rounded-2xl border-gray-200 p-8 xs:border-2">
+      <div className="xs:border-2 rounded-2xl border-gray-200 p-8">
         <form className="relative w-[240px]" onSubmit={handleSubmit}>
-          <h1 className="mb-4 text-xl font-semibold xs:text-2xl">
+          <h1 className="xs:text-2xl mb-4 text-xl font-semibold">
             Reset password
           </h1>
           <input
@@ -50,13 +50,13 @@ export default function ForgotPassword() {
             required
           />
           {error && (
-            <div className="mt-2 flex w-full gap-1 rounded-lg border-2 border-red-400 bg-red-100 p-0.5 text-sm font-medium text-red-400">
+            <div className="mt-2 flex w-full gap-1 rounded-lg border-2 border-red-500 bg-red-100 p-0.5 text-sm font-medium text-red-500">
               <BiInfoCircle className="flex-none rotate-180 text-xl" />
               <p className="flex-auto truncate">{error}</p>
             </div>
           )}
           {message && (
-            <div className="mt-2 flex w-full gap-1 rounded-lg border-2 border-emerald-400 bg-green-100 p-0.5 text-sm font-medium text-emerald-400">
+            <div className="mt-2 flex w-full gap-1 rounded-lg border-2 border-emerald-500 bg-green-100 p-0.5 text-sm font-medium text-emerald-500">
               <BiCheck className="flex-none text-xl" />
               <p className="flex-auto truncate">{message}</p>
             </div>

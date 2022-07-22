@@ -8,6 +8,11 @@ import {
   updateDoc,
   deleteDoc,
   deleteField,
+  collection,
+  where,
+  getDoc,
+  getDocs,
+  query,
 } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
 
@@ -99,6 +104,22 @@ export function TaskProvider({ children }) {
     await deleteDoc(listRef);
   };
 
+  const getUserId = async (email) => {
+    const userDoc = await getDocs(
+      query(collection(db, "Users"), where("email", "==", email))
+    );
+    return userDoc.docs[0].id;
+  };
+
+  const inviteUser = async (listId, email, author) => {
+    const userId = await getUserId(email);
+    const listRef = doc(db, "Users", author, "Lists", listId);
+    await updateDoc(listRef, {
+      users: [...userLists[listId].users, userId],
+      modifiedAt: new Date(),
+    });
+  };
+
   const value = {
     userLists,
     setUserLists,
@@ -108,6 +129,7 @@ export function TaskProvider({ children }) {
     updateTask,
     newList,
     deleteList,
+    inviteUser,
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;

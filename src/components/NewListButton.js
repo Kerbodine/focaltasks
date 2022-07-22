@@ -32,7 +32,7 @@ const NewListButton = () => {
   return (
     <>
       <button
-        className={`group flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 outline-none transition-colors hover:bg-accent hover:text-white`}
+        className={`group hover:bg-accent flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 outline-none transition-colors hover:text-white`}
         onClick={openModal}
       >
         <span className="flex-none text-xl">
@@ -41,7 +41,7 @@ const NewListButton = () => {
         <p
           className={`${
             !navbar && "hidden sm:block"
-          } flex-auto text-left text-sm font-medium`}
+          } flex-auto truncate text-left text-sm font-medium`}
         >
           New list
         </p>
@@ -63,7 +63,7 @@ const NewListButton = () => {
         <button
           type="submit"
           onClick={createNewList}
-          className="mt-4 w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:border-accent hover:bg-accent hover:text-white disabled:cursor-not-allowed"
+          className="hover:border-accent hover:bg-accent mt-4 w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:text-white disabled:cursor-not-allowed"
         >
           Create list
         </button>

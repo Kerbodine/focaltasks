@@ -54,6 +54,12 @@
   display: none;  /* Safari and Chrome */
 }
 
+.label-center {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 /* React Datepicker */
 
 .react-datepicker-wrapper,

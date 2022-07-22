@@ -25,9 +25,16 @@ export default function Navbar() {
   const { navbar, toggleNavbar, closeNavbar } = useView();
   const { sidebarLists } = useSettings();
 
-  const specialLists = ["inbox", "today", "upcoming", "important"];
+  const specialLists = ["inbox"];
 
   const ref = useClickOutside(() => closeNavbar());
+
+  const checkShared = () => {
+    return (
+      Object.values(userLists).filter((list) => list.users.length > 1).length >
+      0
+    );
+  };
 
   return (
     <div
@@ -79,7 +86,12 @@ export default function Navbar() {
       <div className="sidenav flex-auto space-y-3 overflow-y-auto p-3">
         {/* Default lists */}
         <div>
-          <NavbarItem icon={<HiInbox />} title="Inbox" link={"/inbox"} />
+          <NavbarItem
+            icon={<HiInbox />}
+            title="Inbox"
+            link={"/inbox"}
+            listId={"inbox"}
+          />
         </div>
         <div className="flex flex-col">
           <NavbarItem icon={<HiSun />} title="Today" link={"/today"} />
@@ -117,20 +129,60 @@ export default function Navbar() {
           />
         </div>
         {/* Horizontal divider */}
-        <hr className="h-[2px] w-full border-0 bg-gray-100" />
+        {checkShared() && (
+          <>
+            <div className="relative">
+              <hr className="h-[2px] w-full border-0 bg-gray-100" />
+              <p
+                className={`${
+                  navbar ? "opacity-100" : "opacity-0 sm:opacity-100"
+                } label-center absolute truncate bg-white px-2 text-xs font-bold uppercase text-gray-400 transition-opacity`}
+              >
+                Shared
+              </p>
+            </div>
+            <div className="flex flex-col">
+              {/* Shared lists */}
+              {Object.values(userLists)
+                .filter((list) => list.users.length > 1) // Check if its the user's list
+                .map((list) => (
+                  <NavbarItem
+                    icon={
+                      listIcons.find((icon) => icon.name === list.icon).icon
+                    }
+                    key={list.id}
+                    title={list.title}
+                    link={`/${list.id}`}
+                    listId={list.id}
+                  />
+                ))}
+            </div>
+          </>
+        )}
+        <div className="relative">
+          <hr className="h-[2px] w-full border-0 bg-gray-100" />
+          <p
+            className={`${
+              navbar ? "opacity-100" : "opacity-0 sm:opacity-100"
+            } label-center absolute truncate bg-white px-2 text-xs font-bold uppercase text-gray-400 transition-opacity`}
+          >
+            My lists
+          </p>
+        </div>
         <div className="flex flex-col">
           {/* User lists */}
           {Object.values(userLists)
             .filter((list) => !specialLists.includes(list.id)) // Check if its not a default list
+            .filter((list) => list.users.length === 1) // Check if its the user's list
             .map((list) => (
               <NavbarItem
                 icon={listIcons.find((icon) => icon.name === list.icon).icon}
                 key={list.id}
                 title={list.title}
                 link={`/${list.id}`}
+                listId={list.id}
               />
             ))}
-          {/* New list button */}
           <NewListButton />
         </div>
       </div>

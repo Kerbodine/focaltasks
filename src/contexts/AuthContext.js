@@ -30,6 +30,7 @@ export function AuthProvider({ children }) {
     const batch = writeBatch(db);
     const photoURL = cred.user.photoURL ? cred.user.photoURL : null;
     const userDoc = {
+      id: cred.user.uid,
       displayName: cred.user.displayName,
       email: cred.user.email,
       photoURL,
@@ -46,6 +47,7 @@ export function AuthProvider({ children }) {
       default: true,
       author: cred.user.uid,
       users: [`${cred.user.uid}`],
+      invites: [],
       tasks: {
         [`${taskId}`]: {
           id: taskId,
