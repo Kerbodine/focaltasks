@@ -37,7 +37,7 @@ const Settings = () => {
         <div className="flex w-full flex-col gap-2 leading-5 text-gray-700">
           {/* Sign out */}
           <h3 className="text-lg font-semibold text-black">Account:</h3>
-          <div className="flex gap-4">
+          {/* <div className="flex gap-4">
             <div>
               <p>Name</p>
               <p className="text-gray-500">{userData.displayName}</p>
@@ -48,7 +48,7 @@ const Settings = () => {
             >
               Change Name
             </button>
-          </div>
+          </div> */}
           <div className="flex gap-4">
             <div>
               <p>Current Account</p>

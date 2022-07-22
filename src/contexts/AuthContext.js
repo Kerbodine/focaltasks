@@ -47,7 +47,7 @@ export function AuthProvider({ children }) {
       default: true,
       author: cred.user.uid,
       users: [`${cred.user.uid}`],
-      invites: [],
+      profiles: [],
       tasks: {
         [`${taskId}`]: {
           id: taskId,
@@ -95,6 +95,7 @@ export function AuthProvider({ children }) {
       const { isNewUser } = getAdditionalUserInfo(cred);
       if (isNewUser) {
         await createSignupDoc(cred);
+        console.log(cred);
       }
     } catch (err) {
       console.log(err);

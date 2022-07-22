@@ -10,6 +10,7 @@ import {
   HiTrash,
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import { useSettings } from "../contexts/SettingsContext";
 import { useTasks } from "../contexts/TaskContext";
 import DeleteListModal from "./modals/DeleteListModal";
@@ -23,6 +24,7 @@ const TaskSettings = ({ currentList, handlePrint }) => {
 
   const { hideDeleteWarning } = useSettings();
   const { updateList, deleteList } = useTasks();
+  const { userData } = useAuth();
 
   const navigate = useNavigate();
 
@@ -122,9 +124,12 @@ const TaskSettings = ({ currentList, handlePrint }) => {
               <Menu.Item>
                 {({ active }) => (
                   <button
+                    {...(currentList.author !== userData.id && {
+                      disabled: true,
+                    })}
                     className={`${
                       active && "bg-gray-100"
-                    } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600`}
+                    } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600 disabled:cursor-not-allowed disabled:opacity-50`}
                     onClick={() => {
                       if (!hideDeleteWarning) {
                         setDeleteModalOpen(true);

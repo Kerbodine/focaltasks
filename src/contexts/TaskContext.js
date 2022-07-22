@@ -10,7 +10,6 @@ import {
   deleteField,
   collection,
   where,
-  getDoc,
   getDocs,
   query,
 } from "firebase/firestore";
@@ -23,7 +22,7 @@ export function useTasks() {
 }
 
 export function TaskProvider({ children }) {
-  const { currentUser } = useAuth();
+  const { currentUser, userData } = useAuth();
 
   const db = getFirestore(app);
 
@@ -89,6 +88,14 @@ export function TaskProvider({ children }) {
       hideCompleted: false,
       author: currentUser.uid,
       users: [`${currentUser.uid}`],
+      profiles: [
+        {
+          id: userData.id,
+          displayName: userData.displayName,
+          email: userData.email,
+          photoURL: userData.photoURL ? userData.photoURL : null,
+        },
+      ],
       tasks: {},
     });
     return listId;
@@ -104,20 +111,37 @@ export function TaskProvider({ children }) {
     await deleteDoc(listRef);
   };
 
-  const getUserId = async (email) => {
+  const inviteUser = async (listId, email, author) => {
+    let user;
     const userDoc = await getDocs(
       query(collection(db, "Users"), where("email", "==", email))
     );
-    return userDoc.docs[0].id;
-  };
 
-  const inviteUser = async (listId, email, author) => {
-    const userId = await getUserId(email);
-    const listRef = doc(db, "Users", author, "Lists", listId);
-    await updateDoc(listRef, {
-      users: [...userLists[listId].users, userId],
-      modifiedAt: new Date(),
-    });
+    try {
+      user = userDoc.docs[0].data();
+      console.log(user);
+    } catch {
+      return "Account does not exist";
+    }
+
+    if (userLists[listId].users.includes(user.id)) {
+      return "User already invited";
+    } else {
+      const listRef = doc(db, "Users", author, "Lists", listId);
+      await updateDoc(listRef, {
+        users: [...userLists[listId].users, user.id],
+        profiles: [
+          ...userLists[listId].profiles,
+          {
+            id: user.id,
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL ? user.photoURL : null,
+          },
+        ],
+        modifiedAt: new Date(),
+      });
+    }
   };
 
   const value = {
