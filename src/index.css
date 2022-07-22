@@ -31,6 +31,10 @@
   user-select: none;
 }
 
+.no-caret {
+  background-image: none;
+}
+
 .CircularProgressbar {
   @apply w-full align-middle;
 }

@@ -144,6 +144,17 @@ export function TaskProvider({ children }) {
     }
   };
 
+  const removeGuest = async (listId, guestId, author) => {
+    const listRef = doc(db, "Users", author, "Lists", listId);
+    await updateDoc(listRef, {
+      users: userLists[listId].users.filter((user) => user !== guestId),
+      profiles: userLists[listId].profiles.filter(
+        (profile) => profile.id !== guestId
+      ),
+      modifiedAt: new Date(),
+    });
+  };
+
   const value = {
     userLists,
     setUserLists,
@@ -154,6 +165,7 @@ export function TaskProvider({ children }) {
     newList,
     deleteList,
     inviteUser,
+    removeGuest,
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
