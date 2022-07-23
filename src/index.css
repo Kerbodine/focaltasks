@@ -22,6 +22,10 @@
   * { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 }
 
+.animate-spin-slow {
+  animation: spin 2.5s linear infinite;
+}
+
 .no-select {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

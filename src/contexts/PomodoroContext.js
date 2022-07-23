@@ -1,12 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  limit,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import { doc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
 
 export const PomodoroContext = createContext({});
@@ -18,29 +11,46 @@ export function usePomodoro() {
 export function PomodoroProvider({ children }) {
   const { currentUser } = useAuth();
 
-  const [workMinutes, setWorkMinutes] = useState(25);
-  const [breakMinutes, setBreakMinutes] = useState(5);
-  const [mode, setMode] = useState("work");
+  const [duration, setDuration] = useState(25);
+  const [currentId, setCurrentId] = useState(null);
+  const [pomodoros, setPomodoros] = useState([]);
 
-  const getPomodoros = async () => {
-    const q = query(
-      collection(getFirestore(), "Users", currentUser.uid, "Pomodoros"),
-      orderBy("createdAt", "desc"),
-      limit(4)
+  const startSession = async (id, time) => {
+    const pomodoro = {
+      id: id,
+      user: currentUser.uid,
+      tag: "Test",
+      createdAt: new Date(),
+      completed: false,
+      time: time,
+    };
+    await setDoc(
+      doc(getFirestore(), "Users", currentUser.uid, "Pomodoros", id),
+      {
+        ...pomodoro,
+      }
     );
-    const snapshot = await getDocs(q);
-    const snap = snapshot.docs.map((doc) => doc.data());
-    return snap;
+  };
+
+  const completeSession = async () => {
+    await updateDoc(
+      doc(getFirestore(), "Users", currentUser.uid, "Pomodoros", currentId),
+      {
+        completed: true,
+        completedAt: new Date(),
+      }
+    );
   };
 
   const value = {
-    workMinutes,
-    setWorkMinutes,
-    breakMinutes,
-    setBreakMinutes,
-    mode,
-    setMode,
-    getPomodoros,
+    duration,
+    setDuration,
+    startSession,
+    completeSession,
+    currentId,
+    setCurrentId,
+    pomodoros,
+    setPomodoros,
   };
 
   return (

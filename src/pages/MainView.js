@@ -111,54 +111,59 @@ export default function MainView() {
               >
                 <CommandPalette />
               </div>
-              <Routes>
-                <Route
-                  exact
-                  path="/today"
-                  element={
-                    <Category title="Today" sort={(task) => task.today} />
-                  }
-                />
-                <Route
-                  exact
-                  path="/upcoming"
-                  element={
-                    <Category title="Upcoming" sort={(task) => task.upcoming} />
-                  }
-                />
-                <Route
-                  exact
-                  path="/important"
-                  element={
-                    <Category
-                      title="Important"
-                      sort={(task) => task.important}
-                    />
-                  }
-                />
-                <Route
-                  exact
-                  path="/completed"
-                  element={
-                    <Category
-                      title="Completed"
-                      sort={(task) => task.completed}
-                    />
-                  }
-                />
-                <Route
-                  exact
-                  path="/all"
-                  element={<Category title="All" sort={(task) => task} />}
-                />
-                <Route exact path="/settings" element={<Settings />} />
-                <Route path="/:listId" element={<ListRoute />} />
-              </Routes>
+              <div className="flex h-full w-full">
+                <Routes>
+                  <Route
+                    exact
+                    path="/today"
+                    element={
+                      <Category title="Today" sort={(task) => task.today} />
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/upcoming"
+                    element={
+                      <Category
+                        title="Upcoming"
+                        sort={(task) => task.upcoming}
+                      />
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/important"
+                    element={
+                      <Category
+                        title="Important"
+                        sort={(task) => task.important}
+                      />
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/completed"
+                    element={
+                      <Category
+                        title="Completed"
+                        sort={(task) => task.completed}
+                      />
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/all"
+                    element={<Category title="All" sort={(task) => task} />}
+                  />
+                  <Route exact path="/settings" element={<Settings />} />
+                  <Route path="/:listId" element={<ListRoute />} />
+                </Routes>
+                {/* Sidebar section */}
+                <PomodoroProvider>
+                  <Sidebar />
+                </PomodoroProvider>
+              </div>
             </div>
-            {/* Sidebar section */}
-            <PomodoroProvider>
-              <Sidebar />
-            </PomodoroProvider>
           </div>
         </SettingsProvider>
       )}
