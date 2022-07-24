@@ -25,6 +25,8 @@ export default function PomodoroCard({ session }) {
               month: "short",
               day: "numeric",
             })
+          : currentId === session.id
+          ? "-"
           : "Canceled"}
       </span>
     </li>

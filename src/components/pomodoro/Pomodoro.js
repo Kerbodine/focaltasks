@@ -16,7 +16,7 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 
 const Pomodoro = () => {
-  const minute = 1;
+  const minute = 60;
 
   const { duration, startSession, completeSession, currentId, setCurrentId } =
     usePomodoro();
@@ -69,6 +69,23 @@ const Pomodoro = () => {
     setIsPaused(true);
     isPausedRef.current = true;
   };
+
+  useEffect(() => {
+    const handleTabClose = (event) => {
+      event.preventDefault();
+      if (started) {
+        console.log("beforeunload event triggered");
+        return (event.returnValue = "Are you sure you want to exit?");
+      } else {
+        return;
+      }
+    };
+
+    window.addEventListener("beforeunload", handleTabClose);
+    return () => {
+      window.removeEventListener("beforeunload", handleTabClose);
+    };
+  }, [started]);
 
   const totalSeconds = duration * minute;
   const percentage = Math.round((secondsLeft / totalSeconds) * 1000) / 10;
@@ -161,6 +178,8 @@ const Pomodoro = () => {
               onClick={() => {
                 resetTimer();
                 setCurrentId(null);
+                setIsPaused(true);
+                setStarted(false);
               }}
               className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-red-400 hover:text-white"
             >

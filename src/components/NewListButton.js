@@ -1,6 +1,7 @@
 import { Dialog } from "@headlessui/react";
 import React, { useState } from "react";
 import { HiPlusSm } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 import { useTasks } from "../contexts/TaskContext";
 import { useView } from "../contexts/ViewContext";
 import IconPicker from "./IconPicker";
@@ -10,6 +11,7 @@ const NewListButton = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { navbar } = useView();
   const { newList } = useTasks();
+  const navigate = useNavigate();
 
   const [listTitle, setListTitle] = useState("");
   const [iconName, setIconName] = useState("list");
@@ -22,17 +24,18 @@ const NewListButton = () => {
     setModalOpen(false);
   };
 
-  const createNewList = (e) => {
+  const createNewList = async (e) => {
     e.preventDefault();
     closeSettings();
     setListTitle("");
-    newList(listTitle, iconName);
+    const listId = await newList(listTitle, iconName);
+    navigate(`/${listId}`);
   };
 
   return (
     <>
       <button
-        className={`group hover:bg-accent flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 outline-none transition-colors hover:text-white`}
+        className={`group flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 outline-none transition-colors hover:bg-accent hover:text-white`}
         onClick={openModal}
       >
         <span className="flex-none text-xl">
@@ -63,7 +66,7 @@ const NewListButton = () => {
         <button
           type="submit"
           onClick={createNewList}
-          className="hover:border-accent hover:bg-accent mt-4 w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:text-white disabled:cursor-not-allowed"
+          className="mt-4 w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:border-accent hover:bg-accent hover:text-white disabled:cursor-not-allowed"
         >
           Create list
         </button>

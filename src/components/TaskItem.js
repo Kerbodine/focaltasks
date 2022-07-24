@@ -14,6 +14,7 @@ import { useSettings } from "../contexts/SettingsContext";
 import DeleteTaskModal from "./modals/DeleteTaskModal";
 import { iOS } from "../config/functions";
 import toast from "react-hot-toast";
+import { BiX } from "react-icons/bi";
 
 export default function TaskItem({
   author,
@@ -96,6 +97,12 @@ export default function TaskItem({
         updateTask(id, { dueDate: date, upcoming: true }, listId, author);
       }
     }
+  };
+
+  const adjustTimezone = (date) => {
+    return new Date(
+      date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
+    );
   };
 
   return (
@@ -259,14 +266,15 @@ export default function TaskItem({
                     onClickOutside={() => setTaskExpanded(false)}
                     onChange={(date) => {
                       if (date) {
-                        const dateString = date.toISOString().split("T")[0];
+                        const newDate = adjustTimezone(date);
+                        const dateString = newDate.toISOString().split("T")[0];
                         updateDate(dateString);
                         setTaskExpanded(false);
                       } else {
                         updateDate(null);
                       }
                     }}
-                    todayButton="☉Today"
+                    todayButton="Today"
                     dateFormat="dd/MM/yyyy"
                     format="y-MM-dd"
                     calendarStartDay={calendarStartDay}
