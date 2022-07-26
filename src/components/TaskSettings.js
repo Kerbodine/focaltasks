@@ -40,11 +40,49 @@ const TaskSettings = ({ currentList, handlePrint }) => {
     handlePrint();
   };
 
+  const deleteListHandler = () => {
+    if (!hideDeleteWarning) {
+      setDeleteModalOpen(true);
+    } else {
+      deleteList(currentList.id, currentList.author);
+      toast.success("List deleted");
+      navigate("/");
+    }
+  };
+
+  const options = [
+    {
+      icon: <HiCheckCircle />,
+      label: `${currentList.hideCompleted ? "Show" : "Hide"} completed`,
+      handler: toggleShowCompleted,
+    },
+    {
+      icon: <HiPencil />,
+      label: "Edit",
+      handler: () => setEditModalOpen(true),
+    },
+    {
+      icon: <HiShare />,
+      label: "Share",
+      handler: () => setShareModalOpen(true),
+    },
+    {
+      icon: <HiPrinter />,
+      label: "Print",
+      handler: printList,
+    },
+    {
+      icon: <HiTrash />,
+      label: "Delete list",
+      handler: deleteListHandler,
+    },
+  ];
+
   return (
     <>
       <Menu as="div" className="relative z-10 print:hidden">
         <div>
-          <Menu.Button className="grid h-8 w-8 place-items-center rounded-lg text-2xl text-gray-500 outline-none transition-colors hover:bg-gray-100">
+          <Menu.Button className="grid h-8 w-8 place-items-center rounded-lg text-2xl text-gray-500 outline-none transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800">
             <BiDotsVerticalRounded />
           </Menu.Button>
         </div>
@@ -57,96 +95,27 @@ const TaskSettings = ({ currentList, handlePrint }) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg border-2 border-gray-100 bg-white shadow-lg outline-none">
+          <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg border-2 border-gray-100 bg-white shadow-lg outline-none dark:border-gray-700 dark:bg-gray-900">
             <div className="space-y-1 p-1.5">
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active && "bg-gray-100"
-                    } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600`}
-                    onClick={toggleShowCompleted}
-                  >
-                    <span className="text-xl">
-                      <HiCheckCircle />
-                    </span>
-                    <p className="ml-1.5 text-sm font-medium">
-                      {currentList.hideCompleted ? "Show" : "Hide"} completed
-                    </p>
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active && "bg-gray-100"
-                    } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600`}
-                    onClick={() => setEditModalOpen(true)}
-                  >
-                    <span className="text-xl">
-                      <HiPencil />
-                    </span>
-                    <p className="ml-1.5 text-sm font-medium">Edit</p>
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active && "bg-gray-100"
-                    } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600`}
-                    onClick={() => setShareModalOpen(true)}
-                  >
-                    <span className="text-xl">
-                      <HiShare />
-                    </span>
-                    <p className="ml-1.5 text-sm font-medium">Share</p>
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active && "bg-gray-100"
-                    } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600`}
-                    onClick={printList}
-                  >
-                    <span className="text-xl">
-                      <HiPrinter />
-                    </span>
-                    <p className="ml-1.5 text-sm font-medium">Print</p>
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    {...(currentList.author !== userData.id && {
-                      disabled: true,
-                    })}
-                    className={`${
-                      active && "bg-gray-100"
-                    } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600 disabled:cursor-not-allowed disabled:opacity-50`}
-                    onClick={() => {
-                      if (!hideDeleteWarning) {
-                        setDeleteModalOpen(true);
-                      } else {
-                        deleteList(currentList.id, currentList.author);
-                        toast.success("List deleted");
-                        navigate("/");
-                      }
-                    }}
-                  >
-                    <span className="text-xl">
-                      <HiTrash />
-                    </span>
-                    <p className="ml-1.5 text-sm font-medium">Delete list</p>
-                  </button>
-                )}
-              </Menu.Item>
+              {options.map(({ icon, label, handler }) => (
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      {...(label === "Delete list" &&
+                        currentList.author !== userData.id && {
+                          disabled: true,
+                        })}
+                      className={`${
+                        active && "bg-gray-100 dark:bg-gray-800"
+                      } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600 dark:text-gray-400`}
+                      onClick={handler}
+                    >
+                      <span className="text-xl">{icon}</span>
+                      <p className="ml-1.5 text-sm font-medium">{label}</p>
+                    </button>
+                  )}
+                </Menu.Item>
+              ))}
             </div>
           </Menu.Items>
         </Transition>

@@ -77,7 +77,7 @@ const Pomodoro = () => {
     const handleTabClose = (event) => {
       event.preventDefault();
       if (started) {
-        console.log("beforeunload event triggered");
+        console.log("Beforeunload event triggered");
         return (event.returnValue = "Are you sure you want to exit?");
       } else {
         return;
@@ -109,8 +109,6 @@ const Pomodoro = () => {
         allPomodoros.docs.forEach((session) => {
           tempPomodoros.push(session.data());
         });
-        console.log("Updating pomodoros");
-        console.log(tempPomodoros);
         setPomodoros(tempPomodoros);
       }
     );
@@ -211,6 +209,12 @@ const Pomodoro = () => {
     <div>
       <div className="p-3">
         <div className="relative flex aspect-square w-full flex-col items-center justify-center rounded-full">
+          {/* Create circular progress bar with svg */}
+          <div
+            className={`absolute h-full w-full ${!started && "not-started"}`}
+          >
+            <CircularProgressbar value={percentage} strokeWidth={4} />
+          </div>
           <PomodoroTime
             minutes={minutes}
             minute={minute}
@@ -218,10 +222,6 @@ const Pomodoro = () => {
             time={secondsLeftRef.current}
             isPaused={isPausedRef.current}
           />
-          {/* Create circular progress bar with svg */}
-          <div className="absolute -z-10 h-full w-full">
-            <CircularProgressbar value={percentage} strokeWidth={4} />
-          </div>
         </div>
       </div>
       <div className="mt-4 flex justify-center gap-2">
@@ -235,7 +235,7 @@ const Pomodoro = () => {
               isPausedRef.current = false;
               setStarted(true);
             }}
-            className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-accent hover:text-white"
+            className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-accent hover:text-white dark:bg-gray-800 dark:hover:bg-accent"
           >
             <HiPlay className="-ml-1 text-xl" />
             Start
@@ -246,7 +246,7 @@ const Pomodoro = () => {
               setIsPaused(false);
               isPausedRef.current = false;
             }}
-            className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-accent hover:text-white"
+            className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-accent hover:text-white dark:bg-gray-800 dark:hover:bg-accent"
           >
             <HiPlay className="-ml-1 text-xl" />
             Resume
@@ -258,7 +258,7 @@ const Pomodoro = () => {
                 setIsPaused(true);
                 isPausedRef.current = true;
               }}
-              className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-500 hover:text-white"
+              className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-500 hover:text-white dark:bg-gray-800 dark:hover:bg-accent"
             >
               <HiPause className="-ml-1 text-xl" />
               Pause
@@ -270,7 +270,7 @@ const Pomodoro = () => {
                 setIsPaused(true);
                 setStarted(false);
               }}
-              className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-red-400 hover:text-white"
+              className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-red-400 hover:text-white dark:bg-gray-800 dark:hover:bg-red-400"
             >
               <HiXCircle className="-ml-1 text-xl" />
               Reset
@@ -279,9 +279,9 @@ const Pomodoro = () => {
         )}
       </div>
       <div className="relative mt-8 mb-4">
-        <hr className="h-[2px] w-full border-0 bg-gray-100" />
+        <hr className="h-[2px] w-full border-0 bg-gray-100 dark:bg-gray-800" />
         <p
-          className={`label-center absolute truncate bg-white px-2 text-xs font-bold uppercase text-gray-400`}
+          className={`label-center absolute truncate bg-white px-2 text-xs font-bold uppercase text-gray-400 dark:bg-gray-900 dark:text-gray-600`}
         >
           Recent Sessions
         </p>
@@ -292,14 +292,14 @@ const Pomodoro = () => {
         ))}
       </ul>
       <div className="relative mt-8 mb-4">
-        <hr className="h-[2px] w-full border-0 bg-gray-100" />
+        <hr className="h-[2px] w-full border-0 bg-gray-100 dark:bg-gray-800" />
         <p
-          className={`label-center absolute truncate bg-white px-2 text-xs font-bold uppercase text-gray-400`}
+          className={`label-center absolute truncate bg-white px-2 text-xs font-bold uppercase text-gray-400 dark:bg-gray-900 dark:text-gray-600`}
         >
           Past week
         </p>
       </div>
-      <div className="w-full overflow-hidden rounded-lg border-2 border-gray-200 px-1 pt-2">
+      <div className="w-full overflow-hidden rounded-lg border-2 border-gray-200 px-1 pt-2 dark:border-gray-700">
         <PomodoroBar labels={chartLabels} data={chartData} />
       </div>
     </div>

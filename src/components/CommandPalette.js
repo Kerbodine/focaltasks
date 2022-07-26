@@ -83,7 +83,7 @@ const CommandPalette = () => {
   return (
     <>
       <button
-        className="flex h-8 w-56 items-center gap-1 rounded-lg bg-gray-100 px-2 text-sm font-medium outline-none"
+        className="flex h-8 w-56 items-center gap-1 rounded-lg bg-gray-100 px-2 text-sm font-medium outline-none dark:bg-gray-800"
         onClick={() => setIsOpen(true)}
       >
         <span className="flex-none text-xl text-gray-500">
@@ -93,7 +93,7 @@ const CommandPalette = () => {
           Quick Search
         </p>
         {!mobile() && (
-          <kbd className="grid h-5 place-items-center rounded-md bg-gray-500 px-1 font-sans text-xs font-medium tracking-wider text-white">
+          <kbd className="grid h-5 place-items-center rounded-md bg-gray-500 px-1 font-sans text-xs font-medium tracking-wider text-white dark:bg-gray-600">
             ⌘K
           </kbd>
         )}
@@ -114,7 +114,7 @@ const CommandPalette = () => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-black/25" />
+            <Dialog.Overlay className="fixed inset-0 bg-white/75 dark:bg-black/75" />
           </Transition.Child>
           <Transition.Child
             enter="ease-out duration-300"
@@ -135,23 +135,23 @@ const CommandPalette = () => {
                   setIsOpen(false);
                 }}
                 as="div"
-                className="relative mx-auto max-w-xl rounded-2xl bg-white p-2 shadow-lg"
+                className="relative mx-auto max-w-xl rounded-2xl border-2 border-gray-200 bg-white p-2 shadow-lg dark:border-gray-800 dark:bg-gray-900"
               >
-                <div className="relative flex items-center gap-2 rounded-lg bg-gray-100 px-3">
+                <div className="relative flex items-center gap-2 rounded-lg bg-gray-100 px-3 dark:bg-gray-800">
                   <HiSearch className="h-6 w-6 text-gray-500" />
                   <Combobox.Input
                     onChange={(event) => {
                       setRawQuery(event.target.value);
                     }}
-                    className="h-10 w-full border-0 bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none"
+                    className="-ml-3 h-10 w-full border-0 bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none dark:text-gray-300 dark:placeholder-gray-500"
                     placeholder="Search..."
                   />
-                  <kbd className="absolute right-2 rounded-lg border-2 border-gray-300 px-2 py-1 font-sans text-xs font-bold text-gray-400">
+                  <kbd className="absolute right-2 rounded-lg border-2 border-gray-300 px-2 py-1 font-sans text-xs font-bold text-gray-400 dark:border-gray-700 dark:text-gray-500">
                     ESC
                   </kbd>
                 </div>
                 {results.length > 0 ? (
-                  <p className="mx-2 mt-3 mb-1 text-xs font-bold uppercase tracking-tight text-gray-400">
+                  <p className="mx-2 mt-3 mb-1 text-xs font-bold uppercase tracking-tight text-gray-400 dark:text-gray-500">
                     All items
                   </p>
                 ) : (
@@ -171,20 +171,20 @@ const CommandPalette = () => {
                       {({ active }) => (
                         <div
                           className={`${
-                            active && "bg-gray-100"
-                          } flex h-8 items-center gap-1.5 rounded-lg px-1.5 font-medium text-gray-600`}
+                            active && "bg-gray-100 dark:bg-gray-800"
+                          } flex h-8 items-center gap-1.5 rounded-lg px-1.5 font-medium text-gray-600 dark:text-gray-400`}
                         >
                           <span className="flex-none text-gray-500">
                             {item.type === "task" ? ( // Check item type (list or task)
                               item.completed === true ? (
-                                <div className="bg-accent h-5 w-5 rounded-md text-xl text-white">
+                                <div className="h-5 w-5 rounded-md bg-accent text-xl text-white">
                                   <BiCheck />
                                 </div>
                               ) : (
-                                <div className="h-5 w-5 rounded-md border-2 border-gray-300"></div>
+                                <div className="h-5 w-5 rounded-md border-2 border-gray-300 dark:border-gray-600"></div>
                               )
                             ) : (
-                              <span className="flex-none text-xl text-gray-500">
+                              <span className="flex-none text-xl text-gray-500 dark:text-gray-400">
                                 {
                                   listIcons.find(
                                     (icon) => icon.name === item.icon && icon
@@ -199,14 +199,14 @@ const CommandPalette = () => {
                     </Combobox.Option>
                   ))}
                 </Combobox.Options>
-                <div className="mt-2 flex items-center border-t-2 border-gray-100 p-2 text-xs font-medium text-gray-600">
+                <div className="mt-2 flex items-center border-t-2 border-gray-100 p-2 text-xs font-medium text-gray-600 dark:border-gray-800 dark:text-gray-400">
                   Type{" "}
                   <kbd
                     className={`${
                       rawQuery.startsWith(">")
                         ? "border-accent text-accent"
-                        : "border-gray-300 text-gray-600"
-                    } mx-1 flex h-5 w-5 items-center justify-center rounded-md border-2 bg-white font-semibold`}
+                        : "border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-400"
+                    } mx-1 flex h-5 w-5 items-center justify-center rounded-md border-2 bg-transparent font-semibold`}
                   >
                     &gt;
                   </kbd>{" "}
@@ -215,8 +215,8 @@ const CommandPalette = () => {
                     className={`${
                       rawQuery.startsWith("-")
                         ? "border-accent text-accent"
-                        : "border-gray-300 text-gray-600"
-                    } mx-1 flex h-5 w-5 items-center justify-center rounded-md border-2 bg-white font-semibold`}
+                        : "border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-400"
+                    } mx-1 flex h-5 w-5 items-center justify-center rounded-md border-2 bg-transparent font-semibold`}
                   >
                     -
                   </kbd>{" "}

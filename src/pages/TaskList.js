@@ -65,7 +65,7 @@ export default function TaskList({ listId, author }) {
         >
           <div className="flex w-full flex-none gap-2">
             <input
-              className="w-full min-w-0 truncate text-3xl font-semibold outline-none"
+              className="w-full min-w-0 truncate bg-transparent text-3xl font-semibold outline-none dark:text-white"
               value={listTitle}
               placeholder="Untitled List"
               onChange={(e) => !list.default && setListTitle(e.target.value)}
@@ -79,7 +79,7 @@ export default function TaskList({ listId, author }) {
             )}
           </div>
           <input
-            className="w-full flex-none font-medium text-gray-600 placeholder-gray-400 outline-none print:placeholder:text-transparent"
+            className="w-full flex-none bg-transparent font-medium text-gray-600 placeholder-gray-400 outline-none dark:text-gray-400 dark:placeholder-gray-600 print:placeholder:text-transparent"
             placeholder="Notes"
             value={listNotes}
             onChange={(e) => setListNotes(e.target.value)}
@@ -108,7 +108,7 @@ export default function TaskList({ listId, author }) {
               )}
             </div>
             <button
-              className="mt-4 flex h-9 flex-none items-center gap-2 rounded-lg border-2 border-dashed border-gray-200 pr-4 pl-2 text-gray-400 transition-all hover:border-solid hover:bg-gray-50 print:hidden"
+              className="mt-4 flex h-9 flex-none items-center gap-2 rounded-lg border-2 border-dashed border-gray-200 pr-4 pl-2 text-gray-500 transition-all hover:border-solid hover:border-gray-300 dark:border-gray-700 dark:text-gray-400 dark:hover:border-gray-600 print:hidden"
               onClick={newTask}
             >
               <div className="grid h-5 w-5 place-items-center text-xl">

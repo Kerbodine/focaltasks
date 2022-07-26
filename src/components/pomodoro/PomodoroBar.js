@@ -48,8 +48,8 @@ export default function PomodoroBar({ labels, data }) {
         datasets: [
           {
             data: data,
-            backgroundColor: "#9ca3af",
-            hoverBackgroundColor: "#6b7280",
+            backgroundColor: "#71717a",
+            hoverBackgroundColor: "#a1a1aa",
             borderWidth: 0,
             borderRadius: 4,
           },

@@ -25,7 +25,7 @@ export default function Category({ title, sort }) {
       <div className="h-full w-full p-6 sm:p-8">
         <div className="flex w-full gap-2">
           <h1
-            className="w-full min-w-0 truncate text-3xl font-semibold outline-none"
+            className="w-full min-w-0 truncate text-3xl font-semibold outline-none dark:text-white"
             placeholder="Untitled List"
           >
             {title}
@@ -49,7 +49,9 @@ export default function Category({ title, sort }) {
               />
             ))
           ) : (
-            <p className="ml-2 font-medium text-gray-700">No tasks</p>
+            <p className="ml-2 font-medium text-gray-700 dark:text-gray-300">
+              No tasks
+            </p>
           )}
         </div>
       </div>

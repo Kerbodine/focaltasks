@@ -95,7 +95,6 @@ export function AuthProvider({ children }) {
       const { isNewUser } = getAdditionalUserInfo(cred);
       if (isNewUser) {
         await createSignupDoc(cred);
-        console.log(cred);
       }
     } catch (err) {
       console.log(err);

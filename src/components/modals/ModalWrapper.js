@@ -24,7 +24,7 @@ const ModalWrapper = ({ modalOpen, setModalOpen, children }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-black/25" />
+            <Dialog.Overlay className="fixed inset-0 bg-white/50 dark:bg-black/50" />
           </Transition.Child>
           {/* This element is to trick the browser into centering the modal contents. */}
           <span
@@ -42,11 +42,11 @@ const ModalWrapper = ({ modalOpen, setModalOpen, children }) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <form className="relative inline-block w-full max-w-xs transform rounded-2xl border-2 border-gray-200 bg-white p-4 text-left align-middle shadow-lg">
+            <form className="relative inline-block w-full max-w-xs transform rounded-2xl border-2 border-gray-200 bg-white p-4 text-left align-middle shadow-lg dark:border-gray-800 dark:bg-gray-900">
               {children}
               <button
                 type="button"
-                className="absolute right-4 top-4 rounded-full p-1 text-2xl transition-colors hover:bg-gray-100"
+                className="absolute right-4 top-4 rounded-full p-1 text-2xl transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                 onClick={closeModal}
               >
                 <BiX />

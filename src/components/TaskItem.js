@@ -14,7 +14,6 @@ import { useSettings } from "../contexts/SettingsContext";
 import DeleteTaskModal from "./modals/DeleteTaskModal";
 import { iOS } from "../config/functions";
 import toast from "react-hot-toast";
-import { BiX } from "react-icons/bi";
 
 export default function TaskItem({
   author,
@@ -30,7 +29,6 @@ export default function TaskItem({
   const [taskToday, setTaskToday] = useState(today);
   const [taskDueDate, setTaskDueDate] = useState(dueDate);
   const [taskExpanded, setTaskExpanded] = useState(false);
-  // const [dueIn, setDueIn] = useState(null);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -105,11 +103,33 @@ export default function TaskItem({
     );
   };
 
+  const categoryButtons = [
+    {
+      icon: taskToday ? <HiSun /> : <HiOutlineSun />,
+      iconSmall: <HiSun />,
+      label: "Today",
+      handler: toggleTaskToday,
+      condition: taskToday,
+    },
+    {
+      icon: taskImportant ? (
+        <HiExclamationCircle />
+      ) : (
+        <HiOutlineExclamationCircle />
+      ),
+      iconSmall: <HiExclamationCircle />,
+      label: "Important",
+      handler: toggleTaskImportant,
+      condition: taskImportant,
+    },
+  ];
+
   return (
     <div
+      id={id}
       className={`${
         taskExpanded
-          ? "h-[76px] bg-white shadow-lg ring-2 ring-gray-200"
+          ? "h-[76px] bg-white shadow-lg ring-2 ring-gray-200 dark:bg-gray-900 dark:ring-gray-700"
           : "h-10"
       } flex w-full overflow-hidden rounded-lg p-2 outline-none transition-all`}
     >
@@ -117,7 +137,7 @@ export default function TaskItem({
         <input
           type="checkbox"
           checked={taskCompleted}
-          className="h-6 w-6 flex-none cursor-pointer rounded-md border-2 border-gray-300 text-2xl text-accent transition-colors focus:outline-none focus:ring-0 focus:ring-offset-0"
+          className="h-6 w-6 flex-none cursor-pointer rounded-md border-2 border-gray-300 bg-transparent text-2xl text-accent transition-colors focus:outline-none focus:ring-0 focus:ring-offset-0 dark:border-gray-600 dark:checked:border-none"
           onChange={() => toggleTaskCompleted()}
         />
         {/* Task badges and input */}
@@ -129,30 +149,24 @@ export default function TaskItem({
         >
           {/* First row input */}
           <div className="flex w-full items-center">
-            {/* Task today icon */}
-            <div
-              className={`${
-                taskToday ? "mr-1 h-5 w-5" : "h-0 w-0"
-              } flex-none overflow-hidden text-xl text-gray-500 transition-all`}
-            >
-              <HiSun />
-            </div>
-            {/* Task important icon */}
-            <div
-              className={`${
-                taskImportant ? "mr-1 h-5 w-5" : "h-0 w-0"
-              } flex-none overflow-hidden text-xl text-gray-500 transition-all`}
-            >
-              <HiExclamationCircle />
-            </div>
+            {/* Task category icon */}
+            {categoryButtons.map(({ condition, iconSmall }, index) => (
+              <div
+                className={`${
+                  condition ? "mr-1 h-5 w-5" : "h-0 w-0"
+                } flex-none overflow-hidden text-xl text-gray-500 transition-all dark:text-gray-400`}
+              >
+                {iconSmall}
+              </div>
+            ))}
             {/* Task title input */}
             <input
-              className={`h-6 w-full flex-auto truncate bg-transparent font-medium placeholder-gray-300 outline-none transition-colors ${
+              className={`h-6 w-full flex-auto truncate bg-transparent font-medium placeholder-gray-300 outline-none transition-colors dark:placeholder-gray-600 ${
                 taskCompleted
-                  ? `text-gray-400 ${
+                  ? `text-gray-400 dark:text-gray-500 ${
                       completedAppearance !== "fade" && "line-through"
                     }`
-                  : "text-gray-600"
+                  : "text-gray-600 dark:text-gray-300"
               } ${taskTitle === "" && "no-underline"}`}
               placeholder="Task title"
               value={taskTitle}
@@ -167,16 +181,18 @@ export default function TaskItem({
                 }
               }}
             />
+            {/* Due date card */}
             {taskDueDate && (
-              <div className="mr-2 flex h-6 items-center rounded-md bg-gray-100 px-1 text-sm font-medium text-gray-600">
-                <span className="text-lg text-gray-500">
+              <div className="mr-2 flex h-6 items-center rounded-md bg-gray-100 px-1 text-sm font-medium text-gray-600 dark:bg-gray-800">
+                <span className="text-lg text-gray-500 dark:text-gray-400">
                   <HiFlag />
                 </span>
-                <p className="mr-1 whitespace-nowrap">{`${getDueInDays()}`}</p>
+                <p className="mr-1 whitespace-nowrap text-gray-500 dark:text-gray-400">{`${getDueInDays()}`}</p>
               </div>
             )}
+            {/* Delete button */}
             <button
-              className={`h-6 w-6 flex-none place-items-center text-xl text-gray-400 hover:text-gray-600 ${
+              className={`h-6 w-6 flex-none place-items-center text-xl text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 ${
                 taskExpanded ? "block" : "w-0 text-[0px]" // hide button patch
               }`}
               onClick={() => {
@@ -197,41 +213,30 @@ export default function TaskItem({
               taskExpanded ? "opacity-100" : "opacity-0"
             }`}
           >
-            <div className={`flex w-full gap-2`}>
-              {/* Toggle today button */}
-              <button
-                className={`${
-                  taskToday ? "bg-gray-500 text-white" : "bg-gray-100"
-                } ml-auto flex h-7 items-center gap-1 rounded-md px-1.5 text-sm font-medium text-gray-600 transition-colors`}
-                onClick={toggleTaskToday}
-              >
-                <span className="text-xl">
-                  {taskToday ? <HiSun /> : <HiOutlineSun />}
-                </span>
-                <p className="mr-1 hidden sm:block">Today</p>
-              </button>
-              {/* Toggle important button */}
-              <button
-                className={`${
-                  taskImportant ? "bg-gray-500 text-white" : "bg-gray-100"
-                } flex h-7 items-center gap-1 rounded-md px-1.5 text-sm font-medium text-gray-600 transition-colors`}
-                onClick={toggleTaskImportant}
-              >
-                <span className="text-xl">
-                  {taskImportant ? (
-                    <HiExclamationCircle />
-                  ) : (
-                    <HiOutlineExclamationCircle />
-                  )}
-                </span>
-                <p className="mr-1 hidden sm:block">Important</p>
-              </button>
+            <div className={`flex w-full justify-end gap-2`}>
+              {/* Toggle category buttons */}
+              {categoryButtons.map(
+                ({ icon, label, handler, condition }, index) => (
+                  <button
+                    key={index}
+                    className={`${
+                      condition
+                        ? "bg-gray-500 text-white dark:bg-gray-600 dark:text-white"
+                        : "bg-gray-100 dark:bg-gray-800"
+                    } flex h-7 items-center gap-1 rounded-md px-1.5 text-sm font-medium text-gray-600 transition-colors dark:text-gray-400`}
+                    onClick={handler}
+                  >
+                    <span className="text-xl">{icon}</span>
+                    <p className="mr-1 hidden sm:block">{label}</p>
+                  </button>
+                )
+              )}
               {/* Due date input */}
               <div
                 className={`flex h-7 w-36 items-center rounded-md px-1.5 text-sm font-medium ${
                   taskDueDate
-                    ? "bg-gray-500 text-white"
-                    : "bg-gray-100 text-gray-600"
+                    ? "bg-gray-500 text-white dark:bg-gray-600 dark:text-white"
+                    : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
                 }`}
               >
                 <span className="mr-1 text-xl">
@@ -242,9 +247,9 @@ export default function TaskItem({
                     type="date"
                     className={`w-28 ${
                       taskDueDate
-                        ? "bg-gray-500 text-white"
-                        : "bg-gray-100 text-gray-600"
-                    } border-0 p-0 text-left text-sm placeholder-gray-400`}
+                        ? "bg-gray-500 text-white dark:bg-gray-600 dark:text-white"
+                        : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                    } border-0 p-0 text-left text-sm placeholder-gray-400 dark:placeholder-gray-500`}
                     value={taskDueDate ? taskDueDate : ""}
                     placeholder="Due date"
                     onInput={(e) => {

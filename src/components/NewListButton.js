@@ -35,7 +35,7 @@ const NewListButton = () => {
   return (
     <>
       <button
-        className={`group flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 outline-none transition-colors hover:bg-accent hover:text-white`}
+        className={`group flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 text-gray-400 outline-none transition-colors hover:bg-accent hover:text-white dark:text-gray-600 dark:hover:text-white`}
         onClick={openModal}
       >
         <span className="flex-none text-xl">
@@ -50,7 +50,10 @@ const NewListButton = () => {
         </p>
       </button>
       <ModalWrapper modalOpen={modalOpen} setModalOpen={setModalOpen}>
-        <Dialog.Title as="h3" className="mt-1 text-xl font-medium leading-6">
+        <Dialog.Title
+          as="h3"
+          className="mt-1 text-xl font-medium leading-6 dark:text-white"
+        >
           New List
         </Dialog.Title>
         <div className="mt-4 space-y-2">
@@ -59,15 +62,11 @@ const NewListButton = () => {
             value={listTitle}
             onChange={(e) => setListTitle(e.target.value)}
             placeholder="List title"
-            className="w-full rounded-lg border-0 bg-gray-100 px-3 py-2 font-medium text-gray-600 outline-none placeholder:text-gray-400"
+            className="modal-input"
           />
           <IconPicker iconName={iconName} setIconName={setIconName} />
         </div>
-        <button
-          type="submit"
-          onClick={createNewList}
-          className="mt-4 w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:border-accent hover:bg-accent hover:text-white disabled:cursor-not-allowed"
-        >
+        <button type="submit" onClick={createNewList} className="modal-button">
           Create list
         </button>
       </ModalWrapper>

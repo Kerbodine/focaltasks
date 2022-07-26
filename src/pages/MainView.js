@@ -87,7 +87,7 @@ export default function MainView() {
   }, [currentUser.uid, setUserLists, setLoading, db]);
 
   return (
-    <div className="h-screen w-screen">
+    <div className="h-screen w-screen bg-white dark:bg-gray-900">
       {loading ? (
         <div className="grid h-full w-full place-items-center">
           <Loader />
@@ -95,7 +95,7 @@ export default function MainView() {
       ) : (
         <SettingsProvider>
           <PomodoroProvider>
-            <hr className="absolute top-[56px] h-[2px] w-screen border-0 bg-gray-100" />
+            <hr className="absolute top-[56px] h-[2px] w-screen border-0 bg-gray-100 dark:bg-gray-800" />
             <div className="mx-auto flex h-full w-full max-w-screen-xl">
               {/* Navbar section */}
               <Navbar />
@@ -112,7 +112,8 @@ export default function MainView() {
                 >
                   <CommandPalette />
                 </div>
-                <div className="flex h-full w-full">
+                {/* Account for topbar height */}
+                <div className="flex h-[calc(100vh-58px)] w-full">
                   <Routes>
                     <Route
                       exact

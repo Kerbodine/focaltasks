@@ -7,7 +7,7 @@ export default function ToggleIcon({ state, clickHandler }) {
       checked={state}
       onChange={clickHandler}
       className={`
-        ${state ? "bg-accent" : "bg-gray-200"}
+        ${state ? "bg-accent" : "bg-gray-200 dark:bg-gray-700"}
         relative ml-auto inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`}
     >
       <span className="sr-only">Use setting</span>

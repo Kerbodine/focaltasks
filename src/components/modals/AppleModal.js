@@ -6,10 +6,13 @@ import ModalWrapper from "./ModalWrapper";
 const AppleModal = ({ modalOpen, setModalOpen }) => {
   return (
     <ModalWrapper modalOpen={modalOpen} setModalOpen={setModalOpen}>
-      <Dialog.Title as="h3" className="mt-1 text-xl font-medium leading-6">
+      <Dialog.Title
+        as="h3"
+        className="mt-1 text-xl font-medium leading-6 dark:text-white"
+      >
         iOS Install Instructions
       </Dialog.Title>
-      <div className="mt-4 space-y-2">
+      <div className="mt-4 space-y-2 dark:text-gray-300">
         <p>
           Open up{" "}
           <span
@@ -17,7 +20,7 @@ const AppleModal = ({ modalOpen, setModalOpen }) => {
               navigator.clipboard.writeText("https://app.focaltasks.com");
               toast.success("Copied to clipboard!");
             }}
-            className="cursor-pointer rounded-md bg-gray-100 px-1.5 py-1 font-mono font-medium"
+            className="cursor-pointer rounded-md bg-gray-100 px-1.5 py-1 font-mono font-medium dark:bg-gray-800"
           >
             app.focaltasks.com
           </span>{" "}

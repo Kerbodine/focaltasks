@@ -7,7 +7,7 @@ const IconPicker = ({ iconName, setIconName }) => {
 
   return (
     <div>
-      <div className="rounded-lg bg-gray-100 p-2 text-gray-600">
+      <div className="rounded-lg bg-gray-100 p-2 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
         <button
           className="flex w-full items-center px-1 text-left outline-none"
           type="button"
@@ -40,7 +40,7 @@ const IconPicker = ({ iconName, setIconName }) => {
                       setIconName(icon.name);
                       setShowIcons(false);
                     }}
-                    className="hover:bg-accent grid h-[38px] w-[38px] place-items-center rounded-md bg-white text-2xl text-gray-500 transition-colors hover:text-white"
+                    className="grid h-[38px] w-[38px] place-items-center rounded-md bg-white text-2xl text-gray-500 transition-colors hover:bg-accent hover:text-white dark:bg-gray-900 dark:hover:bg-accent"
                   >
                     {icon.icon}
                   </button>

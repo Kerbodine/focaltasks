@@ -30,7 +30,7 @@ export default function ShareProfile({
         )}
       </div>
       <div className={`flex-auto truncate text-sm`}>
-        <p className="truncate font-medium text-gray-700">{`${profile.displayName}`}</p>
+        <p className="truncate font-medium text-gray-700 dark:text-gray-300">{`${profile.displayName}`}</p>
         <p className="-mt-1 truncate text-gray-500">{profile.email}</p>
       </div>
       <select
@@ -38,8 +38,8 @@ export default function ShareProfile({
         {...(!userIsOwner && { disabled: true })}
         className={`${
           owner
-            ? "bg-gray-100 text-gray-500"
-            : "text-gray-400 hover:bg-gray-100"
+            ? "bg-gray-100 text-gray-500 dark:bg-gray-800"
+            : "text-gray-400 hover:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-800"
         } no-caret cursor-pointer appearance-none rounded-md border-0 p-1 text-center text-xs font-bold uppercase focus:ring-0`}
       >
         <option value="">{owner ? "Owner" : "Guest"}</option>
