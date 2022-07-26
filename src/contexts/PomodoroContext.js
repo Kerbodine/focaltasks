@@ -14,6 +14,7 @@ export function PomodoroProvider({ children }) {
   const [duration, setDuration] = useState(25);
   const [currentId, setCurrentId] = useState(null);
   const [pomodoros, setPomodoros] = useState([]);
+  const [pastData, setPastData] = useState([]);
 
   const startSession = async (id, time) => {
     const pomodoro = {
@@ -51,6 +52,8 @@ export function PomodoroProvider({ children }) {
     setCurrentId,
     pomodoros,
     setPomodoros,
+    pastData,
+    setPastData,
   };
 
   return (

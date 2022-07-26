@@ -12,11 +12,13 @@ import {
   onSnapshot,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 import { useAuth } from "../../contexts/AuthContext";
+import PomodoroBar from "./PomodoroBar";
 
 const Pomodoro = () => {
-  const minute = 60;
+  const minute = 60; // seconds
 
   const { duration, startSession, completeSession, currentId, setCurrentId } =
     usePomodoro();
@@ -25,7 +27,8 @@ const Pomodoro = () => {
   const [started, setStarted] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [pomodoros, setPomodoros] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [chartLabels, setChartLabels] = useState([]);
+  const [chartData, setChartData] = useState([]);
 
   const { currentUser } = useAuth();
 
@@ -95,12 +98,11 @@ const Pomodoro = () => {
   if (seconds < 10) seconds = "0" + seconds;
 
   useEffect(() => {
-    setLoading(true);
     const unsubscribe = onSnapshot(
       query(
         collection(getFirestore(), "Users", currentUser.uid, "Pomodoros"),
         orderBy("createdAt", "desc"),
-        limit(5)
+        limit(3)
       ),
       (allPomodoros) => {
         let tempPomodoros = [];
@@ -110,7 +112,94 @@ const Pomodoro = () => {
         console.log("Updating pomodoros");
         console.log(tempPomodoros);
         setPomodoros(tempPomodoros);
-        setLoading(false);
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, [currentUser.uid]);
+
+  // group all documents into an array of dates
+  const groupSessions = (pomodoros) => {
+    let pastPomodorosByDay = {};
+    pomodoros.forEach((pomodoro) => {
+      const date = new Date(pomodoro.completedAt.seconds * 1000);
+      const day = date.getDate();
+      const month = date.getMonth();
+      const year = date.getFullYear();
+      const weekday = date.getDay();
+      const key = `${day}-${month}-${year}-${weekday}`;
+      if (pastPomodorosByDay[key]) {
+        pastPomodorosByDay[key] += pomodoro.time;
+      } else {
+        pastPomodorosByDay[key] = pomodoro.time;
+      }
+    });
+    return pastPomodorosByDay;
+  };
+
+  // return array of labels based on current weekday
+  const getLabels = () => {
+    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    var goBackDays = 7;
+    var today = new Date();
+    var daysSorted = [];
+    for (var i = 0; i < goBackDays; i++) {
+      var newDate = new Date(today.setDate(today.getDate() - 1));
+      daysSorted.push(days[newDate.getDay()]);
+    }
+    return daysSorted.reverse();
+  };
+
+  // return array of times based on label days and grouped pomodoro sessions
+  const getData = (daysSorted, pastPomodorosByDay) => {
+    const numDays = {
+      Sun: 0,
+      Mon: 1,
+      Tue: 2,
+      Wed: 3,
+      Thu: 4,
+      Fri: 5,
+      Sat: 6,
+    };
+    let chartData = {};
+    daysSorted.forEach((day) => {
+      let value =
+        pastPomodorosByDay[
+          Object.keys(pastPomodorosByDay).filter(
+            (date) => date.split("-")[3] === numDays[day].toString()
+          )
+        ];
+      chartData[day] = value;
+    });
+    return daysSorted.map((day) => chartData[day]);
+  };
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(
+        collection(getFirestore(), "Users", currentUser.uid, "Pomodoros"),
+        orderBy("completedAt", "desc"),
+        where("completed", "==", true),
+        where(
+          "completedAt",
+          ">=",
+          new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+        )
+      ),
+      (allPomodoros) => {
+        let tempPomodoros = [];
+        allPomodoros.docs.forEach((session) => {
+          tempPomodoros.push(session.data());
+        });
+        // sum time spent for each day
+        const pastPomodorosByDay = groupSessions(tempPomodoros);
+        // get labels for chart
+        const daysSorted = getLabels();
+        setChartLabels(daysSorted);
+        // get ordered chart data
+        const chartData = getData(daysSorted, pastPomodorosByDay);
+        setChartData(chartData);
       }
     );
     return () => {
@@ -202,6 +291,17 @@ const Pomodoro = () => {
           <PomodoroCard key={session.id} session={session} />
         ))}
       </ul>
+      <div className="relative mt-8 mb-4">
+        <hr className="h-[2px] w-full border-0 bg-gray-100" />
+        <p
+          className={`label-center absolute truncate bg-white px-2 text-xs font-bold uppercase text-gray-400`}
+        >
+          Past week
+        </p>
+      </div>
+      <div className="w-full overflow-hidden rounded-lg border-2 border-gray-200 px-1 pt-2">
+        <PomodoroBar labels={chartLabels} data={chartData} />
+      </div>
     </div>
   );
 };

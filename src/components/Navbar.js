@@ -122,11 +122,6 @@ export default function Navbar() {
         </div>
         <div className="flex flex-col">
           <NavbarItem icon={<HiCog />} title="Settings" link={"/settings"} />
-          <NavbarItem
-            icon={<HiTrash />}
-            title="Recently Deleted"
-            link={"/deleted"}
-          />
         </div>
         {/* Horizontal divider */}
         {checkShared() && (
