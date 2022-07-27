@@ -38,8 +38,8 @@ export default function ShareProfile({
         {...(!userIsOwner && { disabled: true })}
         className={`${
           owner
-            ? "bg-gray-100 text-gray-500 dark:bg-gray-800"
-            : "text-gray-400 hover:bg-gray-100 dark:text-gray-600 dark:hover:bg-gray-800"
+            ? "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-500"
+            : "text-gray-400 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-600 dark:hover:bg-gray-800"
         } no-caret cursor-pointer appearance-none rounded-md border-0 p-1 text-center text-xs font-bold uppercase focus:ring-0`}
       >
         <option value="">{owner ? "Owner" : "Guest"}</option>

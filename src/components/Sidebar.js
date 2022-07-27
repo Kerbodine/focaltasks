@@ -1,17 +1,8 @@
-import { Tab } from "@headlessui/react";
 import { useView } from "../contexts/ViewContext";
-import { ReactComponent as IconClock } from "../svg/icon-clock.svg";
-import { ReactComponent as IconChart } from "../svg/icon-chart.svg";
 import Pomodoro from "./pomodoro/Pomodoro";
 
 export default function Sidebar() {
   const { sidebar } = useView();
-
-  const sidebarIcons = [<IconClock />, <IconChart />];
-
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
 
   return (
     <div

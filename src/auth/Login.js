@@ -44,29 +44,27 @@ export default function Login() {
   };
 
   return (
-    <div className="grid h-screen w-screen place-items-center bg-white">
-      <div className="rounded-2xl border-gray-200 p-8 xs:border-2">
+    <div className="grid h-screen w-screen place-items-center bg-white dark:bg-gray-900">
+      <div className="rounded-2xl border-gray-200 p-8 dark:border-gray-700 xs:border-2">
         <form className="relative w-[240px]" onSubmit={handleSubmit}>
-          <h1 className="mb-4 text-2xl font-semibold xs:text-3xl">Log in</h1>
-          <button
-            type="button"
-            onClick={googleSignIn}
-            className="flex h-9 w-full items-center gap-2 rounded-lg border-2 border-gray-200 px-2 text-sm font-medium text-gray-600 hover:border-gray-400"
-          >
+          <h1 className="mb-4 text-2xl font-semibold tracking-tight dark:text-white xs:text-3xl">
+            Log in
+          </h1>
+          <button type="button" onClick={googleSignIn} className="auth-google">
             <span className="text-base">
               <GoogleIcon />
             </span>
             Continue with Google
           </button>
           <div className="my-2 flex w-full items-center">
-            <div className="h-0.5 flex-auto bg-gray-200"></div>
+            <div className="h-0.5 flex-auto bg-gray-200 dark:bg-gray-700"></div>
             <p className="mx-2 text-xs font-bold text-gray-500">OR</p>
-            <div className="h-0.5 flex-auto bg-gray-200"></div>
+            <div className="h-0.5 flex-auto bg-gray-200 dark:bg-gray-700"></div>
           </div>
           <input
             type="email"
             placeholder="Email address"
-            className="mb-2 w-full rounded-lg border-2 border-gray-200 px-2 py-1 text-gray-600 focus:border-gray-400 focus:outline-none"
+            className="auth-input mb-2"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -75,21 +73,21 @@ export default function Login() {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              className="w-full rounded-lg border-2 border-gray-200 px-2 py-1 text-gray-600 focus:border-gray-400 focus:outline-none"
+              className="auth-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
             <button
               type="button"
-              className="-ml-7 text-xl text-gray-400 hover:text-gray-600"
+              className="-ml-7 text-xl text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <BiHide /> : <BiShow />}
             </button>
           </div>
           {error && (
-            <div className="mt-2 flex w-full gap-1 rounded-lg border-2 border-red-400 bg-red-100 p-0.5 text-sm font-medium text-red-400">
+            <div className="auth-error mt-2">
               <BiInfoCircle className="flex-none rotate-180 text-xl" />
               <p className="flex-auto truncate">{error}</p>
             </div>
@@ -99,23 +97,20 @@ export default function Login() {
               Forgot password?
             </Link>
           </div>
-          <button
-            type="submit"
-            className="mt-4 rounded-lg border-2 border-gray-600 px-2 py-1 text-sm font-medium text-gray-600 hover:bg-gray-600 hover:text-white"
-          >
+          <button type="submit" className="auth-button mt-4">
             Log in →
           </button>
           <p className="mt-2 text-sm text-gray-500">
             Need an account?{" "}
             <Link
               to="/signup"
-              className="font-medium text-gray-700 hover:underline"
+              className="font-medium text-gray-700 hover:underline dark:text-gray-400"
             >
               Sign up
             </Link>
           </p>
           {loading && (
-            <div className="absolute inset-0 grid place-items-center bg-white">
+            <div className="absolute inset-0 grid place-items-center bg-white dark:bg-gray-900">
               <span className="animate-spin text-2xl text-gray-500">
                 <BiLoaderAlt />
               </span>

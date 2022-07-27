@@ -52,7 +52,6 @@ export default function MainView() {
       query(
         collectionGroup(db, "Lists"),
         where("users", "array-contains", currentUser.uid),
-        // collection(db, "Users", currentUser.uid, "Lists"),
         orderBy("createdAt")
       ),
       (allLists) => {

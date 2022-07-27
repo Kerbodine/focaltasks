@@ -7,7 +7,6 @@ import {
   HiInbox,
   HiMenu,
   HiSun,
-  HiTrash,
 } from "react-icons/hi";
 import { useView } from "../contexts/ViewContext";
 import NavbarItem from "./NavbarItem";

@@ -152,6 +152,7 @@ export default function TaskItem({
             {/* Task category icon */}
             {categoryButtons.map(({ condition, iconSmall }, index) => (
               <div
+                key={index}
                 className={`${
                   condition ? "mr-1 h-5 w-5" : "h-0 w-0"
                 } flex-none overflow-hidden text-xl text-gray-500 transition-all dark:text-gray-400`}
