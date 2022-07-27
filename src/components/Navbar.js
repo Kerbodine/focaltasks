@@ -42,7 +42,7 @@ export default function Navbar() {
         navbar
           ? "w-[240px]"
           : `w-[56px] sm:w-[240px] ${mobile() && "-ml-[58px] sm:ml-0"}`
-      } absolute box-content flex h-full flex-none flex-col border-r-2 border-gray-100 bg-white transition-width duration-300 dark:border-gray-800 dark:bg-gray-900 sm:relative`}
+      } transition-width absolute box-content flex h-full flex-none flex-col border-r-2 border-gray-100 bg-white duration-300 dark:border-gray-800 dark:bg-gray-900 sm:relative`}
     >
       <div className="flex h-[58px] w-full flex-none items-center border-b-2 border-gray-100 px-3 dark:border-gray-800">
         {/* Account info and seettings */}

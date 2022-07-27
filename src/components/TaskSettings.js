@@ -97,8 +97,8 @@ const TaskSettings = ({ currentList, handlePrint }) => {
         >
           <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg border-2 border-gray-100 bg-white shadow-lg outline-none dark:border-gray-700 dark:bg-gray-900">
             <div className="space-y-1 p-1.5">
-              {options.map(({ icon, label, handler }) => (
-                <Menu.Item>
+              {options.map(({ icon, label, handler }, index) => (
+                <Menu.Item key={index}>
                   {({ active }) => (
                     <button
                       {...(label === "Delete list" &&

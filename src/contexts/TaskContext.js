@@ -14,6 +14,7 @@ import {
   query,
 } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
+import toast from "react-hot-toast";
 
 const TaskContext = createContext();
 
@@ -27,6 +28,19 @@ export function TaskProvider({ children }) {
   const db = getFirestore(app);
 
   const [userLists, setUserLists] = useState([]);
+
+  const getTask = (taskId) => {
+    const task = Object.values(userLists)
+      .map((list) => list.tasks.find((task) => task.id === taskId))
+      .filter((task) => task !== undefined)
+      .flat()[0];
+    return task;
+  };
+
+  const getAuthor = (listId) => {
+    const list = Object.values(userLists).filter((list) => list.id === listId);
+    return list[0].author;
+  };
 
   const createTask = async (listId, author) => {
     const taskId = uuidv4();
@@ -155,6 +169,27 @@ export function TaskProvider({ children }) {
     });
   };
 
+  const moveTask = async (taskId, listId) => {
+    const categories = [
+      "today",
+      "upcoming",
+      "important",
+      "completed",
+      "all",
+      "settings",
+    ];
+    if (!categories.includes(listId)) {
+      let taskData = getTask(taskId); // task data
+      let originalListId = taskData.listId; // listId before move
+      taskData.listId = listId; // listId after move
+      const author = getAuthor(originalListId);
+      const newAuthor = getAuthor(listId);
+      await updateTask(taskId, taskData, listId, newAuthor);
+      await deleteTask(taskId, originalListId, author);
+      toast.success("Task moved");
+    }
+  };
+
   const value = {
     userLists,
     setUserLists,
@@ -166,6 +201,7 @@ export function TaskProvider({ children }) {
     deleteList,
     inviteUser,
     removeGuest,
+    moveTask,
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;

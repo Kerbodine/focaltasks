@@ -22,11 +22,12 @@ import ListRoute from "../components/ListRoute";
 import Category from "./Category";
 import { SettingsProvider } from "../contexts/SettingsContext";
 import { mobile } from "../config/functions";
+import { DragDropContext } from "react-beautiful-dnd";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
   const { setUserData, currentUser } = useAuth();
-  const { setUserLists } = useTasks();
+  const { userLists, setUserLists, moveTask } = useTasks();
 
   const db = getFirestore(app);
 
@@ -85,6 +86,8 @@ export default function MainView() {
     };
   }, [currentUser.uid, setUserLists, setLoading, db]);
 
+  console.log(userLists);
+
   return (
     <div className="h-screen w-screen bg-white dark:bg-gray-900">
       {loading ? (
@@ -94,76 +97,86 @@ export default function MainView() {
       ) : (
         <SettingsProvider>
           <PomodoroProvider>
-            <hr className="absolute top-[56px] h-[2px] w-screen border-0 bg-gray-100 dark:bg-gray-800" />
-            <div className="mx-auto flex h-full w-full max-w-screen-xl">
-              {/* Navbar section */}
-              <Navbar />
-              {/* Main task area */}
-              <div
-                className={`${
-                  mobile() ? "ml-0" : "ml-[56px]"
-                } flex h-full flex-auto flex-col transition-margin duration-300 sm:ml-0`}
-              >
+            <DragDropContext
+              onDragEnd={(result) => {
+                console.log(result);
+                const listId = result.destination.droppableId.split("/")[1];
+                const taskId = result.draggableId;
+                console.log(listId, taskId);
+                moveTask(taskId, listId);
+              }}
+            >
+              <hr className="absolute top-[56px] h-[2px] w-screen border-0 bg-gray-100 dark:bg-gray-800" />
+              <div className="mx-auto flex h-full w-full max-w-screen-xl">
+                {/* Navbar section */}
+                <Navbar />
+                {/* Main task area */}
                 <div
                   className={`${
-                    mobile() ? "justify-center" : "justify-end"
-                  } flex h-[56px] w-full flex-none items-center px-3 sm:ml-0`}
+                    mobile() ? "ml-0" : "ml-[56px]"
+                  } transition-margin flex h-full flex-auto flex-col duration-300 sm:ml-0`}
                 >
-                  <CommandPalette />
-                </div>
-                {/* Account for topbar height */}
-                <div className="flex h-[calc(100vh-58px)] w-full">
-                  <Routes>
-                    <Route
-                      exact
-                      path="/today"
-                      element={
-                        <Category title="Today" sort={(task) => task.today} />
-                      }
-                    />
-                    <Route
-                      exact
-                      path="/upcoming"
-                      element={
-                        <Category
-                          title="Upcoming"
-                          sort={(task) => task.upcoming}
-                        />
-                      }
-                    />
-                    <Route
-                      exact
-                      path="/important"
-                      element={
-                        <Category
-                          title="Important"
-                          sort={(task) => task.important}
-                        />
-                      }
-                    />
-                    <Route
-                      exact
-                      path="/completed"
-                      element={
-                        <Category
-                          title="Completed"
-                          sort={(task) => task.completed}
-                        />
-                      }
-                    />
-                    <Route
-                      exact
-                      path="/all"
-                      element={<Category title="All" sort={(task) => task} />}
-                    />
-                    <Route exact path="/settings" element={<Settings />} />
-                    <Route path="/:listId" element={<ListRoute />} />
-                  </Routes>
-                  {/* Sidebar section */}
-                  <Sidebar />
+                  <div
+                    className={`${
+                      mobile() ? "justify-center" : "justify-end"
+                    } flex h-[56px] w-full flex-none items-center px-3 sm:ml-0`}
+                  >
+                    <CommandPalette />
+                  </div>
+                  {/* Account for topbar height */}
+                  <div className="flex h-[calc(100vh-58px)] w-full">
+                    <Routes>
+                      <Route
+                        exact
+                        path="/today"
+                        element={
+                          <Category title="Today" sort={(task) => task.today} />
+                        }
+                      />
+                      <Route
+                        exact
+                        path="/upcoming"
+                        element={
+                          <Category
+                            title="Upcoming"
+                            sort={(task) => task.upcoming}
+                          />
+                        }
+                      />
+                      <Route
+                        exact
+                        path="/important"
+                        element={
+                          <Category
+                            title="Important"
+                            sort={(task) => task.important}
+                          />
+                        }
+                      />
+                      <Route
+                        exact
+                        path="/completed"
+                        element={
+                          <Category
+                            title="Completed"
+                            sort={(task) => task.completed}
+                          />
+                        }
+                      />
+                      <Route
+                        exact
+                        path="/all"
+                        element={<Category title="All" sort={(task) => task} />}
+                      />
+                      <Route exact path="/settings" element={<Settings />} />
+                      <Route path="/:listId" element={<ListRoute />} />
+                    </Routes>
+                    {/* Sidebar section */}
+                    <Sidebar />
+                  </div>
                 </div>
               </div>
-            </div>
+            </DragDropContext>
           </PomodoroProvider>
         </SettingsProvider>
       )}

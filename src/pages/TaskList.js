@@ -5,6 +5,7 @@ import TaskItem from "../components/TaskItem";
 import { useTasks } from "../contexts/TaskContext";
 import TaskSettings from "../components/TaskSettings";
 import { useReactToPrint } from "react-to-print";
+import { Droppable } from "react-beautiful-dnd";
 
 export default function TaskList({ listId, author }) {
   const { createTask, userLists, updateList } = useTasks();
@@ -88,25 +89,35 @@ export default function TaskList({ listId, author }) {
             }}
           />
           <div className="flex-auto pb-14">
-            <div className="-mx-2 mt-4 flex flex-col gap-0.5">
-              {tasks.map(
-                (task, index) =>
-                  (list.hideCompleted
-                    ? list.hideCompleted && !task.completed
-                    : true) && (
-                    <TaskItem
-                      key={task.id + index}
-                      listId={listId}
-                      data={task}
-                      author={
-                        Object.values(userLists).filter(
-                          (list) => list.id === task.listId
-                        )[0].author
-                      }
-                    />
-                  )
+            <Droppable droppableId={listId}>
+              {(provided) => (
+                <div
+                  className="-mx-2 mt-4 flex flex-col gap-0.5"
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {tasks.map(
+                    (task, index) =>
+                      (list.hideCompleted
+                        ? list.hideCompleted && !task.completed
+                        : true) && (
+                        <TaskItem
+                          index={index}
+                          key={task.id + index}
+                          listId={listId}
+                          data={task}
+                          author={
+                            Object.values(userLists).filter(
+                              (list) => list.id === task.listId
+                            )[0].author
+                          }
+                        />
+                      )
+                  )}
+                  {provided.placeholder}
+                </div>
               )}
-            </div>
+            </Droppable>
             <button
               className="mt-4 flex h-9 flex-none items-center gap-2 rounded-lg border-2 border-dashed border-gray-200 pr-4 pl-2 text-gray-500 transition-all hover:border-solid hover:border-gray-300 dark:border-gray-700 dark:text-gray-400 dark:hover:border-gray-600 print:hidden"
               onClick={newTask}
