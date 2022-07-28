@@ -80,7 +80,7 @@ const TaskSettings = ({ currentList, handlePrint }) => {
 
   return (
     <>
-      <Menu as="div" className="relative z-10 print:hidden">
+      <Menu as="div" className="relative print:hidden">
         <div>
           <Menu.Button className="grid h-8 w-8 place-items-center rounded-lg text-2xl text-gray-500 outline-none transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800">
             <BiDotsVerticalRounded />
@@ -107,7 +107,7 @@ const TaskSettings = ({ currentList, handlePrint }) => {
                         })}
                       className={`${
                         active && "bg-gray-100 dark:bg-gray-800"
-                      } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600 dark:text-gray-400`}
+                      } flex w-full items-center rounded-md px-2 py-1.5 text-gray-600 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-400`}
                       onClick={handler}
                     >
                       <span className="text-xl">{icon}</span>

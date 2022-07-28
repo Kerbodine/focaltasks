@@ -17,6 +17,7 @@ import { iOS } from "../config/functions";
 import toast from "react-hot-toast";
 import { BiGridVertical } from "react-icons/bi";
 import { getEmptyImage } from "react-dnd-html5-backend";
+import { useView } from "../contexts/ViewContext";
 
 export default function TaskItem({
   author,
@@ -25,6 +26,7 @@ export default function TaskItem({
   const { deleteTask, updateTask, moveTask } = useTasks();
   const { calendarStartDay, completedAppearance, taskDeleteWarning } =
     useSettings();
+  const { navbar } = useView();
 
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskCompleted, setTaskCompleted] = useState(completed);
@@ -154,18 +156,18 @@ export default function TaskItem({
       id={id}
       className={`${
         taskExpanded
-          ? "h-[76px] shadow-lg ring-2 ring-gray-100 dark:ring-gray-800"
+          ? "h-[76px] shadow-lg ring-2 ring-gray-200 dark:ring-gray-700"
           : "h-10"
       } ${
         isDragging && "bg-gray-100 dark:bg-gray-800"
-      } flex w-full overflow-hidden rounded-lg bg-white p-2 outline-none transition-all dark:bg-gray-900`}
+      } flex w-full overflow-hidden rounded-lg p-2 outline-none transition-all`}
     >
       <div className={`flex w-full gap-3 ${isDragging && "opacity-0"}`}>
         <div
           ref={drag}
-          className={`${
-            taskExpanded && "hidden"
-          } absolute -ml-6 cursor-move text-2xl text-gray-300 dark:text-gray-700`}
+          className={`${taskExpanded && "hidden"} ${
+            navbar && "hidden sm:block" // z index patch
+          } absolute z-auto -ml-6 cursor-move text-2xl text-gray-300 dark:text-gray-700`}
         >
           <BiGridVertical />
         </div>

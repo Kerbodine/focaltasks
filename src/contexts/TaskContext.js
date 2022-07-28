@@ -12,6 +12,7 @@ import {
   where,
   getDocs,
   query,
+  writeBatch,
 } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
 import toast from "react-hot-toast";
@@ -66,7 +67,13 @@ export function TaskProvider({ children }) {
   };
 
   const updateTask = async (taskId, updatedItems, listId, author) => {
-    await updateDoc(doc(db, "Users", author, "Lists", listId), {
+    let batch = writeBatch(db);
+    batch = updateTaskBatch(taskId, updatedItems, listId, author, batch);
+    await batch.commit();
+  };
+
+  const updateTaskBatch = (taskId, updatedItems, listId, author, batch) => {
+    batch.update(doc(db, "Users", author, "Lists", listId), {
       tasks: {
         ...Object.values(userLists[listId].tasks)
           .filter((task) => task.id !== taskId)
@@ -81,13 +88,21 @@ export function TaskProvider({ children }) {
       },
       modifiedAt: new Date(),
     });
+    return batch;
   };
 
   const deleteTask = async (taskId, listId, author) => {
-    await updateDoc(doc(db, "Users", author, "Lists", listId), {
+    let batch = writeBatch(db);
+    batch = deleteTaskBatch(taskId, listId, author, batch);
+    await batch.commit();
+  };
+
+  const deleteTaskBatch = (taskId, listId, author, batch) => {
+    batch.update(doc(db, "Users", author, "Lists", listId), {
       [`tasks.${taskId}`]: deleteField(),
       modifiedAt: new Date(),
     });
+    return batch;
   };
 
   const newList = async (title, icon) => {
@@ -176,9 +191,11 @@ export function TaskProvider({ children }) {
       const author = getAuthor(originalListId);
       const newAuthor = getAuthor(listId);
       if (taskData.listId !== originalListId) {
-        await deleteTask(taskId, originalListId, author);
-        await updateTask(taskId, taskData, listId, newAuthor);
+        let batch = writeBatch(db);
+        batch = updateTaskBatch(taskId, taskData, listId, newAuthor, batch);
+        batch = deleteTaskBatch(taskId, originalListId, author, batch);
         toast.success("Task moved");
+        await batch.commit();
       }
     } catch {}
   };

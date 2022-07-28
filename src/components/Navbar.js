@@ -42,7 +42,7 @@ export default function Navbar() {
         navbar
           ? "w-[240px]"
           : `w-[56px] sm:w-[240px] ${mobile() && "-ml-[58px] sm:ml-0"}`
-      } transition-width absolute box-content flex h-full flex-none flex-col border-r-2 border-gray-100 bg-white duration-300 dark:border-gray-800 dark:bg-gray-900 sm:relative`}
+      } absolute box-content flex h-full flex-none flex-col border-r-2 border-gray-100 bg-white transition-width duration-300 dark:border-gray-800 dark:bg-gray-900 sm:relative`}
     >
       <div className="flex h-[58px] w-full flex-none items-center border-b-2 border-gray-100 px-3 dark:border-gray-800">
         {/* Account info and seettings */}
@@ -93,22 +93,30 @@ export default function Navbar() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <NavbarItem icon={<HiSun />} title="Today" link={"/today"} />
+          <NavbarItem
+            icon={<HiSun />}
+            title="Today"
+            link={"/today"}
+            filter={(task) => task.today}
+          />
           <NavbarItem
             icon={<HiExclamationCircle />}
             title="Important"
             link={"/important"}
+            filter={(task) => task.important}
           />
           <NavbarItem
             icon={<HiCalendar />}
             title="Upcoming"
             link={"/upcoming"}
+            filter={(task) => task.dueDate}
           />
           {sidebarLists.completed && (
             <NavbarItem
               icon={<HiCheckCircle />}
               title="Completed"
               link={"/completed"}
+              filter={(task) => task.completed}
             />
           )}
           {sidebarLists.all && (
@@ -116,11 +124,17 @@ export default function Navbar() {
               icon={<HiCollection />}
               title="All tasks"
               link={"/all"}
+              filter={(task) => true}
             />
           )}
         </div>
         <div className="flex flex-col">
-          <NavbarItem icon={<HiCog />} title="Settings" link={"/settings"} />
+          <NavbarItem
+            icon={<HiCog />}
+            title="Settings"
+            link={"/settings"}
+            filter={(task) => false}
+          />
         </div>
         {/* Horizontal divider */}
         {checkShared() && (

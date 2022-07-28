@@ -5,7 +5,7 @@ import { useTasks } from "../contexts/TaskContext";
 import { useView } from "../contexts/ViewContext";
 import { useDrop } from "react-dnd";
 
-export default function NavbarItem({ icon, title, link, listId }) {
+export default function NavbarItem({ icon, title, link, listId, filter }) {
   const { navbar } = useView();
   const { pathname } = useLocation();
   const { userLists } = useTasks();
@@ -18,8 +18,14 @@ export default function NavbarItem({ icon, title, link, listId }) {
       if (list) {
         setLength(list.tasks.filter((task) => !task.completed).length);
       }
+    } else {
+      const lists = Object.values(userLists);
+      const length = lists
+        .map((list) => list.tasks.filter(filter).length)
+        .reduce((a, b) => a + b, 0);
+      setLength(length);
     }
-  }, [userLists, listId]);
+  }, [userLists, listId, filter]);
 
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: "task",
@@ -64,7 +70,7 @@ export default function NavbarItem({ icon, title, link, listId }) {
           leaveFrom="scale-105 opacity-100"
           leaveTo="scale-75 opacity-0"
         >
-          <span className="grid h-5 w-5 place-items-center rounded-md bg-gray-500 font-mono text-xs font-semibold text-white dark:bg-gray-700">
+          <span className="grid h-5 w-5 place-items-center rounded-md bg-gray-100 font-mono text-[13px] font-bold text-gray-500 dark:bg-gray-800 dark:text-gray-400">
             {length}
           </span>
         </Transition>
@@ -75,4 +81,5 @@ export default function NavbarItem({ icon, title, link, listId }) {
 
 NavbarItem.defaultProps = {
   link: "/",
+  filter: (task) => !task.completed,
 };
