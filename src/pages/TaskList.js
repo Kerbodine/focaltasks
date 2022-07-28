@@ -5,6 +5,7 @@ import TaskItem from "../components/TaskItem";
 import { useTasks } from "../contexts/TaskContext";
 import TaskSettings from "../components/TaskSettings";
 import { useReactToPrint } from "react-to-print";
+import DragLayer from "../components/DragLayer";
 
 export default function TaskList({ listId, author }) {
   const { createTask, userLists, updateList } = useTasks();

@@ -16,6 +16,7 @@ import DeleteTaskModal from "./modals/DeleteTaskModal";
 import { iOS } from "../config/functions";
 import toast from "react-hot-toast";
 import { BiGridVertical } from "react-icons/bi";
+import { getEmptyImage } from "react-dnd-html5-backend";
 
 export default function TaskItem({
   author,
@@ -128,7 +129,7 @@ export default function TaskItem({
 
   const [{ isDragging }, drag, preview] = useDrag(() => ({
     type: "task",
-    item: { id: id, listId: listId },
+    item: { id: id, listId: listId, title: title, completed: completed },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (item && dropResult) {
@@ -143,19 +144,23 @@ export default function TaskItem({
     }),
   }));
 
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  }, []);
+
   return (
     <div
-      ref={preview}
+      // ref={preview}
       id={id}
       className={`${
         taskExpanded
-          ? "h-[76px] shadow-lg ring-2 ring-gray-200 dark:ring-gray-700"
+          ? "h-[76px] shadow-lg ring-2 ring-gray-100 dark:ring-gray-800"
           : "h-10"
       } ${
-        isDragging && "opacity-30"
+        isDragging && "bg-gray-100 dark:bg-gray-800"
       } flex w-full overflow-hidden rounded-lg bg-white p-2 outline-none transition-all dark:bg-gray-900`}
     >
-      <div className="flex w-full gap-3">
+      <div className={`flex w-full gap-3 ${isDragging && "opacity-0"}`}>
         <div
           ref={drag}
           className={`${
@@ -167,7 +172,7 @@ export default function TaskItem({
         <input
           type="checkbox"
           checked={taskCompleted}
-          className="text-accent h-6 w-6 flex-none cursor-pointer rounded-md border-2 border-gray-300 bg-transparent text-2xl transition-colors focus:outline-none focus:ring-0 focus:ring-offset-0 dark:border-gray-600 dark:checked:border-none"
+          className="h-6 w-6 flex-none cursor-pointer rounded-md border-2 border-gray-300 bg-transparent text-2xl text-accent transition-colors focus:outline-none focus:ring-0 focus:ring-offset-0 dark:border-gray-600 dark:checked:border-none"
           onChange={() => toggleTaskCompleted()}
         />
         {/* Task badges and input */}
@@ -252,7 +257,7 @@ export default function TaskItem({
                     key={index}
                     className={`${
                       condition
-                        ? "bg-gray-500 text-white dark:bg-gray-600 dark:text-white"
+                        ? "bg-gray-500 !text-white dark:bg-gray-600 dark:text-white"
                         : "bg-gray-100 dark:bg-gray-800"
                     } flex h-7 items-center gap-1 rounded-md px-1.5 text-sm font-medium text-gray-600 transition-colors dark:text-gray-400`}
                     onClick={handler}

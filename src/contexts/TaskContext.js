@@ -133,7 +133,6 @@ export function TaskProvider({ children }) {
 
     try {
       user = userDoc.docs[0].data();
-      console.log(user);
     } catch {
       return "Account does not exist";
     }
@@ -173,13 +172,15 @@ export function TaskProvider({ children }) {
     let taskData = getTask(taskId); // task data
     let originalListId = taskData.listId; // listId before move
     taskData.listId = listId; // listId after move
-    const author = getAuthor(originalListId);
-    const newAuthor = getAuthor(listId);
-    if (taskData.listId !== originalListId) {
-      await deleteTask(taskId, originalListId, author);
-      await updateTask(taskId, taskData, listId, newAuthor);
-      toast.success("Task moved");
-    }
+    try {
+      const author = getAuthor(originalListId);
+      const newAuthor = getAuthor(listId);
+      if (taskData.listId !== originalListId) {
+        await deleteTask(taskId, originalListId, author);
+        await updateTask(taskId, taskData, listId, newAuthor);
+        toast.success("Task moved");
+      }
+    } catch {}
   };
 
   const value = {

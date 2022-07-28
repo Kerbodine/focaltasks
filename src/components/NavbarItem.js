@@ -40,7 +40,7 @@ export default function NavbarItem({ icon, title, link, listId }) {
           : "hover:bg-gray-100 dark:hover:bg-gray-800"
       } ${
         canDrop && isOver && listId
-          ? "ring-accent ring-2 ring-inset"
+          ? "ring-2 ring-inset ring-accent"
           : canDrop && listId && "ring-2 ring-inset ring-gray-400/25"
       } no-select relative flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 transition-colors`}
     >

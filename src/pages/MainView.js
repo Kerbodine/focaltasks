@@ -24,6 +24,7 @@ import { SettingsProvider } from "../contexts/SettingsContext";
 import { mobile } from "../config/functions";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import DragLayer from "../components/DragLayer";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
@@ -87,8 +88,6 @@ export default function MainView() {
     };
   }, [currentUser.uid, setUserLists, setLoading, db]);
 
-  console.log(userLists);
-
   return (
     <div className="h-screen w-screen bg-white dark:bg-gray-900">
       {loading ? (
@@ -107,7 +106,7 @@ export default function MainView() {
                 <div
                   className={`${
                     mobile() ? "ml-0" : "ml-[56px]"
-                  } transition-margin flex h-full flex-auto flex-col duration-300 sm:ml-0`}
+                  } flex h-full flex-auto flex-col transition-margin duration-300 sm:ml-0`}
                 >
                   <div
                     className={`${
@@ -169,6 +168,7 @@ export default function MainView() {
                   </div>
                 </div>
               </div>
+              <DragLayer />
             </DndProvider>
           </PomodoroProvider>
         </SettingsProvider>
