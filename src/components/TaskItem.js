@@ -8,22 +8,20 @@ import {
   HiSun,
   HiX,
 } from "react-icons/hi";
+import { useDrag } from "react-dnd";
 import { useTasks } from "../contexts/TaskContext";
 import DatePicker from "react-datepicker";
 import { useSettings } from "../contexts/SettingsContext";
 import DeleteTaskModal from "./modals/DeleteTaskModal";
 import { iOS } from "../config/functions";
 import toast from "react-hot-toast";
-import { Draggable } from "react-beautiful-dnd";
 import { BiGridVertical } from "react-icons/bi";
 
 export default function TaskItem({
-  index,
   author,
-  isDragging,
   data: { id, title, completed, dueDate, today, important, listId },
 }) {
-  const { deleteTask, updateTask } = useTasks();
+  const { deleteTask, updateTask, moveTask } = useTasks();
   const { calendarStartDay, completedAppearance, taskDeleteWarning } =
     useSettings();
 
@@ -128,200 +126,208 @@ export default function TaskItem({
     },
   ];
 
-  console.log(isDragging);
+  const [{ isDragging }, drag, preview] = useDrag(() => ({
+    type: "task",
+    item: { id: id, listId: listId },
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult();
+      if (item && dropResult) {
+        const taskId = item.id;
+        const listId = dropResult.listId;
+        moveTask(taskId, listId);
+      }
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+      handlerId: monitor.getHandlerId(),
+    }),
+  }));
 
   return (
-    <Draggable key={id} draggableId={id} index={index}>
-      {(provided) => (
+    <div
+      ref={preview}
+      id={id}
+      className={`${
+        taskExpanded
+          ? "h-[76px] shadow-lg ring-2 ring-gray-200 dark:ring-gray-700"
+          : "h-10"
+      } ${
+        isDragging && "opacity-30"
+      } flex w-full overflow-hidden rounded-lg bg-white p-2 outline-none transition-all dark:bg-gray-900`}
+    >
+      <div className="flex w-full gap-3">
         <div
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-          id={id}
+          ref={drag}
           className={`${
-            taskExpanded
-              ? "h-[76px] shadow-lg ring-2 ring-gray-200 dark:ring-gray-700"
-              : "h-10"
-          } ${
-            isDragging && "shadow-lg ring-2 ring-gray-200 dark:ring-gray-700"
-          } flex w-full rounded-lg bg-white p-2 outline-none transition-all dark:bg-gray-900`}
+            taskExpanded && "hidden"
+          } absolute -ml-6 cursor-move text-2xl text-gray-300 dark:text-gray-700`}
         >
-          <div className="flex w-full gap-3">
-            <div
-              {...provided.dragHandleProps}
-              className={`${
-                taskExpanded && "hidden"
-              } absolute -ml-6 cursor-move text-2xl text-gray-300 dark:text-gray-700`}
-            >
-              <BiGridVertical />
-            </div>
+          <BiGridVertical />
+        </div>
+        <input
+          type="checkbox"
+          checked={taskCompleted}
+          className="text-accent h-6 w-6 flex-none cursor-pointer rounded-md border-2 border-gray-300 bg-transparent text-2xl transition-colors focus:outline-none focus:ring-0 focus:ring-offset-0 dark:border-gray-600 dark:checked:border-none"
+          onChange={() => toggleTaskCompleted()}
+        />
+        {/* Task badges and input */}
+        <div
+          tabIndex="0"
+          className="flex flex-auto flex-col gap-2 outline-none"
+          onFocus={() => setTaskExpanded(true)}
+          onBlur={() => setTaskExpanded(false)}
+        >
+          {/* First row input */}
+          <div className="flex w-full items-center">
+            {/* Task category icon */}
+            {categoryButtons.map(({ condition, iconSmall }, index) => (
+              <div
+                key={index}
+                className={`${
+                  condition ? "mr-1 h-5 w-5" : "h-0 w-0"
+                } flex-none overflow-hidden text-xl text-gray-500 transition-all dark:text-gray-400`}
+              >
+                {iconSmall}
+              </div>
+            ))}
+            {/* Task title input */}
             <input
-              type="checkbox"
-              checked={taskCompleted}
-              className="text-accent h-6 w-6 flex-none cursor-pointer rounded-md border-2 border-gray-300 bg-transparent text-2xl transition-colors focus:outline-none focus:ring-0 focus:ring-offset-0 dark:border-gray-600 dark:checked:border-none"
-              onChange={() => toggleTaskCompleted()}
+              className={`h-6 w-full flex-auto truncate bg-transparent font-medium placeholder-gray-300 outline-none transition-colors dark:placeholder-gray-600 ${
+                taskCompleted
+                  ? `text-gray-400 dark:text-gray-500 ${
+                      completedAppearance !== "fade" && "line-through"
+                    }`
+                  : "text-gray-600 dark:text-gray-300"
+              } ${taskTitle === "" && "no-underline"}`}
+              placeholder="Task title"
+              value={taskTitle}
+              onChange={(e) => setTaskTitle(e.target.value)}
+              onBlur={() => {
+                taskTitle !== title &&
+                  updateTask(id, { title: taskTitle }, listId, author);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.target.blur();
+                }
+              }}
             />
-            {/* Task badges and input */}
-            <div
-              tabIndex="0"
-              className="flex flex-auto flex-col gap-2 outline-none"
-              onFocus={() => setTaskExpanded(true)}
-              onBlur={() => setTaskExpanded(false)}
+            {/* Due date card */}
+            {taskDueDate && (
+              <div className="mr-2 flex h-6 items-center rounded-md bg-gray-100 px-1 text-sm font-medium text-gray-600 dark:bg-gray-800">
+                <span className="text-lg text-gray-500 dark:text-gray-400">
+                  <HiFlag />
+                </span>
+                <p className="mr-1 whitespace-nowrap text-gray-500 dark:text-gray-400">{`${getDueInDays()}`}</p>
+              </div>
+            )}
+            {/* Delete button */}
+            <button
+              className={`h-6 w-6 flex-none place-items-center text-xl text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 ${
+                taskExpanded ? "block" : "w-0 text-[0px]" // hide button patch
+              }`}
+              onClick={() => {
+                if (taskDeleteWarning) {
+                  setDeleteModalOpen(true);
+                } else {
+                  deleteTask(id, listId, author);
+                  toast.success("Task deleted");
+                }
+              }}
             >
-              {/* First row input */}
-              <div className="flex w-full items-center">
-                {/* Task category icon */}
-                {categoryButtons.map(({ condition, iconSmall }, index) => (
-                  <div
+              <HiX />
+            </button>
+          </div>
+          {/* Second row */}
+          <div
+            className={`flex w-full ${
+              taskExpanded ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <div className={`flex w-full justify-end gap-2`}>
+              {/* Toggle category buttons */}
+              {categoryButtons.map(
+                ({ icon, label, handler, condition }, index) => (
+                  <button
                     key={index}
                     className={`${
-                      condition ? "mr-1 h-5 w-5" : "h-0 w-0"
-                    } flex-none overflow-hidden text-xl text-gray-500 transition-all dark:text-gray-400`}
+                      condition
+                        ? "bg-gray-500 text-white dark:bg-gray-600 dark:text-white"
+                        : "bg-gray-100 dark:bg-gray-800"
+                    } flex h-7 items-center gap-1 rounded-md px-1.5 text-sm font-medium text-gray-600 transition-colors dark:text-gray-400`}
+                    onClick={handler}
                   >
-                    {iconSmall}
-                  </div>
-                ))}
-                {/* Task title input */}
-                <input
-                  className={`h-6 w-full flex-auto truncate bg-transparent font-medium placeholder-gray-300 outline-none transition-colors dark:placeholder-gray-600 ${
-                    taskCompleted
-                      ? `text-gray-400 dark:text-gray-500 ${
-                          completedAppearance !== "fade" && "line-through"
-                        }`
-                      : "text-gray-600 dark:text-gray-300"
-                  } ${taskTitle === "" && "no-underline"}`}
-                  placeholder="Task title"
-                  value={taskTitle}
-                  onChange={(e) => setTaskTitle(e.target.value)}
-                  onBlur={() => {
-                    taskTitle !== title &&
-                      updateTask(id, { title: taskTitle }, listId, author);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.target.blur();
-                    }
-                  }}
-                />
-                {/* Due date card */}
-                {taskDueDate && (
-                  <div className="mr-2 flex h-6 items-center rounded-md bg-gray-100 px-1 text-sm font-medium text-gray-600 dark:bg-gray-800">
-                    <span className="text-lg text-gray-500 dark:text-gray-400">
-                      <HiFlag />
-                    </span>
-                    <p className="mr-1 whitespace-nowrap text-gray-500 dark:text-gray-400">{`${getDueInDays()}`}</p>
-                  </div>
-                )}
-                {/* Delete button */}
-                <button
-                  className={`h-6 w-6 flex-none place-items-center text-xl text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 ${
-                    taskExpanded ? "block" : "w-0 text-[0px]" // hide button patch
-                  }`}
-                  onClick={() => {
-                    if (taskDeleteWarning) {
-                      setDeleteModalOpen(true);
-                    } else {
-                      deleteTask(id, listId, author);
-                      toast.success("Task deleted");
-                    }
-                  }}
-                >
-                  <HiX />
-                </button>
-              </div>
-              {/* Second row */}
+                    <span className="text-xl">{icon}</span>
+                    <p className="mr-1 hidden sm:block">{label}</p>
+                  </button>
+                )
+              )}
+              {/* Due date input */}
               <div
-                className={`flex w-full ${
-                  taskExpanded ? "opacity-100" : "opacity-0"
+                className={`flex h-7 w-36 items-center rounded-md px-1.5 text-sm font-medium ${
+                  taskDueDate
+                    ? "bg-gray-500 text-white dark:bg-gray-600 dark:text-white"
+                    : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
                 }`}
               >
-                <div className={`flex w-full justify-end gap-2`}>
-                  {/* Toggle category buttons */}
-                  {categoryButtons.map(
-                    ({ icon, label, handler, condition }, index) => (
-                      <button
-                        key={index}
-                        className={`${
-                          condition
-                            ? "bg-gray-500 text-white dark:bg-gray-600 dark:text-white"
-                            : "bg-gray-100 dark:bg-gray-800"
-                        } flex h-7 items-center gap-1 rounded-md px-1.5 text-sm font-medium text-gray-600 transition-colors dark:text-gray-400`}
-                        onClick={handler}
-                      >
-                        <span className="text-xl">{icon}</span>
-                        <p className="mr-1 hidden sm:block">{label}</p>
-                      </button>
-                    )
-                  )}
-                  {/* Due date input */}
-                  <div
-                    className={`flex h-7 w-36 items-center rounded-md px-1.5 text-sm font-medium ${
+                <span className="mr-1 text-xl">
+                  {taskDueDate ? <HiFlag /> : <HiOutlineFlag />}
+                </span>
+                {iOS() ? (
+                  <input
+                    type="date"
+                    className={`w-28 ${
                       taskDueDate
                         ? "bg-gray-500 text-white dark:bg-gray-600 dark:text-white"
                         : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
-                    }`}
-                  >
-                    <span className="mr-1 text-xl">
-                      {taskDueDate ? <HiFlag /> : <HiOutlineFlag />}
-                    </span>
-                    {iOS() ? (
-                      <input
-                        type="date"
-                        className={`w-28 ${
-                          taskDueDate
-                            ? "bg-gray-500 text-white dark:bg-gray-600 dark:text-white"
-                            : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
-                        } border-0 p-0 text-left text-sm placeholder-gray-400 dark:placeholder-gray-500`}
-                        value={taskDueDate ? taskDueDate : ""}
-                        placeholder="Due date"
-                        onInput={(e) => {
-                          const target = e.nativeEvent.target;
-                          function iosClearDefault() {
-                            target.defaultValue = "";
-                          }
-                          window.setTimeout(iosClearDefault, 0);
-                          updateDate(null);
-                        }}
-                        onChange={(e) => {
-                          updateDate(e.target.value);
-                        }}
-                      />
-                    ) : (
-                      <DatePicker
-                        placeholderText="Enter deadline"
-                        selected={taskDueDate ? new Date(taskDueDate) : ""}
-                        onClickOutside={() => setTaskExpanded(false)}
-                        onChange={(date) => {
-                          if (date) {
-                            const newDate = adjustTimezone(date);
-                            const dateString = newDate
-                              .toISOString()
-                              .split("T")[0];
-                            updateDate(dateString);
-                            setTaskExpanded(false);
-                          } else {
-                            updateDate(null);
-                          }
-                        }}
-                        todayButton="Today"
-                        dateFormat="dd/MM/yyyy"
-                        format="y-MM-dd"
-                        calendarStartDay={calendarStartDay}
-                      />
-                    )}
-                  </div>
-                </div>
+                    } border-0 p-0 text-left text-sm placeholder-gray-400 dark:placeholder-gray-500`}
+                    value={taskDueDate ? taskDueDate : ""}
+                    placeholder="Due date"
+                    onInput={(e) => {
+                      const target = e.nativeEvent.target;
+                      function iosClearDefault() {
+                        target.defaultValue = "";
+                      }
+                      window.setTimeout(iosClearDefault, 0);
+                      updateDate(null);
+                    }}
+                    onChange={(e) => {
+                      updateDate(e.target.value);
+                    }}
+                  />
+                ) : (
+                  <DatePicker
+                    placeholderText="Enter deadline"
+                    selected={taskDueDate ? new Date(taskDueDate) : ""}
+                    onClickOutside={() => setTaskExpanded(false)}
+                    onChange={(date) => {
+                      if (date) {
+                        const newDate = adjustTimezone(date);
+                        const dateString = newDate.toISOString().split("T")[0];
+                        updateDate(dateString);
+                        setTaskExpanded(false);
+                      } else {
+                        updateDate(null);
+                      }
+                    }}
+                    todayButton="Today"
+                    dateFormat="dd/MM/yyyy"
+                    format="y-MM-dd"
+                    calendarStartDay={calendarStartDay}
+                  />
+                )}
               </div>
             </div>
           </div>
-          <DeleteTaskModal
-            taskId={id}
-            listId={listId}
-            author={author}
-            modalOpen={deleteModalOpen}
-            setModalOpen={setDeleteModalOpen}
-          />
         </div>
-      )}
-    </Draggable>
+      </div>
+      <DeleteTaskModal
+        taskId={id}
+        listId={listId}
+        author={author}
+        modalOpen={deleteModalOpen}
+        setModalOpen={setDeleteModalOpen}
+      />
+    </div>
   );
 }

@@ -170,20 +170,12 @@ export function TaskProvider({ children }) {
   };
 
   const moveTask = async (taskId, listId) => {
-    const categories = [
-      "today",
-      "upcoming",
-      "important",
-      "completed",
-      "all",
-      "settings",
-    ];
-    if (!categories.includes(listId)) {
-      let taskData = getTask(taskId); // task data
-      let originalListId = taskData.listId; // listId before move
-      taskData.listId = listId; // listId after move
-      const author = getAuthor(originalListId);
-      const newAuthor = getAuthor(listId);
+    let taskData = getTask(taskId); // task data
+    let originalListId = taskData.listId; // listId before move
+    taskData.listId = listId; // listId after move
+    const author = getAuthor(originalListId);
+    const newAuthor = getAuthor(listId);
+    if (taskData.listId !== originalListId) {
       await deleteTask(taskId, originalListId, author);
       await updateTask(taskId, taskData, listId, newAuthor);
       toast.success("Task moved");

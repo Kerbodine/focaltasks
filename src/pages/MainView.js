@@ -22,12 +22,13 @@ import ListRoute from "../components/ListRoute";
 import Category from "./Category";
 import { SettingsProvider } from "../contexts/SettingsContext";
 import { mobile } from "../config/functions";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
   const { setUserData, currentUser } = useAuth();
-  const { userLists, setUserLists, moveTask } = useTasks();
+  const { userLists, setUserLists } = useTasks();
 
   const db = getFirestore(app);
 
@@ -97,21 +98,7 @@ export default function MainView() {
       ) : (
         <SettingsProvider>
           <PomodoroProvider>
-            <DragDropContext
-              onDragEnd={(result) => {
-                console.log(result);
-                if (result.destination !== null) {
-                  const droppableId = result.destination.droppableId;
-                  console.log(droppableId);
-                  if (droppableId !== "list") {
-                    const listId = droppableId.split("/")[1];
-                    const taskId = result.draggableId;
-                    // console.log(listId, taskId);
-                    moveTask(taskId, listId);
-                  }
-                }
-              }}
-            >
+            <DndProvider backend={HTML5Backend}>
               <hr className="absolute top-[56px] h-[2px] w-screen border-0 bg-gray-100 dark:bg-gray-800" />
               <div className="mx-auto flex h-full w-full max-w-screen-xl">
                 {/* Navbar section */}
@@ -182,7 +169,7 @@ export default function MainView() {
                   </div>
                 </div>
               </div>
-            </DragDropContext>
+            </DndProvider>
           </PomodoroProvider>
         </SettingsProvider>
       )}

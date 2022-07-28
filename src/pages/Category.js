@@ -1,5 +1,4 @@
 import React from "react";
-import { Droppable } from "react-beautiful-dnd";
 import TaskItem from "../components/TaskItem";
 import { useTasks } from "../contexts/TaskContext";
 
@@ -35,37 +34,27 @@ export default function Category({ title, sort }) {
         {title === "Today" && (
           <p className="font-medium text-gray-500">{today}</p>
         )}
-        <Droppable droppableId={"list"}>
-          {(provided, snapshot) => (
-            <div
-              className="-mx-2 mt-4 flex flex-col gap-0.5"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {tasks.length ? (
-                tasks.map((task, index) => (
-                  <TaskItem
-                    index={index}
-                    key={task.id + index}
-                    listId={task.listId}
-                    data={task}
-                    isDragging={snapshot.isDragging}
-                    author={
-                      Object.values(userLists).filter(
-                        (list) => list.id === task.listId
-                      )[0].author
-                    }
-                  />
-                ))
-              ) : (
-                <p className="ml-2 font-medium text-gray-700 dark:text-gray-300">
-                  No tasks
-                </p>
-              )}
-              {provided.placeholder}
-            </div>
+        <div className="-mx-2 mt-4 flex flex-col gap-0.5">
+          {tasks.length ? (
+            tasks.map((task, index) => (
+              <TaskItem
+                index={index}
+                key={task.id + index}
+                listId={task.listId}
+                data={task}
+                author={
+                  Object.values(userLists).filter(
+                    (list) => list.id === task.listId
+                  )[0].author
+                }
+              />
+            ))
+          ) : (
+            <p className="ml-2 font-medium text-gray-700 dark:text-gray-300">
+              No tasks
+            </p>
           )}
-        </Droppable>
+        </div>
       </div>
     </>
   );
