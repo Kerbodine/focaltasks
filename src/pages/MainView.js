@@ -77,9 +77,9 @@ export default function MainView() {
             {}
           );
         }, {});
-        console.log("Updating lists");
-        setUserLists(objectList);
+        setUserLists({ ...objectList });
         setLoading(false);
+        console.log("Updating lists");
       }
     );
     // Cleanup listeners
@@ -168,7 +168,9 @@ export default function MainView() {
                   </div>
                 </div>
               </div>
-              <DragLayer />
+              <div key={userLists}>
+                <DragLayer />
+              </div>
             </DndProvider>
           </PomodoroProvider>
         </SettingsProvider>

@@ -97,19 +97,19 @@ export default function Navbar() {
             icon={<HiSun />}
             title="Today"
             link={"/today"}
-            filter={(task) => task.today}
+            filter={(task) => task.today && !task.completed}
           />
           <NavbarItem
             icon={<HiExclamationCircle />}
             title="Important"
             link={"/important"}
-            filter={(task) => task.important}
+            filter={(task) => task.important && !task.completed}
           />
           <NavbarItem
             icon={<HiCalendar />}
             title="Upcoming"
             link={"/upcoming"}
-            filter={(task) => task.dueDate}
+            filter={(task) => task.dueDate && !task.completed}
           />
           {sidebarLists.completed && (
             <NavbarItem

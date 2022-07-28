@@ -21,6 +21,7 @@ import { useView } from "../contexts/ViewContext";
 
 export default function TaskItem({
   author,
+  data,
   data: { id, title, completed, dueDate, today, important, listId },
 }) {
   const { deleteTask, updateTask, moveTask } = useTasks();
@@ -129,22 +130,32 @@ export default function TaskItem({
     },
   ];
 
-  const [{ isDragging }, drag, preview] = useDrag(() => ({
-    type: "task",
-    item: { id: id, listId: listId, title: title, completed: completed },
-    end: (item, monitor) => {
-      const dropResult = monitor.getDropResult();
-      if (item && dropResult) {
-        const taskId = item.id;
-        const listId = dropResult.listId;
-        moveTask(taskId, listId);
-      }
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-      handlerId: monitor.getHandlerId(),
+  const [{ isDragging }, drag, preview] = useDrag(
+    () => ({
+      type: "task",
+      item: {
+        id: id,
+        listId: listId,
+        title: taskTitle,
+        completed: taskCompleted,
+      },
+      end: async (item, monitor) => {
+        const dropResult = monitor.getDropResult();
+        if (item && dropResult) {
+          const taskId = item.id;
+          const newListId = dropResult.listId;
+          await moveTask(taskId, newListId, listId);
+        }
+      },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+        handlerId: monitor.getHandlerId(),
+      }),
     }),
-  }));
+    [id, listId, taskTitle, taskCompleted, moveTask]
+  );
+
+  console.log(taskCompleted);
 
   useEffect(() => {
     preview(getEmptyImage(), { captureDraggingState: true });

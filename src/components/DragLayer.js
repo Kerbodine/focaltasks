@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDragLayer } from "react-dnd";
 import TaskDragPreview from "./TaskDragPreview";
 
@@ -17,7 +17,7 @@ export default function DragLayer() {
     };
   }
 
-  const { itemType, isDragging, item, initialOffset, currentOffset } =
+  const { itemType, isDragging, initialOffset, currentOffset, item } =
     useDragLayer((monitor) => ({
       item: monitor.getItem(),
       itemType: monitor.getItemType(),
@@ -25,6 +25,10 @@ export default function DragLayer() {
       currentOffset: monitor.getSourceClientOffset(),
       isDragging: monitor.isDragging(),
     }));
+
+  if (!isDragging) {
+    return null;
+  }
 
   function renderItem() {
     switch (itemType) {

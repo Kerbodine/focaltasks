@@ -28,22 +28,15 @@ export function TaskProvider({ children }) {
 
   const db = getFirestore(app);
 
-  const [userLists, setUserLists] = useState([]);
-
-  const getTask = (taskId) => {
-    const task = Object.values(userLists)
-      .map((list) => list.tasks.find((task) => task.id === taskId))
-      .filter((task) => task !== undefined)
-      .flat()[0];
-    return task;
-  };
-
-  const getAuthor = (listId) => {
-    const list = Object.values(userLists).filter((list) => list.id === listId);
-    return list[0].author;
-  };
+  const [userLists, setUserLists] = useState({});
 
   const createTask = async (listId, author) => {
+    let batch = writeBatch(db);
+    batch = createTaskBatch(listId, author, batch);
+    await batch.commit();
+  };
+
+  const createTaskBatch = (listId, author, batch) => {
     const taskId = uuidv4();
     const task = {
       id: taskId,
@@ -55,7 +48,7 @@ export function TaskProvider({ children }) {
       createdAt: new Date(),
       modifiedAt: new Date(),
     };
-    await updateDoc(doc(db, "Users", author, "Lists", listId), {
+    batch.update(doc(db, "Users", author, "Lists", listId), {
       tasks: {
         ...Object.values(userLists[listId].tasks)
           .filter((task) => task.id !== taskId)
@@ -64,6 +57,7 @@ export function TaskProvider({ children }) {
       },
       modifiedAt: new Date(),
     });
+    return batch;
   };
 
   const updateTask = async (taskId, updatedItems, listId, author) => {
@@ -183,6 +177,19 @@ export function TaskProvider({ children }) {
     });
   };
 
+  const getTask = (taskId) => {
+    const task = Object.values(userLists)
+      .map((list) => list.tasks.filter((task) => task.id === taskId))
+      .filter((task) => task !== undefined)
+      .flat()[0];
+    return task;
+  };
+
+  const getAuthor = (listId) => {
+    const list = Object.values(userLists).filter((list) => list.id === listId);
+    return list[0].author;
+  };
+
   const moveTask = async (taskId, listId) => {
     let taskData = getTask(taskId); // task data
     let originalListId = taskData.listId; // listId before move
@@ -194,10 +201,12 @@ export function TaskProvider({ children }) {
         let batch = writeBatch(db);
         batch = updateTaskBatch(taskId, taskData, listId, newAuthor, batch);
         batch = deleteTaskBatch(taskId, originalListId, author, batch);
-        toast.success("Task moved");
         await batch.commit();
+        toast.success("Task moved");
       }
-    } catch {}
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const value = {

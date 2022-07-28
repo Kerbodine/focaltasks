@@ -1,5 +1,6 @@
 import React from "react";
 import { useSettings } from "../contexts/SettingsContext";
+import { useTasks } from "../contexts/TaskContext";
 
 export default function TaskDragPreview({ title, completed }) {
   const { completedAppearance } = useSettings();
