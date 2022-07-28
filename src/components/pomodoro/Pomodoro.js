@@ -18,7 +18,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import PomodoroBar from "./PomodoroBar";
 
 const Pomodoro = () => {
-  const minute = 1; // seconds
+  const minute = 60; // seconds
 
   const { duration, startSession, completeSession } = usePomodoro();
 

@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 import { BiGridVertical } from "react-icons/bi";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { useView } from "../contexts/ViewContext";
+import { mobile } from "../config/functions";
 
 export default function TaskItem({
   author,
@@ -178,6 +179,8 @@ export default function TaskItem({
           ref={drag}
           className={`${taskExpanded && "hidden"} ${
             navbar && "hidden sm:block" // z index patch
+          } ${
+            mobile() && "hidden"
           } absolute z-auto -ml-6 cursor-move text-2xl text-gray-300 dark:text-gray-700`}
         >
           <BiGridVertical />

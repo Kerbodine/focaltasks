@@ -40,7 +40,7 @@
     /* min-height: calc(100% + env(safe-area-inset-top));
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);*/
   }
-  html, body {touch-action: none;}
+  /* html, body {touch-action: none;} */
   * { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 }
 
