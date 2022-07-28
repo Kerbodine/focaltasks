@@ -100,10 +100,16 @@ export default function MainView() {
             <DragDropContext
               onDragEnd={(result) => {
                 console.log(result);
-                const listId = result.destination.droppableId.split("/")[1];
-                const taskId = result.draggableId;
-                console.log(listId, taskId);
-                moveTask(taskId, listId);
+                if (result.destination !== null) {
+                  const droppableId = result.destination.droppableId;
+                  console.log(droppableId);
+                  if (droppableId !== "list") {
+                    const listId = droppableId.split("/")[1];
+                    const taskId = result.draggableId;
+                    // console.log(listId, taskId);
+                    moveTask(taskId, listId);
+                  }
+                }
               }}
             >
               <hr className="absolute top-[56px] h-[2px] w-screen border-0 bg-gray-100 dark:bg-gray-800" />

@@ -89,8 +89,8 @@ export default function TaskList({ listId, author }) {
             }}
           />
           <div className="flex-auto pb-14">
-            <Droppable droppableId={listId}>
-              {(provided) => (
+            <Droppable droppableId={"list"}>
+              {(provided, snapshot) => (
                 <div
                   className="-mx-2 mt-4 flex flex-col gap-0.5"
                   {...provided.droppableProps}
@@ -106,6 +106,7 @@ export default function TaskList({ listId, author }) {
                           key={task.id + index}
                           listId={listId}
                           data={task}
+                          isDragging={snapshot.isDraggingOver}
                           author={
                             Object.values(userLists).filter(
                               (list) => list.id === task.listId

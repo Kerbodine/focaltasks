@@ -35,8 +35,8 @@ export default function Category({ title, sort }) {
         {title === "Today" && (
           <p className="font-medium text-gray-500">{today}</p>
         )}
-        <Droppable droppableId={title}>
-          {(provided) => (
+        <Droppable droppableId={"list"}>
+          {(provided, snapshot) => (
             <div
               className="-mx-2 mt-4 flex flex-col gap-0.5"
               {...provided.droppableProps}
@@ -49,6 +49,7 @@ export default function Category({ title, sort }) {
                     key={task.id + index}
                     listId={task.listId}
                     data={task}
+                    isDragging={snapshot.isDragging}
                     author={
                       Object.values(userLists).filter(
                         (list) => list.id === task.listId

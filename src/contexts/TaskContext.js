@@ -184,8 +184,8 @@ export function TaskProvider({ children }) {
       taskData.listId = listId; // listId after move
       const author = getAuthor(originalListId);
       const newAuthor = getAuthor(listId);
-      await updateTask(taskId, taskData, listId, newAuthor);
       await deleteTask(taskId, originalListId, author);
+      await updateTask(taskId, taskData, listId, newAuthor);
       toast.success("Task moved");
     }
   };

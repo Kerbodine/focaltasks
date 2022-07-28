@@ -23,8 +23,8 @@ export default function NavbarItem({ icon, title, link, listId }) {
 
   return (
     <Droppable droppableId={link}>
-      {(provided) => (
-        <div>
+      {(provided, snapshot) => (
+        <div className="block w-full">
           <Link
             to={link}
             {...provided.droppableProps}
@@ -33,6 +33,8 @@ export default function NavbarItem({ icon, title, link, listId }) {
               pathname === link
                 ? "!bg-gray-100 dark:!bg-gray-800"
                 : "hover:bg-gray-100 dark:hover:bg-gray-800"
+            } ${
+              snapshot.isDraggingOver && "ring-accent ring-2"
             } no-select relative flex h-8 w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 transition-colors`}
           >
             <span className="flex-none fill-gray-500 text-xl text-gray-500 dark:text-gray-400">
@@ -61,6 +63,7 @@ export default function NavbarItem({ icon, title, link, listId }) {
               </Transition>
             </div>
           </Link>
+          <span className="hidden">{provided.placeholder}</span>
         </div>
       )}
     </Droppable>

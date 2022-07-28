@@ -49,7 +49,7 @@ export default function ToggleIcon({ state, clickHandler }) {
           aria-hidden="true"
         >
           <svg
-            className="h-3 w-3 text-accent"
+            className="text-accent h-3 w-3"
             fill="currentColor"
             viewBox="0 0 12 12"
           >

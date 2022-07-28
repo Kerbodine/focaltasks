@@ -15,10 +15,12 @@ import DeleteTaskModal from "./modals/DeleteTaskModal";
 import { iOS } from "../config/functions";
 import toast from "react-hot-toast";
 import { Draggable } from "react-beautiful-dnd";
+import { BiGridVertical } from "react-icons/bi";
 
 export default function TaskItem({
   index,
   author,
+  isDragging,
   data: { id, title, completed, dueDate, today, important, listId },
 }) {
   const { deleteTask, updateTask } = useTasks();
@@ -126,21 +128,32 @@ export default function TaskItem({
     },
   ];
 
+  console.log(isDragging);
+
   return (
     <Draggable key={id} draggableId={id} index={index}>
       {(provided) => (
         <div
           {...provided.draggableProps}
-          {...provided.dragHandleProps}
           ref={provided.innerRef}
           id={id}
           className={`${
             taskExpanded
-              ? "h-[76px] bg-white shadow-lg ring-2 ring-gray-200 dark:bg-gray-900 dark:ring-gray-700"
+              ? "h-[76px] shadow-lg ring-2 ring-gray-200 dark:ring-gray-700"
               : "h-10"
-          } flex w-full overflow-hidden rounded-lg p-2 outline-none transition-all`}
+          } ${
+            isDragging && "shadow-lg ring-2 ring-gray-200 dark:ring-gray-700"
+          } flex w-full rounded-lg bg-white p-2 outline-none transition-all dark:bg-gray-900`}
         >
           <div className="flex w-full gap-3">
+            <div
+              {...provided.dragHandleProps}
+              className={`${
+                taskExpanded && "hidden"
+              } absolute -ml-6 cursor-move text-2xl text-gray-300 dark:text-gray-700`}
+            >
+              <BiGridVertical />
+            </div>
             <input
               type="checkbox"
               checked={taskCompleted}
