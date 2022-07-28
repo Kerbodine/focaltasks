@@ -17,7 +17,7 @@ export default function Login() {
 
   const googleSignIn = async () => {
     await signInWithGoogle();
-    navigate("/");
+    navigate("/inbox");
   };
 
   const handleSubmit = async (e) => {
@@ -27,7 +27,7 @@ export default function Login() {
       setLoading(true);
       await login(email, password);
       setLoading(false);
-      navigate("/");
+      navigate("/inbox");
     } catch (err) {
       switch (err.code) {
         case "auth/user-not-found":
@@ -45,9 +45,9 @@ export default function Login() {
 
   return (
     <div className="grid h-screen w-screen place-items-center bg-white dark:bg-gray-900">
-      <div className="xs:border-2 rounded-2xl border-gray-200 p-8 dark:border-gray-700">
+      <div className="rounded-2xl border-gray-200 p-8 dark:border-gray-700 xs:border-2">
         <form className="relative w-[240px]" onSubmit={handleSubmit}>
-          <h1 className="xs:text-3xl mb-4 text-2xl font-semibold tracking-tight dark:text-white">
+          <h1 className="mb-4 text-2xl font-semibold tracking-tight dark:text-white xs:text-3xl">
             Log in
           </h1>
           <button type="button" onClick={googleSignIn} className="auth-google">

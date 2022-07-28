@@ -19,7 +19,7 @@ export default function Signup() {
 
   const googleSignIn = async () => {
     await signInWithGoogle();
-    navigate("/");
+    navigate("/inbox");
   };
 
   const handleSubmit = async (e) => {

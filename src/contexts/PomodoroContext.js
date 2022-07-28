@@ -12,7 +12,6 @@ export function PomodoroProvider({ children }) {
   const { currentUser } = useAuth();
 
   const [duration, setDuration] = useState(25);
-  const [currentId, setCurrentId] = useState(null);
   const [pomodoros, setPomodoros] = useState([]);
   const [pastData, setPastData] = useState([]);
 
@@ -33,7 +32,7 @@ export function PomodoroProvider({ children }) {
     );
   };
 
-  const completeSession = async () => {
+  const completeSession = async (currentId) => {
     await updateDoc(
       doc(getFirestore(), "Users", currentUser.uid, "Pomodoros", currentId),
       {
@@ -48,8 +47,6 @@ export function PomodoroProvider({ children }) {
     setDuration,
     startSession,
     completeSession,
-    currentId,
-    setCurrentId,
     pomodoros,
     setPomodoros,
     pastData,

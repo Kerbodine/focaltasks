@@ -46,7 +46,7 @@ const TaskSettings = ({ currentList, handlePrint }) => {
     } else {
       deleteList(currentList.id, currentList.author);
       toast.success("List deleted");
-      navigate("/");
+      navigate("/inbox");
     }
   };
 

@@ -18,7 +18,7 @@ const DeleteListModal = ({ currentList, modalOpen, setModalOpen }) => {
     closeModal();
     deleteList(currentList.id, currentList.author);
     toast.success("List deleted");
-    navigate("/");
+    navigate("/inbox");
   };
 
   return (

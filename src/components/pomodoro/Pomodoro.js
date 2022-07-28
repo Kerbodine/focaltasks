@@ -18,14 +18,14 @@ import { useAuth } from "../../contexts/AuthContext";
 import PomodoroBar from "./PomodoroBar";
 
 const Pomodoro = () => {
-  const minute = 60; // seconds
+  const minute = 1; // seconds
 
-  const { duration, startSession, completeSession, currentId, setCurrentId } =
-    usePomodoro();
+  const { duration, startSession, completeSession } = usePomodoro();
 
   const [isPaused, setIsPaused] = useState(true);
   const [started, setStarted] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(0);
+  const [currentId, setCurrentId] = useState(null);
   const [pomodoros, setPomodoros] = useState([]);
   const [chartLabels, setChartLabels] = useState([]);
   const [chartData, setChartData] = useState([]);
@@ -64,7 +64,7 @@ const Pomodoro = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [duration, currentId, completeSession]);
+  }, [duration, currentId]);
 
   const resetTimer = () => {
     secondsLeftRef.current = duration * minute;
