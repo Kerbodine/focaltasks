@@ -73,6 +73,9 @@ export default function TaskList({ listId, author }) {
                 list.title !== listTitle &&
                   updateList(listId, { title: listTitle }, author);
               }}
+              {...(listTitle === "Inbox" && {
+                readOnly: true,
+              })}
             />
             {!list.default && (
               <TaskSettings currentList={list} handlePrint={handlePrint} />

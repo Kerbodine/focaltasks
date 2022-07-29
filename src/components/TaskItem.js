@@ -156,8 +156,6 @@ export default function TaskItem({
     [id, listId, taskTitle, taskCompleted, moveTask]
   );
 
-  console.log(taskCompleted);
-
   useEffect(() => {
     preview(getEmptyImage(), { captureDraggingState: true });
   }, []);
@@ -181,7 +179,7 @@ export default function TaskItem({
             navbar && "hidden sm:block" // z index patch
           } ${
             mobile() && "hidden"
-          } absolute z-auto -ml-6 cursor-move text-2xl text-gray-300 dark:text-gray-700`}
+          } absolute z-auto -ml-6 cursor-move text-2xl text-gray-200 dark:text-gray-700 print:hidden`}
         >
           <BiGridVertical />
         </div>
