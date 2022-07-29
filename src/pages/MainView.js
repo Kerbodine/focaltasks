@@ -25,6 +25,7 @@ import { mobile } from "../config/functions";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import DragLayer from "../components/DragLayer";
+import BetaBadge from "../components/BetaBadge";
 
 export default function MainView() {
   const [loading, setLoading] = useState(true);
@@ -165,6 +166,8 @@ export default function MainView() {
                     </Routes>
                     {/* Sidebar section */}
                     <Sidebar />
+                    {/* Remove in v1.0 */}
+                    <BetaBadge />
                   </div>
                 </div>
               </div>
