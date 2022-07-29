@@ -11,12 +11,17 @@ export default function NavbarItem({ icon, title, link, listId, filter }) {
   const { userLists } = useTasks();
 
   const [length, setLength] = useState(0);
+  const [dueToday, setDueToday] = useState(0);
 
   useEffect(() => {
     if (listId) {
       const list = userLists[listId];
       if (list) {
         setLength(list.tasks.filter((task) => !task.completed).length);
+        const due = list.tasks
+          .filter((task) => task.dueDate !== null)
+          .filter((task) => new Date(task.dueDate) <= new Date()).length;
+        setDueToday(due);
       }
     } else {
       const lists = Object.values(userLists);
@@ -38,7 +43,7 @@ export default function NavbarItem({ icon, title, link, listId, filter }) {
 
   return (
     <Link
-      ref={drop}
+      ref={listId && drop}
       to={link}
       className={`${
         pathname === link
@@ -60,9 +65,9 @@ export default function NavbarItem({ icon, title, link, listId, filter }) {
       >
         {title}
       </p>
-      <div className={`${!navbar && "hidden sm:block"}`}>
+      <div className={`${!navbar && "hidden"} flex gap-1`}>
         <Transition
-          show={length > 0}
+          show={length - dueToday > 0}
           enter="ease-out duration-200"
           enterFrom="scale-75 opacity-0"
           enterTo="scale-105 opacity-100"
@@ -71,7 +76,20 @@ export default function NavbarItem({ icon, title, link, listId, filter }) {
           leaveTo="scale-75 opacity-0"
         >
           <span className="grid h-5 w-5 place-items-center rounded-md bg-gray-100 font-mono text-[13px] font-bold text-gray-500 dark:bg-gray-800 dark:text-gray-400">
-            {length}
+            {length - dueToday}
+          </span>
+        </Transition>
+        <Transition
+          show={dueToday > 0}
+          enter="ease-out duration-200"
+          enterFrom="scale-75 opacity-0"
+          enterTo="scale-105 opacity-100"
+          leave="ease-in duration-150"
+          leaveFrom="scale-105 opacity-100"
+          leaveTo="scale-75 opacity-0"
+        >
+          <span className="grid h-5 w-5 place-items-center rounded-md bg-accent font-mono text-[13px] font-bold text-white">
+            {dueToday}
           </span>
         </Transition>
       </div>

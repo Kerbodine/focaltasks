@@ -30,8 +30,9 @@ export default function Navbar() {
 
   const checkShared = () => {
     return (
-      Object.values(userLists).filter((list) => list.users.length > 1).length >
-      0
+      Object.values(userLists).filter(
+        (list) => list.users.length > 1 || list.public
+      ).length > 0
     );
   };
 
@@ -152,7 +153,7 @@ export default function Navbar() {
             <div className="flex flex-col gap-1">
               {/* Shared lists */}
               {Object.values(userLists)
-                .filter((list) => list.users.length > 1) // Check if its the user's list
+                .filter((list) => list.users.length > 1 || list.public) // Check if its the user's list
                 .map((list) => (
                   <NavbarItem
                     icon={
@@ -181,7 +182,7 @@ export default function Navbar() {
           {/* User lists */}
           {Object.values(userLists)
             .filter((list) => !specialLists.includes(list.id)) // Check if its not a default list
-            .filter((list) => list.users.length === 1) // Check if its the user's list
+            .filter((list) => list.users.length === 1 && !list.public) // Check if not shared
             .map((list) => (
               <NavbarItem
                 icon={listIcons.find((icon) => icon.name === list.icon).icon}

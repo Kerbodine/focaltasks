@@ -300,7 +300,16 @@ const Pomodoro = () => {
         </p>
       </div>
       <div className="w-full overflow-hidden rounded-lg border-2 border-gray-200 px-1 pt-2 dark:border-gray-700">
-        <PomodoroBar labels={chartLabels} data={chartData} />
+        <div className="relative">
+          <PomodoroBar labels={chartLabels} data={chartData} />
+          <div className="absolute inset-0 grid place-items-center">
+            {chartData !== [] && (
+              <div className="text-center">
+                <p className="text-gray-500">No data</p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
