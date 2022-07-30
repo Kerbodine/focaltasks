@@ -19,6 +19,7 @@ export default function NavbarItem({ icon, title, link, listId, filter }) {
       if (list) {
         setLength(list.tasks.filter((task) => !task.completed).length);
         const due = list.tasks
+          .filter((task) => !task.completed)
           .filter((task) => task.dueDate !== null)
           .filter((task) => new Date(task.dueDate) <= new Date()).length;
         setDueToday(due);

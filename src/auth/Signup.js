@@ -29,7 +29,7 @@ export default function Signup() {
       setLoading(true);
       await signup(email, password, firstName, lastName);
       setLoading(false);
-      navigate("/verify-email?signup=true");
+      navigate("/inbox");
     } catch (err) {
       switch (err.code) {
         case "auth/email-already-in-use":
@@ -128,7 +128,7 @@ export default function Signup() {
             </Link>
           </p>
           {loading && (
-            <div className="absolute inset-0 grid place-items-center bg-white">
+            <div className="absolute inset-0 grid place-items-center bg-white dark:bg-gray-900">
               <span className="animate-spin text-2xl text-gray-500">
                 <BiLoaderAlt />
               </span>
