@@ -35,11 +35,6 @@ const Pomodoro = () => {
   const secondsLeftRef = useRef(secondsLeft);
   const isPausedRef = useRef(isPaused);
 
-  function tick() {
-    secondsLeftRef.current--;
-    setSecondsLeft(secondsLeftRef.current);
-  }
-
   useEffect(() => {
     function switchMode() {
       completeSession(currentId);
@@ -53,17 +48,27 @@ const Pomodoro = () => {
     secondsLeftRef.current = duration * minute;
     setSecondsLeft(secondsLeftRef.current);
 
-    const interval = setInterval(() => {
+    const start = document.timeline.currentTime;
+    function frame(time) {
       if (isPausedRef.current) {
         return;
       }
       if (secondsLeftRef.current === 0) {
         return switchMode();
       }
-      tick();
-    }, 1000);
+      const elapsed = time - start;
+      const seconds = Math.round(elapsed / 1000);
+      const secondsLeft = duration * minute;
+      secondsLeftRef.current = secondsLeft - seconds;
+      setSecondsLeft(secondsLeft - seconds);
+      const targetNext = (seconds + 1) * 1000 + start;
+      setTimeout(
+        () => requestAnimationFrame(frame),
+        targetNext - performance.now()
+      );
+    }
 
-    return () => clearInterval(interval);
+    frame(start);
   }, [duration, currentId]);
 
   const resetTimer = () => {
@@ -240,42 +245,19 @@ const Pomodoro = () => {
             <HiPlay className="-ml-1 text-xl" />
             Start
           </button>
-        ) : isPaused && started ? (
+        ) : (
           <button
             onClick={() => {
-              setIsPaused(false);
-              isPausedRef.current = false;
+              resetTimer();
+              setCurrentId(null);
+              setIsPaused(true);
+              setStarted(false);
             }}
-            className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-accent hover:text-white dark:bg-gray-800 dark:hover:bg-accent"
+            className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-red-400 hover:text-white dark:bg-gray-800 dark:hover:bg-red-400"
           >
-            <HiPlay className="-ml-1 text-xl" />
-            Resume
+            <HiXCircle className="-ml-1 text-xl" />
+            Reset
           </button>
-        ) : (
-          <>
-            <button
-              onClick={() => {
-                setIsPaused(true);
-                isPausedRef.current = true;
-              }}
-              className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-500 hover:text-white dark:bg-gray-800 dark:hover:bg-accent"
-            >
-              <HiPause className="-ml-1 text-xl" />
-              Pause
-            </button>
-            <button
-              onClick={() => {
-                resetTimer();
-                setCurrentId(null);
-                setIsPaused(true);
-                setStarted(false);
-              }}
-              className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-red-400 hover:text-white dark:bg-gray-800 dark:hover:bg-red-400"
-            >
-              <HiXCircle className="-ml-1 text-xl" />
-              Reset
-            </button>
-          </>
         )}
       </div>
       <div className="relative mt-8 mb-4">
@@ -303,7 +285,7 @@ const Pomodoro = () => {
         <div className="relative">
           <PomodoroBar labels={chartLabels} data={chartData} />
           <div className="absolute inset-0 grid place-items-center">
-            {chartData !== [] && (
+            {!chartData.filter((data) => data !== undefined).length && (
               <div className="text-center">
                 <p className="text-gray-500">No data</p>
               </div>
