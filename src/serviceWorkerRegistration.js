@@ -2,6 +2,7 @@
 // register() is not called by default.
 
 import toast from "react-hot-toast";
+import { HiDownload } from "react-icons/hi";
 
 // This lets the app load faster on subsequent visits in production, and gives
 // it offline capabilities. However, it also means that developers (and users)
@@ -75,14 +76,29 @@ function registerValidSW(swUrl, config) {
                 "New content is available and will be used when all " +
                   "tabs for this page are closed. See https://cra.link/PWA."
               );
-
               registration.waiting.postMessage({ type: "SKIP_WAITING" });
-              toast("Update available! To update, refresh this tab.", {
-                toastId: "appUpdateAvailable",
-                autoClose: false,
-                icon: "🥳",
-              });
-
+              toast.custom(
+                (t) => (
+                  <span className="flex w-full max-w-xs items-center rounded-lg bg-white p-2 text-gray-700  shadow-lg">
+                    <span className="mr-3 rounded-lg bg-gray-100 p-2 text-2xl">
+                      <HiDownload />
+                    </span>
+                    <p className="leading-5">New update available!</p>
+                    <button
+                      className="hover:border-accent hover:bg-accent ml-auto rounded-lg border-2 border-gray-200 px-2 py-1.5 font-medium transition-colors hover:text-white"
+                      onClick={() => {
+                        toast.remove(t.id);
+                        window.location.reload();
+                      }}
+                    >
+                      Reload
+                    </button>
+                  </span>
+                ),
+                {
+                  duration: 10000,
+                }
+              );
               // Execute callback
               if (config && config.onUpdate) {
                 config.onUpdate(registration);

@@ -24,12 +24,6 @@ export default function NavbarItem({ icon, title, link, listId, filter }) {
           .filter((task) => new Date(task.dueDate) <= new Date()).length;
         setDueToday(due);
       }
-    } else {
-      const lists = Object.values(userLists);
-      const length = lists
-        .map((list) => list.tasks.filter(filter).length)
-        .reduce((a, b) => a + b, 0);
-      setLength(length);
     }
   }, [userLists, listId, filter]);
 
@@ -41,6 +35,8 @@ export default function NavbarItem({ icon, title, link, listId, filter }) {
       canDrop: monitor.canDrop(),
     }),
   }));
+
+  console.log(dueToday);
 
   return (
     <Link
@@ -66,7 +62,7 @@ export default function NavbarItem({ icon, title, link, listId, filter }) {
       >
         {title}
       </p>
-      <div className={`${!navbar && "hidden"} flex gap-1`}>
+      <div className={`${!navbar && "hidden sm:flex"} flex gap-1`}>
         <Transition
           show={length - dueToday > 0}
           enter="ease-out duration-200"
