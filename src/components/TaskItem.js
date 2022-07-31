@@ -17,19 +17,16 @@ import { iOS } from "../config/functions";
 import toast from "react-hot-toast";
 import { BiGridVertical } from "react-icons/bi";
 import { getEmptyImage } from "react-dnd-html5-backend";
-import { useView } from "../contexts/ViewContext";
 import { mobile } from "../config/functions";
 import splitbee from "@splitbee/web";
 
 export default function TaskItem({
   author,
-  data,
   data: { id, title, completed, dueDate, today, important, listId },
 }) {
   const { deleteTask, updateTask, moveTask } = useTasks();
   const { calendarStartDay, completedAppearance, taskDeleteWarning } =
     useSettings();
-  const { navbar } = useView();
 
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskCompleted, setTaskCompleted] = useState(completed);
