@@ -5,12 +5,14 @@ import TaskItem from "../components/TaskItem";
 import { useTasks } from "../contexts/TaskContext";
 import TaskSettings from "../components/TaskSettings";
 import { useReactToPrint } from "react-to-print";
+import splitbee from "@splitbee/web";
 
 export default function TaskList({ listId, author }) {
   const { createTask, userLists, updateList } = useTasks();
 
   const newTask = () => {
     createTask(listId, author);
+    splitbee.track("Create task");
   };
 
   // Initialize list settings

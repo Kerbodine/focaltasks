@@ -1,4 +1,5 @@
 import { Dialog } from "@headlessui/react";
+import splitbee from "@splitbee/web";
 import React, { useState } from "react";
 import { HiPlusSm } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +31,7 @@ const NewListButton = () => {
     setListTitle("");
     const listId = await newList(listTitle, iconName);
     navigate(`/${listId}`);
+    splitbee.track("Create list");
   };
 
   return (

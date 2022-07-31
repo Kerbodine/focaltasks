@@ -6,8 +6,14 @@ import Login from "./auth/Login";
 import Signup from "./auth/Signup";
 import ForgotPassword from "./auth/ForgotPassword";
 import MainView from "./pages/MainView";
+import splitbee from "@splitbee/web";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    splitbee.init();
+  }, []);
+
   return (
     <div className="h-screen w-screen overflow-hidden">
       <Router>

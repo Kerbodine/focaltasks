@@ -1,4 +1,5 @@
 import { Dialog } from "@headlessui/react";
+import splitbee from "@splitbee/web";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { BiCopy, BiInfoCircle } from "react-icons/bi";
@@ -29,6 +30,7 @@ const ShareModal = ({ currentList, modalOpen, setModalOpen }) => {
       setError(error);
     } else {
       toast.success("Successfully shared!");
+      splitbee.track("Shared list");
     }
     setLoading(false);
   };
@@ -95,6 +97,7 @@ const ShareModal = ({ currentList, modalOpen, setModalOpen }) => {
                     { public: !currentList.public },
                     currentList.author
                   );
+                  splitbee.track("Toggle public");
                 }}
               />
             </div>

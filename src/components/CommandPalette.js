@@ -1,4 +1,5 @@
 import { Combobox, Dialog, Transition } from "@headlessui/react";
+import splitbee from "@splitbee/web";
 import React, { Fragment, useState, useEffect } from "react";
 import { BiCheck } from "react-icons/bi";
 import { HiSearch } from "react-icons/hi";
@@ -133,6 +134,7 @@ const CommandPalette = () => {
                     navigate(`/${item.id}`);
                   }
                   setIsOpen(false);
+                  splitbee.track("Command palette search");
                 }}
                 as="div"
                 className="relative mx-auto max-w-xl rounded-2xl border-2 border-gray-200 bg-white p-2 shadow-lg dark:border-gray-800 dark:bg-gray-900"

@@ -19,6 +19,7 @@ import { BiGridVertical } from "react-icons/bi";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { useView } from "../contexts/ViewContext";
 import { mobile } from "../config/functions";
+import splitbee from "@splitbee/web";
 
 export default function TaskItem({
   author,
@@ -42,6 +43,7 @@ export default function TaskItem({
   const toggleTaskCompleted = () => {
     updateTask(id, { completed: !taskCompleted }, listId, author);
     setTaskCompleted(!taskCompleted);
+    splitbee.track("Completed task");
   };
 
   const toggleTaskImportant = () => {
@@ -51,6 +53,7 @@ export default function TaskItem({
     } else {
       updateTask(id, { important: true }, listId, author);
     }
+    splitbee.track("Toggle task important");
   };
 
   const toggleTaskToday = () => {
@@ -60,6 +63,7 @@ export default function TaskItem({
     } else {
       updateTask(id, { today: true }, listId, author);
     }
+    splitbee.track("Toggle task today");
   };
 
   const getDueInDays = () => {
@@ -102,6 +106,7 @@ export default function TaskItem({
         updateTask(id, { dueDate: date, upcoming: true }, listId, author);
       }
     }
+    splitbee.track("Update task due date");
   };
 
   const adjustTimezone = (date) => {

@@ -1,3 +1,4 @@
+import splitbee from "@splitbee/web";
 import { useState } from "react";
 import { BiHide, BiInfoCircle, BiLoaderAlt, BiShow } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
@@ -29,6 +30,7 @@ export default function Signup() {
       setLoading(true);
       await signup(email, password, firstName, lastName);
       setLoading(false);
+      splitbee.track("Signup");
       navigate("/inbox");
     } catch (err) {
       switch (err.code) {

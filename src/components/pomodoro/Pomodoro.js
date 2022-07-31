@@ -16,6 +16,7 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../../contexts/AuthContext";
 import PomodoroBar from "./PomodoroBar";
+import splitbee from "@splitbee/web";
 
 const Pomodoro = () => {
   const minute = 60; // seconds
@@ -76,6 +77,9 @@ const Pomodoro = () => {
     setSecondsLeft(secondsLeftRef.current);
     setIsPaused(true);
     isPausedRef.current = true;
+    splitbee.track("Reset timer", {
+      duration: secondsLeftRef.current,
+    });
   };
 
   useEffect(() => {
@@ -239,6 +243,9 @@ const Pomodoro = () => {
               setIsPaused(false);
               isPausedRef.current = false;
               setStarted(true);
+              splitbee.track("Start pomodoro", {
+                duration: totalSeconds / 60,
+              });
             }}
             className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-accent hover:text-white dark:bg-gray-800 dark:hover:bg-accent"
           >
