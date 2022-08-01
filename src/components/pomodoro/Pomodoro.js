@@ -54,8 +54,14 @@ const Pomodoro = () => {
       if (isPausedRef.current) {
         return;
       }
-      if (secondsLeftRef.current === 0) {
-        return switchMode();
+      if (secondsLeftRef.current <= 0) {
+        switchMode();
+        const notification = new Notification("Pomodoro Finished!", {
+          body: `${duration} min session completed`,
+          icon: "/logo192.png",
+        });
+        alert("Pomodoro completed!");
+        return;
       }
       const elapsed = time - start;
       const seconds = Math.round(elapsed / 1000);
@@ -110,6 +116,7 @@ const Pomodoro = () => {
     const unsubscribe = onSnapshot(
       query(
         collection(getFirestore(), "Users", currentUser.uid, "Pomodoros"),
+        where("completed", "==", true),
         orderBy("createdAt", "desc"),
         limit(3)
       ),

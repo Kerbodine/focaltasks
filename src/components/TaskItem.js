@@ -163,7 +163,7 @@ export default function TaskItem({
   }, [preview]);
 
   return (
-    <div className={`${!taskExpanded && "-ml-4"} flex items-center`}>
+    <div className={`${!taskExpanded && "-ml-4 print:ml-0"} flex items-center`}>
       <div
         ref={drag}
         className={`${taskExpanded && "hidden"} ${mobile() && "opacity-0"} ${

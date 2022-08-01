@@ -103,6 +103,7 @@ export default function TaskList({ listId, author }) {
                       index={index}
                       key={task.id + index}
                       listId={listId}
+                      data={task}
                       author={
                         Object.values(userLists).filter(
                           (list) => list.id === task.listId

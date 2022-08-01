@@ -1,5 +1,5 @@
 import { Dialog } from "@headlessui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTasks } from "../../contexts/TaskContext";
 import IconPicker from "../IconPicker";
 import ModalWrapper from "./ModalWrapper";
@@ -23,6 +23,11 @@ const EditListModal = ({ currentList, modalOpen, setModalOpen }) => {
       currentList.author
     );
   };
+
+  useEffect(() => {
+    setListTitle(currentList.title);
+    setIconName(currentList.icon);
+  }, [currentList]);
 
   return (
     <ModalWrapper modalOpen={modalOpen} setModalOpen={setModalOpen}>

@@ -12,6 +12,7 @@ import { useEffect } from "react";
 function App() {
   useEffect(() => {
     splitbee.init();
+    Notification.requestPermission();
   }, []);
 
   return (

@@ -41,6 +41,7 @@ export default function Category({ title, sort }) {
                 index={index}
                 key={task.id + index}
                 listId={task.listId}
+                data={task}
                 author={
                   Object.values(userLists).filter(
                     (list) => list.id === task.listId

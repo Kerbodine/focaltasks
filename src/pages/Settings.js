@@ -41,7 +41,7 @@ const Settings = () => {
     },
     {
       icon: <FiDribbble />,
-      link: "https://dribbble.com/focaltimer",
+      link: "https://dribbble.com/Kerbodine",
     },
   ];
 
@@ -277,9 +277,7 @@ const Settings = () => {
               <p className="text-xl font-semibold text-gray-700 dark:text-gray-300">
                 FocalTasks
               </p>
-              <p className="-mt-0.5 font-mono text-gray-500">
-                v{process.env.REACT_APP_VERSION} (Beta)
-              </p>
+              <p className="-mt-0.5 font-mono text-gray-500">v0.95 (Beta)</p>
             </div>
             <div className="ml-auto flex gap-2">
               {socialButtons.map(({ icon, link }, index) => (

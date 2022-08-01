@@ -10,9 +10,9 @@ const AppleModal = ({ modalOpen, setModalOpen }) => {
         as="h3"
         className="mt-1 text-xl font-medium leading-6 dark:text-white"
       >
-        iOS Install Instructions
+        iOS Install Steps
       </Dialog.Title>
-      <div className="mt-4 space-y-2 dark:text-gray-300">
+      <div className="mt-4 space-y-2 text-gray-600 dark:text-gray-300">
         <p>
           Open up{" "}
           <span

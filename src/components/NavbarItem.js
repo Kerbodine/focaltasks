@@ -57,7 +57,7 @@ export default function NavbarItem({ icon, title, link, listId, filter }) {
       </span>
       <p
         className={`${
-          !navbar && "hidden sm:block"
+          !navbar && "opacity-0 sm:opacity-100"
         } flex-auto truncate text-sm font-medium text-gray-600 dark:text-gray-400`}
       >
         {title}
